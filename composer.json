@@ -1,0 +1,30 @@
+{
+    "name": "appaqui/freimguork-appacman",
+    "description": "CMS module for AppAqui projects",
+    "authors": [
+        {
+        	"name": "Barbara Gavalda", 
+        	"email": "bgavalda@appaqui.com"
+    	},
+    	{
+        	"name": "Toni Palanques", 
+        	"email": "tpalanques@appaqui.com"
+    	}
+    ],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url":  "https://bgavalda@bitbucket.org/appaqui/freimguork-core.git"
+		}
+	],
+    "require": {
+        "appaqui/freimguork-core": "dev-master",
+		"almasaeed2010/adminlte": "~2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+	"minimum-stability": "dev"
+}
