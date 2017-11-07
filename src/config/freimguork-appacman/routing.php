@@ -3,8 +3,12 @@
 $config = array(
 
     'routing' => array(
-        ''  => 'Home',
+        gettext('iniciar-sesion')               =>  'LoggedOut\\Signin',
         gettext('he-olvidado-mi-contrasena')    =>  'LoggedOut\\Forgot',
+        gettext('cerrar-sesion')                =>  'LoggedOut\\LogOut',
+
+        ''  => 'Home',
+
     )
 
 );

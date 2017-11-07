@@ -2,12 +2,12 @@
 
 {% block form %}
 
-    <p class="login-box-msg">{% trans %}Recordar contraseña{% endtrans %}</p>
+    <h3 class="login-box-msg">{% trans %}Recordar contraseña{% endtrans %}</h3>
 
     <form action="{{ domain }}" method="POST">
         <p>{% trans %}Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar de contraseña.{% endtrans %}</p>
         <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="{% trans %}Email{% endtrans %}">
+            <input type="email" class="form-control input-lg" placeholder="{% trans %}Email{% endtrans %}">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div>

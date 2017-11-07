@@ -2,19 +2,25 @@
 
 {% block form %}
 
-    <p class="login-box-msg">{% trans %}Iniciar sesión{% endtrans %}</p>
+    <h3 class="login-box-msg">{% trans %}Iniciar sesión{% endtrans %}</h3>
 
-    <form action="{{ domain }}" method="POST">
+    <form action="{{ domain }}{% trans %}iniciar-sesion{% endtrans %}" method="POST">
+        {% if form_error %}
+            <div class="alert alert-danger">
+                <h4><i class="icon fa fa-ban"></i>{% trans %}Error{% endtrans %}</h4>
+                <p>{{ form_error }}</p>
+            </div>
+        {% endif %}
         <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="{% trans %}Email{% endtrans %}">
+            <input type="email" name="user" class="form-control input-lg" placeholder="{% trans %}Email{% endtrans %}" value="{{ form['user'] }}" />
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="{% trans %}Contraseña{% endtrans %}">
+            <input type="password" name="password" class="form-control input-lg" placeholder="{% trans %}Contraseña{% endtrans %}" value="{{ form['password'] }}" />
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div>
-            <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans %}Acceder{% endtrans %}</button>
+            <button type="submit" name="enter" class="btn btn-primary btn-block btn-flat">{% trans %}Acceder{% endtrans %}</button>
         </div>
     </form>
 

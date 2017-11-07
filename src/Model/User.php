@@ -20,11 +20,16 @@ class User {
     private $id = null;
 
     /**
+     * @var \Core\Utils\Session $session
+     */
+    private $session = null;
+
+    /**
      * load user info from session
      */
     private function __construct(){
-        $session = Session::getInstance();
-        $this->id = $session->get('user_id');
+        $this->session = Session::getInstance();
+        $this->id = $this->session->get('user_id');
     }
 
     /**
@@ -43,6 +48,18 @@ class User {
             return false;
         }
         return true;
+    }
+
+    public function logout(){
+        $this->session->clear();
+    }
+
+    public function getName(){
+        return 'Bàrbara Gavaldà';
+    }
+
+    public function signin($userID){
+        $this->id = $this->session->set('user_id', $userID);
     }
 
 }

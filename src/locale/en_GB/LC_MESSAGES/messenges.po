@@ -12,13 +12,33 @@ msgstr ""
 "X-Generator: Poedit 1.8.11\n"
 
 # url
+msgid "iniciar-sesion"
+msgstr "signin"
 
 msgid "he-olvidado-mi-contrasena"
 msgstr "forgot"
 
+msgid "cerrar-sesion"
+msgstr "logout"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Debes llenar todos los campos obligatorios."
+msgstr "You must fill all the required fields."
+
+msgid "Comprueba el formato del email."
+msgstr "Check the email format."
+
+msgid "No existe ningún usuario con este email."
+msgstr "There is no user with this email."
+
+msgid "Contraseña incorrecta."
+msgstr "Incorrect password."
 
 # signin
 msgid "Iniciar sesión"

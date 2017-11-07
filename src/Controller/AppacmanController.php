@@ -11,10 +11,18 @@ abstract class AppacmanController extends Controller {
     /**
      * @var \Appacman\Model\User user object
      */
-    private $user = null;
+    protected $user = null;
+
+    /**
+     * @var array $loggedOutPages. List of pages without login
+     */
+    private $loggedOutPages = array();
 
     public function __construct(){
         parent::__construct();
+
+        // logged out pages
+        $this->loggedOutPages = array(gettext('iniciar-sesion'), gettext('he-olvidado-mi-contrasena'));
 
         // domain admin css
         $this->assign('admin_domain', $this->static_domain . APPACMAN . 'public/');
@@ -30,14 +38,23 @@ abstract class AppacmanController extends Controller {
         $isLogedOutPage = false;
         if( count($this->parts) ){
             $currentPage = $this->parts[0];
-            $isLogedOutPage = in_array($currentPage, array(gettext('he-olvidado-mi-contrasena')) ) === true;
+            $isLogedOutPage = in_array($currentPage, $this->loggedOutPages ) === true;
         }
 
         $this->user = User::getInstance();
-        if( $this->user->loggedIn() || $isLogedOutPage ){
-            $this->run();
+        $isLoggedIn = $this->user->loggedIn();
+        if( $isLoggedIn && $isLogedOutPage ){
+            // redirect logedin users to home page
+            $this->redirect($this->domain);
+        }else if( !$isLoggedIn && !$isLogedOutPage ){
+            // redirect logedout users to signin page
+            $this->redirect($this->domain . gettext('iniciar-sesion'), 401);
         }else{
-            $this->template('LoggedOut/signin.twig');
+            // execute currect page
+            if( $isLoggedIn ){
+                $this->assign('username', $this->user->getName());
+            }
+            $this->run();
         }
     }
 

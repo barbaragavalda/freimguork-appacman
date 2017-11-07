@@ -1,0 +1,81 @@
+{% extends "basic.twig" %}
+
+{% block body_class %}skin-custom fixed{% endblock %}
+
+{% block extra_scripts %}
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ vendor_domain }}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    {#
+    <!-- SlimScroll -->
+    <script src="{{ vendor_domain }}bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="{{ vendor_domain }}bower_components/fastclick/lib/fastclick.js"></script>
+    #}
+{% endblock %}
+
+{% block content %}
+
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="{{ domain }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>A</b>LT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>{{ business['name'] }}</b></span>
+        </a>
+
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#">
+                            <img src="{{ business['logo'] }}" class="user-image" alt="{{ business['name'] }}" title="{{ business['name'] }}">
+                            <span class="hidden-xs">{{ username }}</span>
+                        </a>
+                    </li>
+                    <li class="messages-menu">
+                        <a href="{{ domain }}{% trans %}cerrar-sesion{% endtrans %}">
+                            <i class="fa fa-sign-out"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-files-o"></i>
+                        <span>Layout Options</span>
+                        <span class="pull-right-container">
+                            <span class="label label-primary pull-right">4</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+
+{% endblock %}
