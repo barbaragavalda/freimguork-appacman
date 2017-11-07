@@ -1,0 +1,21 @@
+{% extends "loggedout/basic.twig" %}
+
+{% block form %}
+
+    <p class="login-box-msg">{% trans %}Recordar contraseña{% endtrans %}</p>
+
+    <form action="{{ domain }}" method="POST">
+        <p>{% trans %}Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar de contraseña.{% endtrans %}</p>
+        <div class="form-group has-feedback">
+            <input type="email" class="form-control" placeholder="{% trans %}Email{% endtrans %}">
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans %}Recordar{% endtrans %}</button>
+        </div>
+    </form>
+
+    <br/>
+    <a href="{{ domain }}">{% trans %}Volver{% endtrans %}</a><br>
+
+{% endblock %}

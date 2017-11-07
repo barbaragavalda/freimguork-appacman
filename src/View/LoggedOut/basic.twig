@@ -1,0 +1,22 @@
+{% extends "basic.twig" %}
+
+{% block body_class %}login-page{% endblock %}
+
+{% block content %}
+
+    <div class="login-box">
+        <div class="login-box-body">
+            <div class="login-logo">
+                <a href="{{ domain }}">
+                    {% if business['logo'] is not null %}
+                        <img src="{{ business['logo'] }}" alt="{{ business['name'] }}" title="{{ business['name'] }}" id="loggedout-logo">
+                    {% endif %}
+                    <b>{{ business['name'] }}</b>
+                </a>
+            </div>
+
+            {% block form %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: <project name>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Bàrbara Gavaldà <bgavalda@appaqui.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"X-Generator: Poedit 1.8.11\n"
+
+# url
+
+msgid "he-olvidado-mi-contrasena"
+msgstr "forgot"
+
+# generic
+msgid "Volver"
+msgstr "Go back"
+
+# signin
+msgid "Iniciar sesión"
+msgstr "Sign in to start your session"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "Acceder"
+msgstr "Sign In"
+
+msgid "He olvidado mi contraseña"
+msgstr "I forgot my password"
+
+# forgot
+msgid "Recordar contraseña"
+msgstr "Remember password"
+
+msgid "Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar de contraseña."
+msgstr "Enter an email address and we will send you the instructions to change your password."
+
+msgid "Recordar"
+msgstr "Remember"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

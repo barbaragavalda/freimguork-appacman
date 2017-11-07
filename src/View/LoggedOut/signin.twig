@@ -1,0 +1,24 @@
+{% extends "loggedout/basic.twig" %}
+
+{% block form %}
+
+    <p class="login-box-msg">{% trans %}Iniciar sesión{% endtrans %}</p>
+
+    <form action="{{ domain }}" method="POST">
+        <div class="form-group has-feedback">
+            <input type="email" class="form-control" placeholder="{% trans %}Email{% endtrans %}">
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="{% trans %}Contraseña{% endtrans %}">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans %}Acceder{% endtrans %}</button>
+        </div>
+    </form>
+
+    <br/>
+    <a href="{{ domain }}{% trans %}he-olvidado-mi-contrasena{% endtrans %}">{% trans %}He olvidado mi contraseña{% endtrans %}</a><br>
+
+{% endblock %}
