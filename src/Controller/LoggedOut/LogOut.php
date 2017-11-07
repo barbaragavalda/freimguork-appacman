@@ -13,9 +13,17 @@ use Appacman\Controller\AppacmanController;
 
 class LogOut extends AppacmanController {
 
-    public function run(){
+    protected function run(){
         $this->user->logout();
         $this->redirect($this->domain . gettext('iniciar-sesion'));
+    }
+
+    protected function getTitle(){
+        return gettext('Cerrar sesión');
+    }
+
+    protected function getBreadcrumb(){
+        return array();
     }
 
 }

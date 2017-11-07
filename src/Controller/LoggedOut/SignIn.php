@@ -14,7 +14,7 @@ use Appacman\Model\LoggedOut\UserForm;
 
 class Signin extends AppacmanController {
 
-    public function run(){
+    protected function run(){
         $send = false;
         if( isset($_POST['enter']) ){
             $form = new UserForm();
@@ -30,6 +30,14 @@ class Signin extends AppacmanController {
         }else{
             $this->template('LoggedOut/signin.twig');
         }
+    }
+
+    protected function getTitle(){
+        return gettext('Iniciar sesión');
+    }
+
+    protected function getBreadcrumb(){
+        return array();
     }
 
 }

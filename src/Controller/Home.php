@@ -10,8 +10,16 @@ namespace Appacman\Controller;
 
 class Home extends AppacmanController {
 
-    public function run(){
+    protected function run(){
         $this->template('home.twig');
+    }
+
+    protected function getTitle(){
+        return gettext('Inicio');
+    }
+
+    protected function getBreadcrumb(){
+        return array();
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Business;
+use Appacman\Model\Menu;
 use Appacman\Model\User;
 use Core\Controller\Controller;
 
@@ -31,6 +32,9 @@ abstract class AppacmanController extends Controller {
         //business info
         $business = new Business();
         $this->assign('business', $business->getInfo());
+
+        // page title
+        $this->assign('title', $this->getTitle());
     }
 
     public function build(){
@@ -53,11 +57,20 @@ abstract class AppacmanController extends Controller {
             // execute currect page
             if( $isLoggedIn ){
                 $this->assign('username', $this->user->getName());
+
+                // menu info
+                $menu = new Menu();
+                $this->assign('menu', $menu->get());
+                $this->assign('breadcrumb', $this->getBreadcrumb());
             }
             $this->run();
         }
     }
 
     abstract protected function run();
+
+    abstract protected function getTitle();
+
+    abstract protected function getBreadcrumb();
 
 }

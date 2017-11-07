@@ -9,4 +9,12 @@ class DefaultController extends AppacmanController {
         $this->template('default_template.twig');
     }
 
+    protected function getTitle(){
+        return 'Appacman';
+    }
+
+    protected function getBreadcrumb(){
+        return array();
+    }
+
 }

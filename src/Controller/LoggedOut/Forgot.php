@@ -13,8 +13,15 @@ use Appacman\Controller\AppacmanController;
 
 class Forgot extends AppacmanController {
 
-    public function run(){
+    protected function run(){
         $this->template('LoggedOut/forgot.twig');
     }
 
+    protected function getTitle(){
+        return gettext('Recordar contraseña');
+    }
+
+    protected function getBreadcrumb(){
+        return array();
+    }
 }
