@@ -1,1 +1,50 @@
 {% extends "basic-loggedin.twig" %}
+
+{% block page_content %}
+
+    {% for block in menu %}
+        {% if block['list']|length %}
+            <!-- block name -->
+            {% if block['name'] is not null %}
+                <h2 class="page-header">{{ block['name'] }}</h2>
+            {% endif %}
+
+            {% for i in 0..(block['list']|length -1) %}
+                {% if i % 4 == 0 %}
+                    <div class="row">
+                {% endif %}
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-yellow">
+                        <!-- resume -->
+                        <div class="inner">
+                            <h3>{{ block['list'][i]['counter'] }}</h3>
+                            <p>{{ block['list'][i]['name'] }}</p>
+                            <p>
+                                {% for permission in block['list'][i]['permissions'] %}
+                                    <span class="label label-success">{{ permission['name'] }}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <!-- icon -->
+                        <div class="icon">
+                            <i class="fa {{ block['list'][i]['icon'] }}"></i>
+                        </div>
+                        <!-- link -->
+                        <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ block['list'][i]['id_appacman_content'] }}" class="small-box-footer">
+                            {% trans %}Ver listado{% endtrans %} <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% if i % 4 == 3 %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if (block['list']|length-1) % 4 != 3 %}
+                </div>
+            {% endif %}
+
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

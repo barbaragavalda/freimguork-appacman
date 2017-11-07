@@ -21,12 +21,21 @@ msgstr "forgot"
 msgid "cerrar-sesion"
 msgstr "logout"
 
+msgid "listado"
+msgstr "list"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
 
 msgid "Error"
 msgstr "Error"
+
+msgid "Inicio"
+msgstr "Home"
+
+msgid "Cerrar sesión"
+msgstr "Logout"
 
 msgid "Debes llenar todos los campos obligatorios."
 msgstr "You must fill all the required fields."
@@ -65,6 +74,34 @@ msgstr "Enter an email address and we will send you the instructions to change y
 
 msgid "Recordar"
 msgstr "Remember"
+
+# home
+msgid "Ver listado"
+msgstr "See list"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
 
 msgid ""
 msgstr ""

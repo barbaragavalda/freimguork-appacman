@@ -22,10 +22,13 @@ class UserForm extends Form {
     public function signin(){
         if( !empty($this->form['user']) && !empty($this->form['password']) ){
             if( filter_var($this->form['user'], FILTER_VALIDATE_EMAIL) ){
-                if( ($userID = $this->checkLogin()) !== false ){
+                if( ($userInfo = $this->checkLogin()) !== false ){
                     $this->send = true;
+                    $key = $userInfo['id_appacman_user'] . '_' . $userInfo['created'];
+                    $username = TwoWay::decrypy($userInfo['name'], $key.'_name');
+
                     $user = User::getInstance();
-                    $user->signin($userID);
+                    $user->signin($userInfo['id_appacman_user'], $username);
                 }
             }else{
                 $this->error = gettext('Comprueba el formato del email.');
@@ -50,7 +53,7 @@ class UserForm extends Form {
                 $found = true;
 
                 if( OneWay::check($user['password'], $this->form['password'], $key.'_password') ){
-                    return $user['id_appacman_user'];
+                    return $user;
                 }else{
                     $this->error = gettext('Contraseña incorrecta.');
                 }

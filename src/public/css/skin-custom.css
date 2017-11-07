@@ -137,6 +137,9 @@
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
-.skin-custom.layout-top-nav .main-header > .logo:hover, .label-primary {
+.skin-custom.layout-top-nav .main-header > .logo:hover, .label-primary, .label-success {
   background-color: #3bb887 !important;
+}
+a {
+  color: #3cbc9f;
 }

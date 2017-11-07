@@ -8,16 +8,25 @@
 
 namespace Appacman\Model;
 
+use Appacman\Model\Utils\Permissions;
 use Core\Utils\Session;
 
 class User {
 
     /**
-     * @var \Appacman\Model\User $instance.  Instance of the singleton
+     * @var \Appacman\Model\User $instance. Instance of the singleton
      */
     private static $instance;
 
+    /**
+     * @var int $id. User id
+     */
     private $id = null;
+
+    /**
+     * @var \Appacman\Model\Utils\Permissions $permissions. User permissions
+     */
+    private $permissions = null;
 
     /**
      * @var \Core\Utils\Session $session
@@ -30,6 +39,8 @@ class User {
     private function __construct(){
         $this->session = Session::getInstance();
         $this->id = $this->session->get('user_id');
+
+        $this->loadPermissions();
     }
 
     /**
@@ -43,6 +54,17 @@ class User {
         return self::$instance;
     }
 
+    /**
+     * @return string username
+     */
+    public function getName(){
+        return $this->session->get('user_name');
+    }
+
+    /**
+     * is the user loggedin
+     * @return bool
+     */
     public function loggedIn(){
         if( empty($this->id) ){
             return false;
@@ -50,16 +72,38 @@ class User {
         return true;
     }
 
+    /**
+     * remove session
+     */
     public function logout(){
         $this->session->clear();
     }
 
-    public function getName(){
-        return 'Bàrbara Gavaldà';
+    /**
+     * save session
+     * @param $userID
+     * @param $username
+     */
+    public function signin($userID, $username){
+        $this->id = $userID;
+        $this->session->set('user_id', $userID);
+        $this->session->set('user_name', $username);
     }
 
-    public function signin($userID){
-        $this->id = $this->session->set('user_id', $userID);
+    /**
+     * load user permissions
+     */
+    private function loadPermissions(){
+        $this->permissions = new Permissions($this->id);
+        $this->permissions->load();
+    }
+
+    public function getContentPermissions($contentID){
+        return $this->permissions->getContentPermissions($contentID);
+    }
+
+    public function hasPermission($contentID, $permission){
+        return $this->permissions->hasPermission($contentID, $permission);
     }
 
 }
