@@ -1,0 +1,95 @@
+{% extends "basic-loggedin.twig" %}
+
+{% block extra_head %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ vendor_domain }}bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% block extra_scripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ vendor_domain }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{ vendor_domain }}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        var columns = [];
+        {% for th in list_headers %}
+            columns.push({ "orderable": true });
+        {% endfor %}
+        columns.push({ "orderable": false });
+        $(function () {
+            $('#list').DataTable({
+                'paging'        : true,
+                'lengthChange'  : true,
+                'searching'     : true,
+                'ordering'      : true,
+                'info'          : true,
+                'autoWidth'     : false,
+                'pageLength'    : 25,
+                'columns'       : columns,
+                'order'         : {{ list_order|json_encode|raw }},
+                'language'      : {
+                    'lengthMenu': "{% trans %}Mostrar _MENU_ items por página{% endtrans %}",
+                    'zeroRecords': "{% trans %}Sin resultados{% endtrans %}",
+                    'info': "{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}",
+                    'infoEmpty': "{% trans %}No hay registros disponibles{% endtrans %}",
+                    'search': "{% trans %}Buscar{% endtrans %}: ",
+                    'infoFiltered': "{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}",
+                    'paginate': {
+                        'first': "{% trans %}Primero{% endtrans %}",
+                        'last': "{% trans %}Último{% endtrans %}",
+                        'previous': "{% trans %}Anterior{% endtrans %}",
+                        'next': "{% trans %}Siguiente{% endtrans %}"
+                    }
+                }
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                {% include "Buttons/create.twig" %}
+                <div class="box-body">
+                    <table id="list" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                {% for th in list_headers %}
+                                    <th>{{ th['name'] }}</th>
+                                {% endfor %}
+                                <th>{% trans %}Acciones{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tr in list %}
+                                <tr>
+                                    {% for th in list_headers %}
+                                        <td>{{ tr[th['field_name']] }}</td>
+                                    {% endfor %}
+                                    <td>
+                                        {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
+                                        {% include "Buttons/edit.twig" with {'itemID': tr['id']} %}
+                                        {% include "Buttons/delete.twig" with {'itemID': tr['id']} %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                {% for th in list_headers %}
+                                    <th>{{ th['name'] }}</th>
+                                {% endfor %}
+                                <th>{% trans %}Acciones{% endtrans %}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                {% include "Buttons/create.twig" %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -2,8 +2,8 @@
  * Skin: Blue
  * ----------
  */
-.skin-custom .main-header .navbar {
-  background-color: #3cbc9f;
+.skin-custom .main-header .navbar, .label-custom {
+  background-color: #39CCCC;
 }
 .skin-custom .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -29,7 +29,7 @@
   color: #fff;
 }
 .skin-custom .main-header .navbar .sidebar-toggle:hover {
-  background-color: #36a984;
+  background-color: #36a8a9;
 }
 @media (max-width: 767px) {
   .skin-custom .main-header .navbar .dropdown-menu li.divider {
@@ -39,19 +39,19 @@
     color: #fff;
   }
   .skin-custom .main-header .navbar .dropdown-menu li a:hover {
-    background: #36a984;
+    background: #36a8a9;
   }
 }
 .skin-custom .main-header .logo {
-  background-color: #36a984;
+  background-color: #36a8a9;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-custom .main-header .logo:hover {
-  background-color: #35a57c;
+  background-color: #30bbbb;
 }
 .skin-custom .main-header li.user-header {
-  background-color: #3cbc9f;
+  background-color: #39CCCC;
 }
 .skin-custom .content-header {
   background: transparent;
@@ -79,7 +79,7 @@
   background: #1e282c;
 }
 .skin-custom .sidebar-menu > li.active > a {
-  border-left-color: #3cbc9f;
+  border-left-color: #39CCCC;
 }
 .skin-custom .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
@@ -133,13 +133,31 @@
   border-bottom-left-radius: 0;
 }
 .skin-custom.layout-top-nav .main-header > .logo {
-  background-color: #3cbc9f;
+  background-color: #39CCCC;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
-.skin-custom.layout-top-nav .main-header > .logo:hover, .label-primary, .label-success {
-  background-color: #3bb887 !important;
+.skin-custom.layout-top-nav .main-header > .logo:hover {
+  background-color: #3bb8b7;
 }
+/* override */
 a {
-  color: #3cbc9f;
+  color: #36a8a9;
+}
+a:hover, a:active, a:focus {
+  color: #237c7b;
+}
+.btn-primary {
+  background-color: #39CCCC;
+  border-color: #36a8a9;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary.hover {
+  background-color: #36a8a9;
+}
+.form-control:focus {
+  border-color: #39CCCC;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+  background-color: #39CCCC;
+  border-color: #36a8a9;
 }

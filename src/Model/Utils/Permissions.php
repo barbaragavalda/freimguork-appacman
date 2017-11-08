@@ -9,6 +9,7 @@ class Permissions extends Model {
     const CREATE = 'create';
     const EDIT = 'edit';
     const DELETE = 'delete';
+    const SEE = 'see';
     const EDIT_INFO = 'edit_info';
 
     /**
@@ -29,7 +30,7 @@ class Permissions extends Model {
     public function __construct($userID){
         parent::__construct();
 
-        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::EDIT_INFO);
+        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EDIT_INFO);
         $this->userID = $userID;
     }
 

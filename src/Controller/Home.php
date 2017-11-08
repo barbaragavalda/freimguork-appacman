@@ -14,6 +14,10 @@ class Home extends AppacmanController {
         $this->template('home.twig');
     }
 
+    protected function hasPermission(){
+        return $this->user->loggedIn();
+    }
+
     protected function getTitle(){
         return gettext('Inicio');
     }

@@ -7,7 +7,8 @@ $config = array(
         gettext('he-olvidado-mi-contrasena')    =>  'LoggedOut\\Forgot',
         gettext('cerrar-sesion')                =>  'LoggedOut\\LogOut',
 
-        ''  => 'Home',
+        ''                                  => 'Home',
+        gettext('listado').'/{contentID}'   => 'ContentList'
 
     )
 

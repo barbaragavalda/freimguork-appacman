@@ -24,6 +24,12 @@ msgstr "logout"
 msgid "listado"
 msgstr "list"
 
+msgid "formulario"
+msgstr "form"
+
+msgid "eliminar"
+msgstr "delete"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
@@ -79,26 +85,58 @@ msgstr "Remember"
 msgid "Ver listado"
 msgstr "See list"
 
-msgid ""
-msgstr ""
+# list
+msgid "Listado"
+msgstr "List"
 
-msgid ""
-msgstr ""
+msgid "Acciones"
+msgstr "Actions"
 
-msgid ""
-msgstr ""
+msgid "Editar"
+msgstr "Edit"
 
-msgid ""
-msgstr ""
+msgid "Eliminar"
+msgstr "Delete"
 
-msgid ""
-msgstr ""
+msgid "Crear nuevo item"
+msgstr "Create new item"
 
-msgid ""
-msgstr ""
+msgid "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
 
-msgid ""
-msgstr ""
+msgid "Mostrar _MENU_ items por página"
+msgstr "Show _MENU_ items per page"
+
+msgid "Sin resultados"
+msgstr "Nothing found"
+
+msgid "No hay registros disponibles"
+msgstr "No records available"
+
+msgid "(filtrado de _MAX_ entradas totales)"
+msgstr "(filtered from _MAX_ total entries)"
+
+msgid "Buscar"
+msgstr "Search"
+
+msgid "Anterior"
+msgstr "Previous"
+
+msgid "Siguiente"
+msgstr "Next"
+
+msgid "Primero"
+msgstr "First"
+
+msgid "Último"
+msgstr "Last"
+
+# 404
+msgid "Página no encontrada"
+msgstr "Page not found"
+
+msgid "No hemos encontrado la página que estás buscando."
+msgstr "We could not find the page you were looking for."
 
 msgid ""
 msgstr ""

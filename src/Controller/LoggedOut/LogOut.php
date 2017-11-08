@@ -18,6 +18,10 @@ class LogOut extends AppacmanController {
         $this->redirect($this->domain . gettext('iniciar-sesion'));
     }
 
+    protected function hasPermission(){
+        return true;
+    }
+
     protected function getTitle(){
         return gettext('Cerrar sesión');
     }

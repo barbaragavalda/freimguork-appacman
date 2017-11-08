@@ -32,9 +32,6 @@ abstract class AppacmanController extends Controller {
         //business info
         $business = new Business();
         $this->assign('business', $business->getInfo());
-
-        // page title
-        $this->assign('title', $this->getTitle());
     }
 
     public function build(){
@@ -47,27 +44,35 @@ abstract class AppacmanController extends Controller {
 
         $this->user = User::getInstance();
         $isLoggedIn = $this->user->loggedIn();
-        if( $isLoggedIn && $isLogedOutPage ){
-            // redirect logedin users to home page
-            $this->redirect($this->domain);
-        }else if( !$isLoggedIn && !$isLogedOutPage ){
+        if( !$isLoggedIn && !$isLogedOutPage ){
             // redirect logedout users to signin page
             $this->redirect($this->domain . gettext('iniciar-sesion'), 401);
         }else{
-            // execute currect page
-            if( $isLoggedIn ){
-                $this->assign('username', $this->user->getName());
+            if( $this->hasPermission() ){
+                // execute currect page
+                if( $isLoggedIn ){
+                    $this->assign('username', $this->user->getName());
 
-                // menu info
-                $menu = new Menu();
-                $this->assign('menu', $menu->get());
-                $this->assign('breadcrumb', $this->getBreadcrumb());
+                    // menu info
+                    $menu = new Menu();
+                    $this->assign('menu', $menu->get());
+                    $this->assign('breadcrumb', $this->getBreadcrumb());
+                }
+
+                // page title
+                $this->assign('title', $this->getTitle());
+
+                $this->run();
+            }else{
+                // redirect logedin users to home page
+                $this->redirect($this->domain);
             }
-            $this->run();
         }
     }
 
     abstract protected function run();
+
+    abstract protected function hasPermission();
 
     abstract protected function getTitle();
 

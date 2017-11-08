@@ -3,14 +3,9 @@
 {% block body_class %}skin-custom fixed{% endblock %}
 
 {% block extra_scripts %}
+    {{ parent() }}
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ vendor_domain }}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    {#
-    <!-- SlimScroll -->
-    <script src="{{ vendor_domain }}bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="{{ vendor_domain }}bower_components/fastclick/lib/fastclick.js"></script>
-    #}
 {% endblock %}
 
 {% block content %}
@@ -63,23 +58,27 @@
                 </div>
             </form>
 
-            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <!-- menu -->
             <ul class="sidebar-menu" data-widget="tree">
                 {% for block in menu %}
                     {% if block['list']|length %}
+                        <!-- block name -->
                         {% if block['name'] is not null %}
                             <li class="header">{{ block['name']|upper }}</li>
                         {% endif %}
+                        <!-- block links list -->
                         {% for li in block['list'] %}
                             {% set icon = 'fa-list' %}
                             {% if li['icon'] %}{% set icon = li['icon'] %}{% endif %}
-                            <li class="treeview">
+                            {% set active = '' %}
+                            {% if li['id_appacman_content'] == contentID %}{% set active = ' class="active"' %}{% endif %}
+                            <li{{ active|raw }}>
                                 <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ li['id_appacman_content'] }}">
                                     <i class="fa {{ icon }}"></i>
                                     <span>{{ li['name'] }}</span>
                                     {% if li['counter'] > 0 %}
                                         <span class="pull-right-container">
-                                            <span class="label label-primary pull-right">{{ li['counter'] }}</span>
+                                            <span class="label label-custom pull-right">{{ li['counter'] }}</span>
                                         </span>
                                     {% endif %}
                                 </a>
@@ -95,12 +94,18 @@
         <!-- breadcrumb -->
         <section class="content-header">
             <h1>{{ title }}</h1>
-            <ol class="breadcrumb">
-                {% if breadcrumb|length > 0 %}
-                    <li><a href="{{ domain }}">Home</a></li>
-                    <li class="active">Widgets</li>
-                {% endif %}
-            </ol>
+            {% if breadcrumb|length > 0 %}
+                <ol class="breadcrumb">
+                    <li><a href="{{ domain }}">{% trans %}Inicio{% endtrans %}</a></li>
+                    {% for li in breadcrumb %}
+                        {% if li['link'] is null %}
+                            <li class="active">{{ li['name'] }}</li>
+                        {% else %}
+                            <li><a href="{{ li['link'] }}">{{ li['name'] }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            {% endif %}
         </section>
 
         <section class="content">

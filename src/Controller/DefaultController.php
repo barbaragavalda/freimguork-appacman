@@ -6,7 +6,15 @@ class DefaultController extends AppacmanController {
 
 	// 404 error
     protected function run(){
-        $this->template('default_template.twig');
+        if( $this->user->loggedIn() ){
+            $this->template('DefaultTemplate/loggedin.twig');
+        }else{
+            $this->template('DefaultTemplate/loggedout.twig');
+        }
+    }
+
+    protected function hasPermission(){
+        return true;
     }
 
     protected function getTitle(){

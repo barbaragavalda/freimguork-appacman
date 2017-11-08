@@ -32,6 +32,10 @@ class Signin extends AppacmanController {
         }
     }
 
+    protected function hasPermission(){
+        return !$this->user->loggedIn();
+    }
+
     protected function getTitle(){
         return gettext('Iniciar sesión');
     }

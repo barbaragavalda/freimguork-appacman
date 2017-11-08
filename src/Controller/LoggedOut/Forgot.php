@@ -17,6 +17,10 @@ class Forgot extends AppacmanController {
         $this->template('LoggedOut/forgot.twig');
     }
 
+    protected function hasPermission(){
+        return !$this->user->loggedIn();
+    }
+
     protected function getTitle(){
         return gettext('Recordar contraseña');
     }
