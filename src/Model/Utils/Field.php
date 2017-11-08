@@ -21,11 +21,24 @@ class Field extends Model {
      */
     private $fields = array();
 
-    public function __construct($contentID, $contentTable){
+    public function __construct($contentTable, $contentID = null){
         parent::__construct();
 
         $this->contentID = $contentID;
         $this->contentTable = $contentTable;
+
+        if( $this->contentID == null ){
+            $sql = '
+                SELECT id_appacman_content
+                FROM appacman_content
+                WHERE table_name = :table
+            ';
+            $params = array(
+                'table' => array('value' => $this->contentTable, 'type' => \PDO::PARAM_STR),
+            );
+            $content = $this->mysql->query($sql, $params);
+            if( count($content) ) $this->contentID = $content[0]['id_appacman_content'];
+        }
 
         $this->init();
     }
@@ -33,7 +46,9 @@ class Field extends Model {
     public function getFieldsForList(){
         $names = array();
         foreach($this->fields as $field){
-            $names[] = $field['field_name'];
+            if( $field['show_on_list'] ){
+                $names[] = $field;
+            }
         }
 
         return $names;
@@ -45,11 +60,11 @@ class Field extends Model {
 
     private function init(){
         $sql = '
-            SELECT af.field_name, afl.name, aft.name AS type
+            SELECT af.field_name, af.show_on_list, afl.name, aft.name AS type
             FROM appacman_field AS af
             INNER JOIN appacman_field_lang AS afl ON afl.id_appacman_field = af.id_appacman_field AND afl.id_appacman_lang = :lang
             LEFT JOIN appacman_field_type AS aft ON aft.id_appacman_field_type = af.id_appacman_field_type
-            WHERE af.id_appacman_content = :content_id AND af.show_on_list = 1
+            WHERE af.id_appacman_content = :content_id
             ORDER BY af.order
         ';
         $params = array(
@@ -59,10 +74,12 @@ class Field extends Model {
         $this->fields = $this->mysql->query($sql, $params);
 
         foreach($this->fields as &$field){
-            // field type
+            $fieldDescription = $this->mysql->fieldDescription($this->contentTable, $field['field_name']);
             $field['length'] = 0;
+            $field['required'] = $fieldDescription['required'];
+            // field type
             if( !$field['type'] ){
-                $typeInfo = $this->mysql->fieldType($this->contentTable, $field['field_name']);
+                $typeInfo = $fieldDescription['type'];
                 $type = $typeInfo;
                 if( strpos($typeInfo, '(') !== false ){
                     $typeArray = explode('(', $typeInfo);

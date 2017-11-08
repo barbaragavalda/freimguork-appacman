@@ -29,7 +29,26 @@ class Content extends Model {
         $this->id = $id;
     }
 
-    public function getid(){
+    public function get(){
+        $fields = array_column($this->fields->getFieldsForList(), 'field_name');
+        $extraFields = count($fields) ? ', '.implode(', ', $fields) : '';
+
+        $table = $this->info['table_name'];
+        $tableLang = $table . '_lang';
+        $params = array();
+        $sql = '
+            SELECT t.id_'.$table.' AS id '.$extraFields.'
+            FROM '.$table.' AS t
+        ';
+        if( $this->mysql->tableExists($tableLang) ){
+            $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
+            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
+        }
+
+        return $this->mysql->query($sql, $params);
+    }
+
+    public function getID(){
         return $this->id;
     }
 
@@ -37,7 +56,12 @@ class Content extends Model {
         return $this->info['name'];
     }
 
+    public function getTable(){
+        return $this->info['table_name'];
+    }
+
     public function getOrderBy(){
+        // order by on data base
         $orders = explode(', ', $this->info['order_by']);
         $orderBy = array();
         foreach($orders as $order){
@@ -45,6 +69,7 @@ class Content extends Model {
             $orderBy[ $array[0] ] = $array[1];
         }
 
+        // setup order for javascript
         $order = array();
         $fields = $this->fields->get();
         for($i=0; $i<count($fields)-1; $i++){
@@ -73,34 +98,20 @@ class Content extends Model {
 
         if( count($content) ){
             $this->info = $content[0];
-            $this->fields = new Field($this->id, $this->info['table_name']);
+            $this->fields = new Field($this->info['table_name'], $this->id);
             return true;
         }
         return false;
     }
 
-    public function get(){
-        $fields = $this->fields->getFieldsForList();
-        $extraFields = count($fields) ? ', '.implode(', ', $fields) : '';
-
-        $table = $this->info['table_name'];
-        $tableLang = $table . '_lang';
-        $params = array();
-        $sql = '
-            SELECT t.id_'.$table.' AS id '.$extraFields.'
-            FROM '.$table.' AS t
-        ';
-        if( $this->mysql->tableExists($tableLang) ){
-            $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
-            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
-        }
-
-        $list = $this->mysql->query($sql, $params);
-        return $list;
-    }
-
     public function getHeaders(){
-        return $this->fields->get();
+        return $this->fields->getFieldsForList();
     }
 
+}
+
+if(!function_exists("array_column")) {
+    function array_column($array,$column_name){
+        return array_map(function($element) use($column_name){return $element[$column_name];}, $array);
+    }
 }

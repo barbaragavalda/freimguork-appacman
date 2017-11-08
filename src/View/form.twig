@@ -1,0 +1,30 @@
+{% extends "basic-loggedin.twig" %}
+
+{% block page_content %}
+
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Horizontal Form</h3>
+        </div>
+        <form class="form-horizontal">
+            <div class="box-body">
+                {% for input in form %}
+                    <div class="form-group">
+                        <label for="{{ input['field_name'] }}" class="col-sm-2 control-label">{{ input['name'] }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="{{ input['field_name'] }}" name="{{ input['field_name'] }}" placeholder="{{ input['name'] }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="box-footer">
+                <div class="btn-group pull-right">
+                    <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancel{% endtrans %}</a>
+                    {% include "Buttons/delete.twig" with {'itemID': tr['id']} %}
+                    <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {% trans %}Guardar{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

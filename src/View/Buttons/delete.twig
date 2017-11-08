@@ -1,3 +1,8 @@
 {% if canDelete %}
-    <a href="{{ domain }}{% trans %}eliminar{% endtrans %}/{{ contentID }}/{{ itemID }}" class="btn btn-danger btn-xs" title="{% trans %}Eliminar{% endtrans %}"><i class="fa fa-trash"></i></a>
+    {% set link = domain ~ 'eliminar'|trans ~ '/' ~ contentID ~ '/' ~ itemID %}
+    {% if small %}
+        <a href="{{ link }}" class="btn btn-danger btn-xs" title="{% trans %}Eliminar{% endtrans %}"><i class="fa fa-trash"></i></a>
+    {% else %}
+        <a href="{{ link }}" class="btn btn-danger"><i class="fa fa-trash"></i> {% trans %}Eliminar{% endtrans %}</a>
+    {% endif %}
 {% endif %}

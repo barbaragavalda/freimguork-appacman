@@ -72,7 +72,7 @@
                                     <td>
                                         {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
                                         {% include "Buttons/edit.twig" with {'itemID': tr['id']} %}
-                                        {% include "Buttons/delete.twig" with {'itemID': tr['id']} %}
+                                        {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
                                     </td>
                                 </tr>
                             {% endfor %}

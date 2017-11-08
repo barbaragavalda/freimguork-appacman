@@ -8,7 +8,9 @@ $config = array(
         gettext('cerrar-sesion')                =>  'LoggedOut\\LogOut',
 
         ''                                  => 'Home',
-        gettext('listado').'/{contentID}'   => 'ContentList'
+        gettext('listado').'/{contentID}'   => 'ContentList',
+        gettext('formulario').'/{contentID}'            => 'ContentForm',
+        gettext('formulario').'/{contentID}/{itemID}'   => 'ContentForm'
 
     )
 
