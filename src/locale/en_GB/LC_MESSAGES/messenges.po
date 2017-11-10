@@ -141,12 +141,36 @@ msgstr "Save"
 msgid "Cancelar"
 msgstr "Cancel"
 
+msgid "Selecciona"
+msgstr "Selecciona"
+
+msgid "Valor oculto"
+msgstr "Hidden value"
+
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"
 
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
 
 msgid ""
 msgstr ""

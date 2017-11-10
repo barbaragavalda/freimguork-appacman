@@ -1,0 +1,62 @@
+<?php
+
+namespace Appacman\Model\Form;
+
+class Select extends FormInput {
+
+    public function getHTML(){
+        return '
+            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                ' . $this->getOptionsHTML() . '
+            </select>
+        ';
+    }
+
+    protected function getOptionsHTML(){
+        $optionsHTML = '';
+        $options = $this->getOptions();
+        $values = $this->loadValues();
+
+        foreach($options as $option){
+            $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
+            $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $option['name'] . '</option>';
+        }
+
+        return $optionsHTML;
+    }
+
+    protected function getOptions(){
+        $lateralTable = str_replace('id_', '', $this->getFieldName());
+        return $this->loadOptions($lateralTable);
+    }
+
+    /**
+     * load all possible options form lateral table
+     * @return array
+     */
+    protected function loadOptions($lateralTable){
+        $lateralTableLang = $lateralTable . '_lang';
+
+        $params = array();
+        $innerJoin = '';
+        if( $this->mysql->tableExists($lateralTableLang) ){
+            $innerJoin = 'INNER JOIN '.$lateralTableLang.' ON '.$lateralTableLang.'.id_'.$lateralTable.' = '.$lateralTable.'.id_'.$lateralTable.' AND '.$lateralTableLang.'.id_appacman_lang = :lang';
+            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
+        }
+        $sql = '
+            SELECT '.$lateralTable.'.id_'.$lateralTable.' AS id, name
+            FROM '.$lateralTable.'
+            '.$innerJoin.'
+            ORDER BY name ASC
+        ';
+        return $this->mysql->query($sql, $params);
+    }
+
+    /**
+     * get selected options
+     */
+    protected function loadValues(){
+        return array($this->description['value']);
+    }
+
+}

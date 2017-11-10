@@ -16,6 +16,7 @@ class ContentForm extends Content {
         parent::run();
 
         $this->assign('form', $this->item->get());
+        $this->assign('breadcrumb', $this->getBreadcrumb());
         $this->template('form.twig');
     }
 
@@ -31,11 +32,11 @@ class ContentForm extends Content {
 
             // has permission to create?
             $itemID = $this->getParam('itemID');
+            $this->item = new Item($itemID, $this->content->getTable());
             if( $itemID == false && $canCreate){
                 $hasPermission = true;
                 // has permission to edit or see?
             }else if( $itemID > 0 ){
-                $this->item = new Item($itemID, $this->content->getTable());
                 if( $this->item->exists() && ($canSee || $canEdit) ){
                     $hasPermission = true;
                 }
@@ -55,14 +56,9 @@ class ContentForm extends Content {
     }
 
     protected function getBreadcrumb(){
-        $name = gettext('Crear nuevo item');
-        if( $this->item->getID() ){
-            $name = $this->item->getName();
-        }
-
         return array(
             array('name' => $this->content->getName(), 'link' => $this->domain . gettext('listado') . '/' . $this->content->getID() ),
-            array('name' => $name, 'link' => null)
+            array('name' => $this->item->getName(), 'link' => null)
         );
     }
 

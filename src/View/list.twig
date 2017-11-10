@@ -1,9 +1,9 @@
 {% extends "basic-loggedin.twig" %}
 
 {% block extra_head %}
-    {{ parent() }}
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ vendor_domain }}bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    {{ parent() }}
 {% endblock %}
 
 {% block extra_scripts %}
@@ -67,11 +67,11 @@
                             {% for tr in list %}
                                 <tr>
                                     {% for th in list_headers %}
-                                        <td>{{ tr[th['field_name']] }}</td>
+                                        <td>{{ tr[th['field_name']]|striptags|raw }}</td>
                                     {% endfor %}
                                     <td>
                                         {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
-                                        {% include "Buttons/edit.twig" with {'itemID': tr['id']} %}
+                                        {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
                                         {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
                                     </td>
                                 </tr>

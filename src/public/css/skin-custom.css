@@ -161,3 +161,19 @@ a:hover, a:active, a:focus {
   background-color: #39CCCC;
   border-color: #36a8a9;
 }
+.select2-container--default.select2-container--open,
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+  border-color: #39CCCC;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+  background-color: #39CCCC;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple,
+.select2-container--default .select2-search--dropdown .select2-search__field,
+.select2-container--default .select2-selection--multiple:focus{
+  border-color: #39CCCC !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #39CCCC;
+  border-color: #36a8a9;
+}

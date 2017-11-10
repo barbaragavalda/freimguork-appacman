@@ -60,7 +60,7 @@ class Field extends Model {
 
     private function init(){
         $sql = '
-            SELECT af.field_name, af.show_on_list, afl.name, aft.name AS type
+            SELECT af.field_name, af.show_on_list, af.show_on_breadcrumb, afl.name, aft.name AS type
             FROM appacman_field AS af
             INNER JOIN appacman_field_lang AS afl ON afl.id_appacman_field = af.id_appacman_field AND afl.id_appacman_lang = :lang
             LEFT JOIN appacman_field_type AS aft ON aft.id_appacman_field_type = af.id_appacman_field_type

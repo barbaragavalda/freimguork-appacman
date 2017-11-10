@@ -2,61 +2,48 @@
 
 namespace Appacman\Model;
 
-
-use Appacman\Model\Utils\Field;
-use Core\Model\Model;
-
-class Item extends Model {
-
-    /**
-     * @var int $id. Item id
-     */
-    private $id = 0;
-
-    /**
-     * @var string $table. Table name
-     */
-    private $table = '';
-
-    /**
-     * @var array $info. Info of the content
-     */
-    private $info = array();
-
-    /**
-     * @var \Appacman\Model\Utils\Field $fields. Fields info
-     */
-    private $fields = array();
+class Item extends Page {
 
     public function __construct($id, $table){
-        parent::__construct();
-
-        $this->id = $id;
+        parent::__construct($id);
         $this->table = $table;
     }
 
+    public function getName(){
+        if( count($this->info) ){
+            return $this->name;
+        }
+        return gettext('Crear nuevo item');
+    }
+
+    /**
+     * get the formulari for that item
+     * @return array
+     */
     public function get(){
+        $this->initFields($this->table);
         $fields = $this->fields->get();
 
         $form = array();
         foreach($fields as $field){
-            $field['value'] = $this->info[ $field['field_name'] ];
+            $input = $this->getInputClass($field);
+            $form[] = $input;
+
+            // page title
+            if( $field['show_on_breadcrumb'] && $this->name == '' ){
+                $this->name = strip_tags( $input->getValue() );
+            }
+            unset($field['show_on_breadcrumb']);
             unset($field['show_on_list']);
-            $form[] = $field;
         }
 
         return $form;
     }
 
-    public function getID(){
-        return $this->id;
-    }
-
-    public function getName(){
-        return 'test';
-        //return $this->info['name'];
-    }
-
+    /**
+     * check if this item exists
+     * @return bool
+     */
     public function exists(){
         $tableLang = $this->table . '_lang';
         $params = array(
@@ -71,7 +58,7 @@ class Item extends Model {
         }
 
         $sql = '
-            SELECT *
+            SELECT *, t.id_'.$this->table.' AS id
             FROM '.$this->table.' AS t
             '.$innerJoin.'
             WHERE t.id_'.$this->table.' = :id
@@ -80,7 +67,6 @@ class Item extends Model {
 
         if( count($info) ){
             $this->info = $info[0];
-            $this->fields = new Field($this->table);
             return true;
         }
         return false;

@@ -1,15 +1,53 @@
+/*********************************************************
+****** A D M I N . C S S   M O D I F I C A T I O N S *****
+**********************************************************/
 #loggedout-logo{
     display: block;
     margin: 0 auto;
     width: 100%;
     max-width: 150px;
 }
-
 .main-header .user-image{
     background-color: #ffffff;
 }
-
 .error-page>.error-content{
     padding-top: 27px;
     text-align: center;
+}
+
+/******************************
+****** E X T R A   C S S *****
+******************************/
+/* form label */
+.required label::after{
+    content: " *";
+    color: #dd4b39;
+}
+form .form-label{
+    padding-top: 7px;
+    font-weight: normal;
+}
+/* form image */
+.media-object img{
+    width: 250px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+.media-object + .btn-danger{
+    margin-left: 10px;
+}
+/* form textarea */
+[class^="wysiwyg-textarea"]{
+    padding: 10px;
+    border: 1px solid #dddddd;
+    background: #ecf0f5;
+}
+[class^="wysiwyg-textarea"] textarea{
+    width: 100%;
+    height: 200px;
+    font-size: 14px;
+    line-height: 18px;
+    border: 1px solid #dddddd;
+    padding: 10px;
 }

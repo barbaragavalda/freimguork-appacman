@@ -2,55 +2,7 @@
 
 namespace Appacman\Model;
 
-
-use Appacman\Model\Utils\Field;
-use Core\Model\Model;
-
-class Content extends Model {
-
-    /**
-     * @var int $id. Content id
-     */
-    private $id = 0;
-
-    /**
-     * @var array $info. Info of the content
-     */
-    private $info = array();
-
-    /**
-     * @var \Appacman\Model\Utils\Field $fields. Fields info
-     */
-    private $fields = array();
-
-    public function __construct($id){
-        parent::__construct();
-
-        $this->id = $id;
-    }
-
-    public function get(){
-        $fields = array_column($this->fields->getFieldsForList(), 'field_name');
-        $extraFields = count($fields) ? ', '.implode(', ', $fields) : '';
-
-        $table = $this->info['table_name'];
-        $tableLang = $table . '_lang';
-        $params = array();
-        $sql = '
-            SELECT t.id_'.$table.' AS id '.$extraFields.'
-            FROM '.$table.' AS t
-        ';
-        if( $this->mysql->tableExists($tableLang) ){
-            $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
-            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
-        }
-
-        return $this->mysql->query($sql, $params);
-    }
-
-    public function getID(){
-        return $this->id;
-    }
+class Content extends Page {
 
     public function getName(){
         return $this->info['name'];
@@ -60,13 +12,21 @@ class Content extends Model {
         return $this->info['table_name'];
     }
 
+    public function getTableHeaders(){
+        return $this->fields->getFieldsForList();
+    }
+
     public function getOrderBy(){
         // order by on data base
         $orders = explode(', ', $this->info['order_by']);
         $orderBy = array();
         foreach($orders as $order){
             $array = explode(' ', $order);
-            $orderBy[ $array[0] ] = $array[1];
+            if( count($array) == 2 ){
+                $orderBy[ $array[0] ] = $array[1];
+            }else{
+                $orderBy[ $array[0] ] = 'asc';
+            }
         }
 
         // setup order for javascript
@@ -83,6 +43,43 @@ class Content extends Model {
         return $order;
     }
 
+    /**
+     * get the list of items for this content
+     * @return array
+     */
+    public function get(){
+        $fields = $this->fields->getFieldsForList();
+        $fieldsNames = array_column($fields, 'field_name');
+        $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
+
+        // table rows
+        $table = $this->info['table_name'];
+        $tableLang = $table . '_lang';
+        $params = array();
+        $sql = '
+            SELECT t.id_'.$table.' AS id '.$extraFields.'
+            FROM '.$table.' AS t
+        ';
+        if( $this->mysql->tableExists($tableLang) ){
+            $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
+            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
+        }
+        $rows = $this->mysql->query($sql, $params);
+
+        // prepare rows for list
+        foreach($rows as &$row){
+            foreach($fields as $field){
+                $input = $this->getInputClass($field, $row);
+                $row[ $input->getFieldName() ] = $input->getValue();
+            }
+        }
+        return $rows;
+    }
+
+    /**
+     * check if this content exists
+     * @return bool
+     */
     public function exists(){
         $sql = '
             SELECT ac.table_name, ac.id_appacman_list_type, ac.order_by, acl.name
@@ -98,20 +95,11 @@ class Content extends Model {
 
         if( count($content) ){
             $this->info = $content[0];
-            $this->fields = new Field($this->info['table_name'], $this->id);
+            $this->table = $this->getTable();
+            $this->initFields($this->info['table_name'], $this->id);
             return true;
         }
         return false;
     }
 
-    public function getHeaders(){
-        return $this->fields->getFieldsForList();
-    }
-
-}
-
-if(!function_exists("array_column")) {
-    function array_column($array,$column_name){
-        return array_map(function($element) use($column_name){return $element[$column_name];}, $array);
-    }
 }

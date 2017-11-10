@@ -52,15 +52,15 @@ abstract class AppacmanController extends Controller {
                 // execute currect page
                 if( $isLoggedIn ){
                     $this->assign('username', $this->user->getName());
-
-                    // menu info
-                    $menu = new Menu();
-                    $this->assign('menu', $menu->get());
-                    $this->assign('breadcrumb', $this->getBreadcrumb());
                 }
 
                 // page title
                 $this->assign('title', $this->getTitle());
+
+                // menu info
+                $menu = new Menu();
+                $this->assign('menu', $menu->get());
+                $this->assign('breadcrumb', $this->getBreadcrumb());
 
                 $this->run();
             }else{

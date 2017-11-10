@@ -1,3 +1,9 @@
 {% if canEdit %}
-    <a href="{{ domain }}{% trans %}formulario{% endtrans %}/{{ contentID }}/{{ itemID }}" class="btn btn-warning btn-xs" title="{% trans %}Edit{% endtrans %}"><i class="fa fa-pencil"></i></a>
+    {% if small %}
+        {% set link = domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' ~ itemID %}
+        <a href="{{ link }}" class="btn btn-warning btn-xs" title="{% trans %}Edit{% endtrans %}"><i class="fa fa-pencil"></i></a>
+    {% else %}
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> {% trans %}Guardar{% endtrans %}</button>
+    {% endif %}
+
 {% endif %}

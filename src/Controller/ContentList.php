@@ -8,7 +8,7 @@ class ContentList extends Content {
 
     protected function run(){
         parent::run();
-        $this->assign('list_headers', $this->content->getHeaders());
+        $this->assign('list_headers', $this->content->getTableHeaders());
         $this->assign('list_order', $this->content->getOrderBy());
         $this->assign('list', $this->content->get());
         $this->template('list.twig');
