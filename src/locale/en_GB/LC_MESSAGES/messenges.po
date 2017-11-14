@@ -81,6 +81,13 @@ msgstr "Enter an email address and we will send you the instructions to change y
 msgid "Recordar"
 msgstr "Remember"
 
+# footer
+msgid "Soporte técnico"
+msgstr "Technical support"
+
+msgid "Versión"
+msgstr "Version"
+
 # home
 msgid "Ver listado"
 msgstr "See list"

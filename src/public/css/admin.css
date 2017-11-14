@@ -18,6 +18,13 @@
 /******************************
 ****** E X T R A   C S S *****
 ******************************/
+/* footer */
+@media screen and (max-width: 770px){
+    footer .pull-left, footer .pull-right{
+        float: none !important;
+        text-align: center;
+    }
+}
 /* form label */
 .required label::after{
     content: " *";
