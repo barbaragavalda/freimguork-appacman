@@ -16,6 +16,7 @@ class ContentForm extends Content {
         parent::run();
 
         $this->assign('form', $this->item->get());
+        $this->assign('title', $this->getTitle());
         $this->assign('breadcrumb', $this->getBreadcrumb());
         $this->template('form.twig');
     }
@@ -39,6 +40,7 @@ class ContentForm extends Content {
             }else if( $itemID > 0 ){
                 if( $this->item->exists() && ($canSee || $canEdit) ){
                     $hasPermission = true;
+                    $this->assign('itemID', $itemID);
                 }
             }
 
@@ -52,7 +54,7 @@ class ContentForm extends Content {
     }
 
     protected function getTitle(){
-        return gettext('Formulario') . ' ' . $this->content->getName();
+        return $this->content->getName() . ' - ' . $this->item->getName();
     }
 
     protected function getBreadcrumb(){

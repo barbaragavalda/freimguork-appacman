@@ -7,6 +7,11 @@ use Core\Model\File;
 class Image extends FormInput {
 
     /**
+     * @var int $id. Image id
+     */
+    private $imageID = null;
+
+    /**
      * @var string $image. Image Path
      */
     private $image = null;
@@ -14,8 +19,8 @@ class Image extends FormInput {
     public function __construct($description, $id){
         parent::__construct($description, $id);
 
-        $imageID = parent::getValue();
-        $image = new File($imageID);
+        $this->imageID = parent::getValue();
+        $image = new File($this->imageID);
         $this->image = $image->getAbsolutePath();
     }
 
@@ -33,7 +38,9 @@ class Image extends FormInput {
         }else{
             return '
                 ' . $this->getImage() . '
-                <a href="#" class="btn btn-danger btn-xs" title="'.gettext('Eliminar').'"><i class="fa fa-trash"></i></a>
+                <a href="#" data-id="'. $this->imageID.'" data-name="'.$this->getFieldName().'" class="btn btn-danger btn-xs delete-image" title="'.gettext('Eliminar').'" data-toggle="confirmation">
+                    <i class="fa fa-trash"></i>
+                </a>
             ';
         }
     }

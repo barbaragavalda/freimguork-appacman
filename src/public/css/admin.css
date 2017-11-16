@@ -25,6 +25,27 @@
         text-align: center;
     }
 }
+/* home */
+.bg-white{
+    background: white;
+}
+.small-box.bg-white:hover {
+    color: #39CCCC;
+    color: black;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.3);
+}
+.small-box.bg-white:hover .icon{
+    color: rgba(57, 204, 204, 0.4);
+}
+.small-box.bg-white > .small-box-footer{
+    background: rgba(0,0,0,0.2);
+}
+.small-box.bg-white:hover > .small-box-footer {
+    background: rgba(0, 0, 0, 0.4);
+}
+
 /* form label */
 .required label::after{
     content: " *";

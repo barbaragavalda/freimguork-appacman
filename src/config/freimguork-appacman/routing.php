@@ -8,9 +8,14 @@ $config = array(
         gettext('cerrar-sesion')                =>  'LoggedOut\\LogOut',
 
         ''                                  => 'Home',
+
+        //list
         gettext('listado').'/{contentID}'   => 'ContentList',
-        gettext('formulario').'/{contentID}'            => 'ContentForm',
-        gettext('formulario').'/{contentID}/{itemID}'   => 'ContentForm'
+
+        //form
+        gettext('formulario').'/{contentID}'                    => 'ContentForm',
+        gettext('formulario').'/{contentID}/{itemID}'           => 'ContentForm',
+        gettext('eliminar-archivo').'/{contentID}/{itemID}'     => 'Ajax\\DeleteFile',
 
     )
 

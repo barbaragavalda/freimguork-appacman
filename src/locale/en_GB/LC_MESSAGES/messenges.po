@@ -30,9 +30,15 @@ msgstr "form"
 msgid "eliminar"
 msgstr "delete"
 
+msgid "eliminar-archivo"
+msgstr "delete-file"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
+
+msgid "Cerrar"
+msgstr "Close"
 
 msgid "Error"
 msgstr "Error"
@@ -153,6 +159,21 @@ msgstr "Selecciona"
 
 msgid "Valor oculto"
 msgstr "Hidden value"
+
+msgid "Sí"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Este proceso es irreversible"
+msgstr "This process is irreversible"
+
+msgid "No se ha podido eliminar la imagen porqué no existe."
+msgstr "The image could not be deleted because it does not exist."
+
+msgid "No se ha podido eliminar el archivo. Por favor, inténtalo más tarde."
+msgstr "The file could not be deleted. Please try again later."
 
 # 404
 msgid "Página no encontrada"

@@ -57,7 +57,8 @@ abstract class Page extends Model {
 
         // input view class
         $inputClass = 'Appacman\\Model\\Form\\' . ucfirst( $field['type'] );
-        return new $inputClass($field, $info['id'], $this->table);
+        $id = count($info) ? $info['id'] : null;
+        return new $inputClass($field, $id, $this->table);
     }
 
     abstract public function getName();

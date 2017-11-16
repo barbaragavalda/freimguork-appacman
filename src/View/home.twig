@@ -14,14 +14,19 @@
                     <div class="row">
                 {% endif %}
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-yellow">
+                    <div class="small-box bg-white">
                         <!-- resume -->
                         <div class="inner">
                             <h3>{{ block['list'][i]['counter'] }}</h3>
                             <p>{{ block['list'][i]['name'] }}</p>
                             <p>
                                 {% for permission in block['list'][i]['permissions'] %}
-                                    <span class="label label-success">{{ permission['name'] }}</span>
+                                    {% set classLabel = 'label-custom' %}
+                                    {% if permission['code'] == 'see' %}{% set classLabel = 'label-default' %}{% endif %}
+                                    {% if permission['code'] == 'edit' %}{% set classLabel = 'label-warning' %}{% endif %}
+                                    {% if permission['code'] == 'delete' %}{% set classLabel = 'label-danger' %}{% endif %}
+                                    {% if permission['code'] == 'create' %}{% set classLabel = 'label-success' %}{% endif %}
+                                    <span class="label {{ classLabel }}">{{ permission['name'] }}</span>
                                 {% endfor %}
                             </p>
                         </div>

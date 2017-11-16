@@ -6,6 +6,8 @@
     {{ parent() }}
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ vendor_domain }}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="{{ vendor_domain }}bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -48,16 +50,6 @@
 
     <aside class="main-sidebar">
         <section class="sidebar">
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-                    <span class="input-group-btn">
-                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </form>
-
             <!-- menu -->
             <ul class="sidebar-menu" data-widget="tree">
                 {% for block in menu %}
@@ -93,7 +85,7 @@
     <div class="content-wrapper">
         <!-- breadcrumb -->
         <section class="content-header">
-            <h1>{{ title }}</h1>
+            <h1>{{ breadcrumb[breadcrumb|length -1]['name'] }}</h1>
             {% if breadcrumb|length > 0 %}
                 <ol class="breadcrumb">
                     <li><a href="{{ domain }}">{% trans %}Inicio{% endtrans %}</a></li>
