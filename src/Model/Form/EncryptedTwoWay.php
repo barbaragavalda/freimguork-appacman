@@ -6,7 +6,7 @@ use Core\Model\Encryptor\TwoWay;
 
 class EncryptedTwoWay extends FormInput {
 
-    public function getValue(){
+    public function getValue($langID){
         $sql = '
             SELECT *
             FROM '.$this->table.'
@@ -20,12 +20,12 @@ class EncryptedTwoWay extends FormInput {
         if( count($row) ){
             $row = $row[0];
             $key = $row['id_'.$this->table] . '_' .$row['created'] . '_' . $this->getFieldName();
-            return TwoWay::decrypy(parent::getValue(), $key);
+            return TwoWay::decrypy(parent::getValue($langID), $key);
         }
         return '';
     }
 
-    public function getHTML(){
+    public function getInputHTML($langID = null){
         return $this->inputType('text');
     }
 

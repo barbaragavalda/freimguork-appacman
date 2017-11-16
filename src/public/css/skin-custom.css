@@ -154,6 +154,11 @@ a:hover, a:active, a:focus {
 .btn-primary:hover, .btn-primary:active, .btn-primary.hover {
   background-color: #36a8a9;
 }
+
+.btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover, .btn-primary.focus, .btn-primary:focus {
+  background-color: #36a8a9;
+  border-color: #237c7b;
+}
 .form-control:focus {
   border-color: #39CCCC;
 }

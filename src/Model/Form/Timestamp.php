@@ -6,13 +6,13 @@ use Core\Model\Utils\DateUtils;
 
 class Timestamp extends FormInput {
 
-    public function getValue(){
-        return DateUtils::hisDmyFormat($this->description['value']);
+    public function getValue($langID = null){
+        $value = parent::getValue($langID);
+        return DateUtils::hisDmyFormat($value);
     }
 
-    public function getHTML(){
-        return $this->label( $this->getValue() );
-        return $this->label( $this->getValue() );
+    public function getInputHTML($langID = null){
+        return $this->label( $this->getValue($langID) );
     }
 
 }

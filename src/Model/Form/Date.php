@@ -6,12 +6,13 @@ use Core\Model\Utils\DateUtils;
 
 class Date extends FormInput {
 
-    public function getValue(){
-        return DateUtils::dmyFormat($this->description['value']);
+    public function getValue($langID = null){
+        $value = parent::getValue($langID);
+        return DateUtils::dmyFormat($value);
     }
 
-    public function getHTML(){
-        return $this->inputType('text');
+    public function getInputHTML($langID = null){
+        return $this->inputType('text', $langID);
     }
 
 }

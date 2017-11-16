@@ -4,9 +4,9 @@ namespace Appacman\Model\Form;
 
 class TextSimple extends Textarea  {
 
-    public function getHTML(){
+    public function getInputHTML($langID = null){
         $this->class .= '-simple';
-        return parent::getHTML();
+        return parent::getInputHTML($langID = null);
     }
 
 }

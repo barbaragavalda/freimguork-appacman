@@ -46,10 +46,28 @@
     background: rgba(0, 0, 0, 0.4);
 }
 
+/* form languages */
+.box-languages .form-group{
+    margin-bottom: 0px;
+}
 /* form label */
-.required label::after{
+form .box-header{
+    padding: 10px 10px 0 10px;
+}
+form .with-border{
+    border-bottom: 1px solid #d2d6de;
+}
+.required .box-title::after{
     content: " *";
     color: #dd4b39;
+}
+form .box-header .box-title{
+    font-size: 16px;
+}
+.form-horizontal .form-group{
+    margin-bottom: 5px;
+    margin-right: -5px;
+    margin-left: -5px;
 }
 form .form-label{
     padding-top: 7px;

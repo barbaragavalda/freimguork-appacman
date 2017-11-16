@@ -3,6 +3,7 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Item;
+use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 
 class ContentForm extends Content {
@@ -15,7 +16,21 @@ class ContentForm extends Content {
     protected function run(){
         parent::run();
 
-        $this->assign('form', $this->item->get());
+        // languages
+        $languages = array();
+        if( $this->item->hasLang() ){
+            $lang = new Language();
+            $languages = $lang->get();
+        }
+
+        // form
+        $this->assign('form', $this->item->get($languages));
+        if( isset($_POST['save']) ){
+            $this->item->save();
+        }
+
+        // common stuff
+        $this->assign('languages', $languages);
         $this->assign('title', $this->getTitle());
         $this->assign('breadcrumb', $this->getBreadcrumb());
         $this->template('form.twig');

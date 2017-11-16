@@ -16,8 +16,8 @@ class Image extends FormInput {
      */
     private $image = null;
 
-    public function __construct($description, $id){
-        parent::__construct($description, $id);
+    public function __construct($description, $id, $table){
+        parent::__construct($description, $id, $table);
 
         $this->imageID = parent::getValue();
         $image = new File($this->imageID);
@@ -32,7 +32,7 @@ class Image extends FormInput {
         }
     }
 
-    public function getHTML(){
+    public function getInputHTML($langID = null){
         if( $this->image == null ){
             return $this->inputType('file');
         }else{
@@ -43,6 +43,13 @@ class Image extends FormInput {
                 </a>
             ';
         }
+    }
+
+    public function canSave(){
+        if( isset($_FILES[$this->getFieldName()]) ){
+            return true;
+        }
+        return false;
     }
 
     private function getImage(){

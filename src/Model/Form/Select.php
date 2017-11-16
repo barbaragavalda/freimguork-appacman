@@ -4,18 +4,18 @@ namespace Appacman\Model\Form;
 
 class Select extends FormInput {
 
-    public function getHTML(){
+    public function getInputHTML($langID = null){
         return '
-            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                ' . $this->getOptionsHTML() . '
+            <select name="'.$this->getFieldName().'" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
     }
 
-    protected function getOptionsHTML(){
+    protected function getOptionsHTML($langID){
         $optionsHTML = '';
         $options = $this->getOptions();
-        $values = $this->loadValues();
+        $values = $this->loadValues($langID);
 
         foreach($options as $option){
             $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
@@ -54,9 +54,11 @@ class Select extends FormInput {
 
     /**
      * get selected options
+     * @param $langID
+     * @return mixed
      */
-    protected function loadValues(){
-        return array($this->description['value']);
+    protected function loadValues($langID){
+        return $this->getValue($langID);
     }
 
 }

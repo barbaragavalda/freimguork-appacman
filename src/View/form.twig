@@ -47,7 +47,7 @@
                         fileError();
                     }
                 })
-                .fail( function( jqXHR, textStatus ) {
+                .fail( function() {
                     fileError();
                 });
             }
@@ -61,32 +61,47 @@
 
 {% block page_content %}
 
+    {% if languages|length %}
+        <div class="box box-languages">
+            <div class="box-body bg-gray form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">IDIOMAS</label>
+                    <div class="col-sm-10">
+                            <div class="btn-group">
+                                {% for lang in languages %}
+                                    <button value="{{ lang['id'] }}" type="button" class="btn btn-default">{{ lang['name'] }}</button>
+                                {% endfor %}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="box">
         <form class="form-horizontal" method="POST">
-            <div class="box-body">
-                {% for input in form %}
-                    {# visible input? #}
-                    {% if input.isVisible() %}
-                        {# required? #}
-                        {% set required = '' %}
-                        {% if canEdit and input.isRequired() %}{% set required = ' required' %}{% endif %}
-                        <div class="form-group{{ required }}">
-                            {% set fieldName = input.fieldName() %}
-                            <label for="{{ fieldName }}" class="col-sm-2 control-label">{{ input.name() }}</label>
-                            {# value #}
-                            <div class="col-sm-10">
+            {% for input in form %}
+                {% if input.isVisible() %}
+                    {% set required = '' %}
+                    {% if canEdit and input.isRequired() %}{% set required = ' required' %}{% endif %}
+                    <div class="with-border">
+                        <div class="box-header{{ required }}">
+                            <div class="box-title">{{ input.name() }}</div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
                                 {% if canEdit %}
-                                    {{ input.getHTML()|raw }}
+                                    {{ input.getFormHTML()|raw }}
                                 {% else %}
-                                    <label class="form-label">{{ input.value()|raw }}</label>
+                                    {{ input.getInfoHTML()|raw }}
                                 {% endif %}
                             </div>
                         </div>
-                    {% else %}
-                        {{ input.getHTML()|raw }}
-                    {% endif %}
-                {% endfor %}
-            </div>
+                    </div>
+                {% else %}
+                    {{ input.getHTML()|raw }}
+                {% endif %}
+            {% endfor %}
             <div class="box-footer">
                 <div class="btn-group pull-right">
                     <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancel{% endtrans %}</a>

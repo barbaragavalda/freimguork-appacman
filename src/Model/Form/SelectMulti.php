@@ -4,10 +4,10 @@ namespace Appacman\Model\Form;
 
 class SelectMulti extends Select {
 
-    public function getHTML(){
+    public function getInputHTML($langID = null){
         return '
-            <select class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getName().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                ' . $this->getOptionsHTML() . '
+            <select name="'.$this->getFieldName().'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getName().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
     }

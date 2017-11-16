@@ -6,12 +6,12 @@ class Textarea extends FormInput {
 
     protected $class = 'wysiwyg-textarea';
 
-    public function getValue(){
-        return strip_tags(parent::getValue());
+    public function getValue($langID = null){
+        return strip_tags(parent::getValue($langID));
     }
 
-    public function getHTML(){
-        return '<div class="'.$this->class.'"><textarea placeholder="'.$this->getName().'">'. parent::getValue() .'</textarea></div>';
+    public function getInputHTML($langID = null){
+        return '<div class="'.$this->class.'"><textarea name="'.$this->getFieldName().'" placeholder="'.$this->getName().'">'. parent::getValue($langID) .'</textarea></div>';
     }
 
 }
