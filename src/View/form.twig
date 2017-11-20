@@ -78,8 +78,12 @@
         </div>
     {% endif %}
 
+    {% set formButtons %}
+        {% include "Buttons/form-btn-group.twig" %}
+    {% endset %}
     <div class="box">
-        <form class="form-horizontal" method="POST">
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            <div class="box-header with-border">{{ formButtons }}</div>
             {% for input in form %}
                 {% if input.isVisible() %}
                     {% set required = '' %}
@@ -102,13 +106,7 @@
                     {{ input.getHTML()|raw }}
                 {% endif %}
             {% endfor %}
-            <div class="box-footer">
-                <div class="btn-group pull-right">
-                    <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancel{% endtrans %}</a>
-                    {% include "Buttons/delete.twig" with {'itemID': tr['id']} %}
-                    {% include "Buttons/edit.twig" with {'itemID': tr['id']} %}
-                </div>
-            </div>
+            <div class="box-footer">{{ formButtons }}</div>
         </form>
     </div>
 

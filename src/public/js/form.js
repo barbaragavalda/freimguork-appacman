@@ -163,7 +163,7 @@ var Namespace = Namespace || {};
             }
 
             button.removeClass(_classDesactive).addClass(_classActive);
-            $('.lang_' + langID).parent().parent().show();
+            $('.lang_' + langID).show();
             _cookies.set('lang_' + langID, 'true', 1);
         }
 
@@ -173,7 +173,7 @@ var Namespace = Namespace || {};
             }
 
             button.removeClass(_classActive).addClass(_classDesactive);
-            $('.lang_' + langID).parent().parent().hide();
+            $('.lang_' + langID).hide();
             _cookies.set('lang_' + langID, 'true', -1);
         }
 

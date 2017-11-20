@@ -58,7 +58,7 @@ class Select extends FormInput {
      * @return mixed
      */
     protected function loadValues($langID){
-        return $this->getValue($langID);
+        return array($this->getValue($langID));
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Appacman\Model\Form;
 
 use Core\Model\File;
+use Core\Utils\Exception;
 
 class Image extends FormInput {
 
@@ -19,7 +20,11 @@ class Image extends FormInput {
     public function __construct($description, $id, $table){
         parent::__construct($description, $id, $table);
 
-        $this->imageID = parent::getValue();
+        $this->loadImage(parent::getValue());
+    }
+
+    private function loadImage($imageID){
+        $this->imageID = $imageID;
         $image = new File($this->imageID);
         $this->image = $image->getAbsolutePath();
     }
@@ -46,7 +51,7 @@ class Image extends FormInput {
     }
 
     public function canSave(){
-        if( isset($_FILES[$this->getFieldName()]) ){
+        if( isset($_FILES[$this->getFieldName()]) && !empty($_FILES[$this->getFieldName()]['tmp_name']) ){
             return true;
         }
         return false;
@@ -58,6 +63,17 @@ class Image extends FormInput {
                 <img src="'.$this->image.'" />
             </a>
         ';
+    }
+
+    public function getPostValue($langID = null){
+        $image = new File();
+        $imageID = $image->save( $_FILES[$this->getFieldName()] );
+
+        if( $imageID === false ){
+            throw new Exception('Unable to save image <pre>' . print_r($_FILES[$this->getFieldName()], true) . '</pre>');
+        }
+        $this->loadImage($imageID);
+        return $imageID;
     }
 
 }

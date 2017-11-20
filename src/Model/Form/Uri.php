@@ -14,8 +14,8 @@ class Uri extends FormInput {
         return $this->inputType('hidden');
     }
 
-    public function getSaveValue(){
-        $postValue = parent::getSaveValue();
+    public function getPostValue($langID = null){
+        $postValue = ($langID == null) ? $_POST['name'] : $_POST['name_'.$langID];
         return urlencode( strip_tags($postValue) );
     }
 

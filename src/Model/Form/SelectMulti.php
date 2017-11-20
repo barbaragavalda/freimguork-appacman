@@ -12,7 +12,6 @@ class SelectMulti extends Select {
         ';
     }
 
-
     protected function getOptions(){
         $tables = explode('_', $this->getFieldName());
         $lateralTable = $tables[1];
@@ -38,6 +37,10 @@ class SelectMulti extends Select {
         );
         $values = $this->mysql->query($sql, $params);
         return array_column($values, 'id');
+    }
+
+    public function canSave(){
+        return false;
     }
 
 }

@@ -2,6 +2,9 @@
 
 namespace Appacman\Model;
 
+use Core\Model\Encryptor\TwoWay;
+use Core\Utils\Exception;
+
 class Item extends Page {
 
     private $form = array();
@@ -61,14 +64,14 @@ class Item extends Page {
             $tableLang = $this->table . '_lang';
             if( $this->mysql->tableExists($tableLang) ){
                 $infoLang = $this->getInfo($tableLang);
-            }
-            foreach($infoLang as $lang){
-                $langID = $lang['id_appacman_lang'];
-                foreach($lang as $field => $value){
-                    if( !array_key_exists($field, $this->info) ){
-                        $this->info[$field] = array();
+                foreach($infoLang as $lang){
+                    $langID = $lang['id_appacman_lang'];
+                    foreach($lang as $field => $value){
+                        if( !array_key_exists($field, $this->info) ){
+                            $this->info[$field] = array();
+                        }
+                        $this->info[$field]['lang_'.$langID] = $value;
                     }
-                    $this->info[$field]['lang_'.$langID] = $value;
                 }
             }
 
@@ -89,23 +92,65 @@ class Item extends Page {
         return $this->mysql->query($sql, $params);
     }
 
+    /**
+     * saves item
+     * @return bool
+     */
     public function save(){
-        $post = array();
-        $postLang = array();
-        foreach($this->form as $input){
-            if( $input->canSave() ){
-                $value = array('value'=>$input->getSaveValue(), 'type'=>$input->getTypeValue());
-                if( $input->onLangTable() ){
-                    $postLang[ $input->getFieldName() ] = $value;
-                }else{
-                    $post[ $input->getFieldName() ] = $value;
+        $this->mysql->beginTransaction();
+
+        try{
+            // prepare post
+            $post = array();
+            $postLang = array();
+            foreach($this->form as $input){
+                if( $input->canSave() ){
+                    $value = $input->getSaveValue();
+                    if( $input->onLangTable() ){
+                        $postLang = array_merge_recursive($postLang, $value);
+                    }else{
+                        $post = array_merge_recursive($post, $value);
+                    }
                 }
             }
+
+            // update
+            $this->update($post);
+            foreach($postLang as $lang => $post){
+                $langID = str_replace('lang_', '', $lang);
+                $this->update($post, $langID);
+            }
+
+            $this->mysql->commit();
+            return true;
+
+        }catch (Exception $e){
+            $this->mysql->rollBack();
+            return false;
         }
-        r($post);
-        r($postLang);
-        r($_POST);
-        exit;
+    }
+
+    private function update($params, $langID = null){
+        $set = array();
+        foreach($params as $field => $param){
+            $set[] = '`' . $field.'` = :'.$field;
+        }
+
+        $tableName = $this->table;
+        $whereLang = '';
+        if( $langID != null ){
+            $tableName = $this->table . '_lang';
+            $whereLang = 'AND id_'.$tableName.' = :lang_id';
+            $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+        }
+
+        $sql = '
+            UPDATE '.$tableName.'
+            SET '.implode(', ', $set).'    
+            WHERE id_'.$this->table.' = :id '.$whereLang.'
+        ';
+        $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+        $this->mysql->query($sql, $params);
     }
 
 }

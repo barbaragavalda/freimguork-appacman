@@ -46,16 +46,15 @@
     background: rgba(0, 0, 0, 0.4);
 }
 
-/* form languages */
+/* form */
 .box-languages .form-group{
     margin-bottom: 0px;
 }
-/* form label */
-form .box-header{
-    padding: 10px 10px 0 10px;
+.with-border{
+    border-bottom: 1px solid #d2d6de !important;
 }
-form .with-border{
-    border-bottom: 1px solid #d2d6de;
+form .with-border .box-header{
+    padding: 10px 10px 0 10px;
 }
 .required .box-title::after{
     content: " *";

@@ -65,9 +65,12 @@ abstract class FormInput extends Model {
                 $keys = array_keys($value);
                 return $value[$keys[0]];
             }else{
-                return $value['lang_'.$langID];
+                if( array_key_exists('lang_'.$langID, $value) ){
+                    return $value['lang_'.$langID];
+                }
             }
         }
+        return '';
     }
 
     public function getFieldName(){
@@ -83,8 +86,23 @@ abstract class FormInput extends Model {
         }
     }
 
+    public function getPostValue($langID = null){
+        return $_POST[ $this->getPostName($langID) ];
+    }
+
     public function getSaveValue(){
-        return $_POST[ $this->getFieldName() ];
+        if( $this->onLangTable() ){
+            $values = array();
+            foreach($this->languages as $language) {
+                $values['lang_'.$language['id']] = array(
+                    $this->getFieldName() => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->getTypeValue())
+                );
+            }
+            return $values;
+        }
+        return array(
+            $this->getFieldName() => array('value'=>$this->getPostValue(), 'type'=>$this->getTypeValue())
+        );
     }
 
     public function getTypeValue(){
@@ -97,8 +115,7 @@ abstract class FormInput extends Model {
 
     protected function inputType($type, $langID = null){
         $postName = $this->getPostName($langID);
-        $classLang = ($langID == null) ? '' : 'lang_'.$langID;
-        return '<input type="'.$type.'" class="form-control '.$classLang.'" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getValue($langID).'" />';
+        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getValue($langID).'" />';
     }
 
     public function label($value){
@@ -120,7 +137,7 @@ abstract class FormInput extends Model {
         $html = '';
         if( $this->onLangTable() ){
             foreach($this->languages as $language) {
-                $html .= $this->getFromRow($this->getInputHTML($language['id']), $language['name']);
+                $html .= $this->getFromRow($this->getInputHTML($language['id']), $language);
             }
         }else{
             $html .= $this->getFromRow($this->getInputHTML());
@@ -134,7 +151,7 @@ abstract class FormInput extends Model {
         if( $this->onLangTable() ){
             foreach($this->languages as $language) {
                 $value = '<label class="form-label">'.$this->getValue($language['id']).'</label>';
-                $html .= $this->getFromRow($value, $language['name']);
+                $html .= $this->getFromRow($value, $language);
             }
         }else{
             $value = '<label class="form-label">'.$this->getValue().'</label>';
@@ -144,9 +161,16 @@ abstract class FormInput extends Model {
         return $html;
     }
 
-    private function getFromRow($input, $name = ''){
+    private function getFromRow($input, $language = null){
+        $classLang = '';
+        $name = '';
         $html = '';
-        $html .= '<div class="form-horizontal">';
+        if( $language != null ){
+            $name = $language['name'];
+            $classLang = ($language['id'] == null) ? '' : 'lang_'.$language['id'];
+        }
+
+        $html .= '<div class="form-horizontal '.$classLang.'">';
         $html .= '    <div class="form-group">';
         $html .= '        <label class="col-sm-2 control-label">'.$name.'</label>';
         $html .= '        <div class="col-sm-10">';
