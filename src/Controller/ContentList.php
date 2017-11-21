@@ -11,7 +11,8 @@ class ContentList extends Content {
         $this->assign('list_headers', $this->content->getTableHeaders());
         $this->assign('list_order', $this->content->getOrderBy());
         $this->assign('list', $this->content->get());
-        $this->template('list.twig');
+
+        $this->template('List/' . $this->content->getListType() . '.twig');
     }
 
     protected function hasPermission(){

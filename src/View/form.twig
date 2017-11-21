@@ -83,6 +83,18 @@
     {% endset %}
     <div class="box">
         <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            {% if formSend %}
+                {% if formError %}
+                    <div class="margin alert alert-danger">
+                        <h4><i class="icon fa fa-ban"></i> {% trans %}Ha habido un error al guardar los datos. Por favor, inténtalo d enuevo más tarde.{% endtrans %}</h4>
+                    </div>
+                {% else %}
+                    <div class="margin alert alert-success">
+                        <h4><i class="icon fa fa-check"></i> {% trans %}Datos guardados correctamente.{% endtrans %}</h4>
+                    </div>
+                {% endif %}
+            {% endif %}
+
             <div class="box-header with-border">{{ formButtons }}</div>
             {% for input in form %}
                 {% if input.isVisible() %}
@@ -97,7 +109,7 @@
                                 {% if canEdit %}
                                     {{ input.getFormHTML()|raw }}
                                 {% else %}
-                                    {{ input.getInfoHTML()|raw }}
+                                    {{ input.getSeeHTML()|raw }}
                                 {% endif %}
                             </div>
                         </div>

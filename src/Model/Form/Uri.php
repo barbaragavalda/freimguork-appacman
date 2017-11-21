@@ -4,17 +4,23 @@ namespace Appacman\Model\Form;
 
 class Uri extends FormInput {
 
-    public function __construct($description, $id, $table) {
-        parent::__construct($description, $id, $table);
+    protected $isVisible = false;
 
-        $this->isVisible = false;
+    /**
+     * input hidden
+     * @param int|null $langID
+     * @return string
+     */
+    protected function getInputHTML($langID = null){
+        return $this->inputType('hidden', $langID);
     }
 
-    public function getInputHTML($langID = null){
-        return $this->inputType('hidden');
-    }
-
-    public function getPostValue($langID = null){
+    /**
+     * encode field name for url
+     * @param int|null $langID
+     * @return string
+     */
+    protected function getPostValue($langID = null){
         $postValue = ($langID == null) ? $_POST['name'] : $_POST['name_'.$langID];
         return urlencode( strip_tags($postValue) );
     }

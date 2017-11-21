@@ -16,6 +16,10 @@ class Content extends Page {
         return $this->fields->getFieldsForList();
     }
 
+    public function getListType(){
+        return $this->info['list_type'];
+    }
+
     public function getOrderBy(){
         // order by on data base
         $orders = explode(', ', $this->info['order_by']);
@@ -70,7 +74,7 @@ class Content extends Page {
         foreach($rows as &$row){
             foreach($fields as $field){
                 $input = $this->getInputClass($field, $row);
-                $row[ $input->getFieldName() ] = $input->getValue();
+                $row[ $input->getFieldName() ] = $input->getListValue();
             }
         }
         return $rows;
@@ -82,9 +86,10 @@ class Content extends Page {
      */
     public function exists(){
         $sql = '
-            SELECT ac.table_name, ac.id_appacman_list_type, ac.order_by, acl.name
+            SELECT ac.table_name, alt.name AS list_type, ac.order_by, acl.name
             FROM appacman_content AS ac
             INNER JOIN appacman_content_lang AS acl ON acl.id_appacman_content = ac.id_appacman_content AND acl.id_appacman_lang = :lang
+            LEFT JOIN appacman_list_type AS alt ON alt.id_appacman_list_type = ac.id_appacman_list_type
             WHERE ac.id_appacman_content = :id
         ';
         $params = array(

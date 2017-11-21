@@ -41,7 +41,7 @@ class Item extends Page {
 
             // page title
             if( $field['show_on_breadcrumb'] && $this->name == '' ){
-                $this->name = strip_tags( $input->getValue() );
+                $this->name = strip_tags( $input->getSeeValue() );
             }
             unset($field['show_on_breadcrumb']);
             unset($field['show_on_list']);
@@ -106,7 +106,7 @@ class Item extends Page {
             foreach($this->form as $input){
                 if( $input->canSave() ){
                     $value = $input->getSaveValue();
-                    if( $input->onLangTable() ){
+                    if( $input->isOnLangTable() ){
                         $postLang = array_merge_recursive($postLang, $value);
                     }else{
                         $post = array_merge_recursive($post, $value);

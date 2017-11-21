@@ -8,8 +8,14 @@ class EncryptedTwoWay extends FormInput {
 
     private $key = '';
 
-    public function __construct($description, $id, $table){
-        parent::__construct($description, $id, $table);
+    /**
+     * Initialize input key for encryption
+     * @param $info
+     * @param $id
+     * @param string|null $table
+     */
+    public function __construct($info, $id, $table){
+        parent::__construct($info, $id, $table);
 
         $sql = '
             SELECT *
@@ -19,26 +25,40 @@ class EncryptedTwoWay extends FormInput {
         $params = array(
             'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
         );
-
         $row = $this->mysql->query($sql, $params);
         if( count($row) ){
             $row = $row[0];
-            $this->key = $row['id_'.$this->table] . '_' .$row['created'] . '_' . $this->getFieldName();
+            $this->key = $row['id_'.$this->table] . '_' .$row['created'] . '_' . $this->fieldName;
         }
     }
 
-    public function getValue($langID = null){
+    /**
+     * decrypt value for display it on form
+     * @param int|null $langID
+     * @return string
+     */
+    public function getSeeValue($langID = null){
         if( $this->key ){
-            return TwoWay::decrypy(parent::getValue($langID), $this->key);
+            return TwoWay::decrypy(parent::getSeeValue($langID), $this->key);
         }
         return '';
     }
 
-    public function getInputHTML($langID = null){
-        return $this->inputType('text');
+    /**
+     * input type text
+     * @param int|null $langID
+     * @return string
+     */
+    protected function getInputHTML($langID = null){
+        return $this->inputType('text', $langID);
     }
 
-    public function getPostValue($langID = null){
+    /**
+     * encrypt value in order to save on database
+     * @param null $langID
+     * @return string
+     */
+    protected function getPostValue($langID = null){
         $postValue = parent::getPostValue($langID);
         return TwoWay::encrypt($postValue, $this->key);
     }

@@ -49,45 +49,17 @@
 
 {% block page_content %}
 
+    {% set createButton %}
+        {% include "Buttons/create.twig" %}
+    {% endset %}
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                {% include "Buttons/create.twig" %}
+                {{ createButton }}
                 <div class="box-body">
-                    <table id="list" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                {% for th in list_headers %}
-                                    <th>{{ th['name'] }}</th>
-                                {% endfor %}
-                                <th>{% trans %}Acciones{% endtrans %}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for tr in list %}
-                                <tr>
-                                    {% for th in list_headers %}
-                                        <td>{{ tr[th['field_name']]|striptags|raw }}</td>
-                                    {% endfor %}
-                                    <td>
-                                        {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
-                                        {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
-                                        {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                {% for th in list_headers %}
-                                    <th>{{ th['name'] }}</th>
-                                {% endfor %}
-                                <th>{% trans %}Acciones{% endtrans %}</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    {% block list %}{% endblock %}
                 </div>
-                {% include "Buttons/create.twig" %}
+                {{ createButton }}
             </div>
         </div>
     </div>

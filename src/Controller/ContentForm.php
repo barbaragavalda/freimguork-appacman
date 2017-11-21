@@ -20,13 +20,17 @@ class ContentForm extends Content {
         $languages = array();
         if( $this->item->hasLang() ){
             $lang = new Language();
-            $languages = $lang->get();
+            $success = $languages = $lang->get();
         }
 
         // form
         $this->assign('form', $this->item->get($languages));
         if( isset($_POST['save']) ){
-            $this->item->save();
+            $success = $this->item->save();
+            $this->assign('formSuccess', $success);
+            $this->assign('formSend', true);
+        }else{
+            $this->assign('formSend', false);
         }
 
         // common stuff

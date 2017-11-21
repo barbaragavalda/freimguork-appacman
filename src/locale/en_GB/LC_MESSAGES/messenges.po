@@ -175,15 +175,18 @@ msgstr "The image could not be deleted because it does not exist."
 msgid "No se ha podido eliminar el archivo. Por favor, inténtalo más tarde."
 msgstr "The file could not be deleted. Please try again later."
 
+msgid "Ha habido un error al guardar los datos. Por favor, inténtalo d enuevo más tarde."
+msgstr "There was an error saving the data. Please try again later."
+
+msgid "Datos guardados correctamente."
+msgstr "Data saved correctly."
+
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"
 
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
-
-msgid ""
-msgstr ""
 
 msgid ""
 msgstr ""

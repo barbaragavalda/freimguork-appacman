@@ -1,0 +1,38 @@
+{% extends "List/basic.twig" %}
+
+{% block list %}
+
+    <table id="list" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            {% for th in list_headers %}
+                <th>{{ th['name'] }}</th>
+            {% endfor %}
+            <th>{% trans %}Acciones{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tr in list %}
+            <tr>
+                {% for th in list_headers %}
+                    <td>{{ tr[th['field_name']]|raw }}</td>
+                {% endfor %}
+                <td>
+                    {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
+                    {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
+                    {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            {% for th in list_headers %}
+                <th>{{ th['name'] }}</th>
+            {% endfor %}
+            <th>{% trans %}Acciones{% endtrans %}</th>
+        </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}

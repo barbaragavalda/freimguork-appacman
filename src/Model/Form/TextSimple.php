@@ -2,11 +2,8 @@
 
 namespace Appacman\Model\Form;
 
-class TextSimple extends Textarea  {
+class TextSimple extends Text {
 
-    public function getInputHTML($langID = null){
-        $this->class = 'wysiwyg-textarea-simple';
-        return parent::getInputHTML($langID);
-    }
+    protected $class = 'wysiwyg-textarea-simple';
 
 }

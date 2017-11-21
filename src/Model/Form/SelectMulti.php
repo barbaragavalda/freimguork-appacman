@@ -4,25 +4,36 @@ namespace Appacman\Model\Form;
 
 class SelectMulti extends Select {
 
-    public function getInputHTML($langID = null){
+    /**
+     * select multiple (more than one option)
+     * @param int|null $langID
+     * @return string
+     */
+    protected function getInputHTML($langID = null){
         return '
-            <select name="'.$this->getFieldName().'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getName().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <select name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getName().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
     }
 
+    /**
+     * from witch table has to load options?
+     * @return array
+     */
     protected function getOptions(){
-        $tables = explode('_', $this->getFieldName());
+        $tables = explode('_', $this->fieldName);
         $lateralTable = $tables[1];
         return $this->loadOptions($lateralTable);
     }
 
     /**
      * get selected options
+     * @param $langID
+     * @return array
      */
-    protected function loadValues(){
-        $table = $this->getFieldName();
+    protected function loadValues($langID){
+        $table = $this->fieldName;
         $tables = explode('_', $table);
         $currentTable = $tables[0];
         $lateralTable = $tables[1];
@@ -39,6 +50,10 @@ class SelectMulti extends Select {
         return array_column($values, 'id');
     }
 
+    /**
+     * TODO: save select
+     * @return bool
+     */
     public function canSave(){
         return false;
     }

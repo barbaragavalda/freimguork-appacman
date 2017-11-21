@@ -4,14 +4,24 @@ namespace Appacman\Model\Form;
 
 class Select extends FormInput {
 
-    public function getInputHTML($langID = null){
+    /**
+     * select simple (only one option)
+     * @param int|null $langID
+     * @return string
+     */
+    protected function getInputHTML($langID = null){
         return '
-            <select name="'.$this->getFieldName().'" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <select name="'.$this->fieldName.'" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
     }
 
+    /**
+     *
+     * @param $langID
+     * @return string
+     */
     protected function getOptionsHTML($langID){
         $optionsHTML = '';
         $options = $this->getOptions();
@@ -25,13 +35,18 @@ class Select extends FormInput {
         return $optionsHTML;
     }
 
+    /**
+     * from witch table has to load options?
+     * @return array
+     */
     protected function getOptions(){
-        $lateralTable = str_replace('id_', '', $this->getFieldName());
+        $lateralTable = str_replace('id_', '', $this->fieldName);
         return $this->loadOptions($lateralTable);
     }
 
     /**
      * load all possible options form lateral table
+     * @param string $lateralTable
      * @return array
      */
     protected function loadOptions($lateralTable){
@@ -55,10 +70,10 @@ class Select extends FormInput {
     /**
      * get selected options
      * @param $langID
-     * @return mixed
+     * @return array
      */
     protected function loadValues($langID){
-        return array($this->getValue($langID));
+        return array($this->getSeeValue($langID));
     }
 
 }
