@@ -11,7 +11,10 @@
     <!-- DataTables -->
     <script src="{{ vendor_domain }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{ vendor_domain }}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <!-- Custom js -->
+    <script src="{{ admin_domain }}js/common.js"></script>
     <script>
+        // tables
         var columns = [];
         {% for th in list_headers %}
             columns.push({ "orderable": true });
@@ -42,8 +45,21 @@
                         'next': "{% trans %}Siguiente{% endtrans %}"
                     }
                 }
-            })
-        })
+            });
+
+            // delete item
+            var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+            deleteModel.item(
+                'left',
+                '{% trans %}Este proceso es irreversible{% endtrans %}',
+                '{% trans %}Sí{% endtrans %}',
+                '{% trans %}No{% endtrans %}',
+                '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
+                function () {
+                    window.location.reload();
+                }
+            );
+        });
     </script>
 {% endblock %}
 

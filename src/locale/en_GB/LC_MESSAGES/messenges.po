@@ -37,6 +37,9 @@ msgstr "delete"
 msgid "eliminar-archivo"
 msgstr "delete-file"
 
+msgid "eliminar-item"
+msgstr "delete-item"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
@@ -184,6 +187,9 @@ msgstr "First"
 msgid "Último"
 msgstr "Last"
 
+msgid "No se ha podido eliminar el item. Por favor, inténtalo más tarde."
+msgstr "The item could not be deleted. Please try again later."
+
 # form
 msgid "Formulario"
 msgstr "Form"
@@ -227,9 +233,6 @@ msgstr "Page not found"
 
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
-
-msgid ""
-msgstr ""
 
 msgid ""
 msgstr ""

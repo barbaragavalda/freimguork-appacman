@@ -2,7 +2,7 @@
 
 namespace Appacman\Model\Form;
 
-class Image extends OtherFile {
+class Image extends GenericFile {
 
     /**
      * image tag with link to see it

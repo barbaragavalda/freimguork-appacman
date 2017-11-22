@@ -3,6 +3,7 @@
 namespace Appacman\Model;
 
 use Core\Model\Encryptor\TwoWay;
+use Core\Model\File;
 use Core\Utils\Exception;
 
 class Item extends Page {
@@ -80,6 +81,10 @@ class Item extends Page {
         return false;
     }
 
+    /**
+     * @param $table
+     * @return mixed
+     */
     private function getInfo($table){
         $sql = '
             SELECT *, t.id_'.$table.' AS id
@@ -139,6 +144,11 @@ class Item extends Page {
         }
     }
 
+    /**
+     * update item
+     * @param $params
+     * @param null $langID
+     */
     private function update($params, $langID = null){
         $fields = $this->getFields($params);
         $tableName = $this->table;
@@ -158,6 +168,11 @@ class Item extends Page {
         $this->mysql->query($sql, $params);
     }
 
+    /**
+     * create new item
+     * @param $params
+     * @param null $langID
+     */
     private function insert($params, $langID = null){
         $fields = $this->getFields($params);
         $tableName = $this->table;
@@ -180,12 +195,88 @@ class Item extends Page {
         }
     }
 
+    /**
+     * fields for update / insert query
+     * @param $params
+     * @return string
+     */
     private function getFields($params){
         $set = array();
         foreach($params as $field => $param){
             $set[] = '`' . $field.'` = :'.$field;
         }
         return implode(', ', $set);
+    }
+
+    /**
+     * delete item from both tables
+     * @return bool
+     */
+    public function delete(){
+        $this->deleteFiles();
+        return $this->deleteFromDatabase();
+    }
+
+    private function deleteFiles(){
+        $this->get();
+        $files = array();
+        foreach($this->form as $input){
+            if( is_a($input, 'Appacman\Model\Form\GenericFile') ){
+                $fileID = $input->getValue();
+                if( is_array($fileID) ){
+                    $files = array_merge($files, array_values($fileID));
+                }else{
+                    $files = array_merge($files, array($fileID));
+                }
+            }
+        }
+
+        $files = array_filter($files);
+        foreach($files as $fileID){
+            $file = new File($fileID);
+            $file->deleteFromFileTable();
+            $file->deleteFromDisk();
+        }
+    }
+
+    private function deleteFromDatabase(){
+        $success = false;
+        $this->mysql->beginTransaction();
+
+        // delete no language
+        $sql = '
+            DELETE FROM '.$this->table.'
+            WHERE id_'.$this->table.' = :id
+        ';
+        $params = array(
+            'id' => array('value'=> $this->id, 'type' => \PDO::PARAM_INT)
+        );
+        $this->mysql->query($sql, $params);
+
+        // delete multi language
+        if( $this->mysql->rowCount() == 1 ){
+            $tableLang = $this->table . '_lang';
+            if( $this->mysql->tableExists($tableLang) ){
+                $sql = '
+                    DELETE FROM '.$tableLang.'
+                    WHERE id_'.$this->table.' = :id
+                ';
+                $this->mysql->query($sql, $params);
+                if( $this->mysql->rowCount() >= 1 ){
+                    $success = true;
+                }
+            }else{
+                $success = true;
+            }
+        }
+
+        if( $success ){
+            $this->mysql->commit();
+            return true;
+        }else{
+            $this->mysql->rollback();
+            return false;
+        }
     }
 
 }

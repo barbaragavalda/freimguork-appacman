@@ -5,7 +5,7 @@ namespace Appacman\Model\Form;
 use Core\Model\File;
 use Core\Utils\Exception;
 
-class OtherFile extends FormInput {
+class GenericFile extends FormInput {
 
     /**
      * @var int $id. Image id
@@ -56,7 +56,7 @@ class OtherFile extends FormInput {
         }else{
             return '
                 ' . $this->getFile() . '
-                <a href="#" data-id="'. $this->fileID.'" data-name="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-image" title="'.gettext('Eliminar').'" data-toggle="confirmation">
+                <a href="#" data-id="'. $this->fileID.'" data-name="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
                     <i class="fa fa-trash"></i>
                 </a>
             ';

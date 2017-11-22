@@ -44,33 +44,6 @@ $(function () {
 
 });
 
-function alertError(title, body, close){
-    var html = '';
-    html += '<div id="error" class="modal fade bd-example-modal-sm" role="dialog">';
-    html += '   <div class="modal-dialog modal-sm">';
-    html += '       <div class="modal-content">';
-    html += '           <div class="modal-header btn-danger clearfix">';
-    html += '               <h5 class="modal-title pull-left">' + title + '</h5>';
-    html += '               <button type="button" class="close" data-dismiss="modal" aria-label="' + close + '">';
-    html += '                   <span aria-hidden="true">&times;</span>';
-    html += '               </button>';
-    html += '           </div>';
-    html += '           <div class="modal-body"><p>' + body + '</p></div>';
-    html += '           <div class="modal-footer">';
-    html += '               <button type="button" class="btn btn-secondary" data-dismiss="modal">' + close + '</button>';
-    html += '           </div>';
-    html += '       </div>';
-    html += '   </div>';
-    html += '</div>';
-    $('body').prepend(html);
-    var dialog = $('#error');
-    dialog.modal();
-    dialog.on('hidden.bs.modal', function(e){
-        dialog.remove();
-    });
-}
-
-
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
 

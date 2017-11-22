@@ -7,21 +7,15 @@ use Appacman\Model\Item;
 use Appacman\Model\Utils\Permissions;
 use Core\Model\File;
 
-class DeleteFile extends Content {
+class DeleteItem extends Content {
+
+    private $item = array();
 
     protected function run(){
-        $itemID = $this->getParam('itemID');
-        $fileID = $_POST['fieldID'];
-        $fieldName = $_POST['fieldName'];
-
-        $this->content->getTable();
-
-        $error = false;
-        $file = new File($fileID);
-        $file->delete($this->content->getTable(), $fieldName, $itemID, $fileID);
+        $success = $this->item->delete();
 
         $this->removeInfo();
-        $this->assign('error', $error);
+        $this->assign('error', !$success);
         $this->json();
     }
 
@@ -34,8 +28,8 @@ class DeleteFile extends Content {
 
             // has permission to edit?
             $itemID = $this->getParam('itemID');
-            $item = new Item($itemID, $this->content->getTable());
-            if( $itemID > 0 && $item->exists() && $canEdit ){
+            $this->item = new Item($itemID, $this->content->getTable());
+            if( $itemID > 0 && $this->item->exists() && $canEdit ){
                 $hasPermission = true;
             }
         }

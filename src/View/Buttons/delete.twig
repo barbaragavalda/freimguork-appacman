@@ -1,8 +1,9 @@
 {% if canDelete %}
-    {% set link = domain ~ 'eliminar'|trans ~ '/' ~ contentID ~ '/' ~ itemID %}
     {% if small %}
-        <a href="{{ link }}" class="btn btn-danger btn-xs" title="{% trans %}Eliminar{% endtrans %}"><i class="fa fa-trash"></i></a>
+        <a href="#" data-id="{{ itemID }}" class="btn btn-danger btn-xs delete-item" title="{% trans %}Eliminar{% endtrans %}" data-toggle="confirmation"><i class="fa fa-trash"></i></a>
     {% else %}
-        <a href="{{ link }}" class="btn btn-danger"><i class="fa fa-trash"></i> {% trans %}Eliminar{% endtrans %}</a>
+        {% if itemID %}
+            <a href="#" data-id="{{ itemID }}" class="btn btn-danger delete-item" title="{% trans %}Eliminar{% endtrans %}" data-toggle="confirmation"><i class="fa fa-trash"></i> {% trans %}Eliminar{% endtrans %}</a>
+        {% endif %}
     {% endif %}
 {% endif %}

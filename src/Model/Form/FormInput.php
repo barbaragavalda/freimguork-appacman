@@ -117,6 +117,14 @@ abstract class FormInput extends Model {
     }
 
     /**
+     * Value on database
+     * @return string
+     */
+    public function getValue(){
+        return $this->value;
+    }
+
+    /**
      * is on lang table?
      * @return bool
      */
