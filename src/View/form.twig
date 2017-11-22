@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{{ vendor_domain }}plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ vendor_domain }}bower_components/select2/dist/css/select2.min.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ vendor_domain }}plugins/iCheck/all.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ vendor_domain }}bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 
     {{ parent() }}
 {% endblock %}
@@ -15,10 +19,21 @@
     <script src="{{ vendor_domain }}plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
     <!-- Select2 -->
     <script src="{{ vendor_domain }}bower_components/select2/dist/js/select2.full.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ vendor_domain }}plugins/iCheck/icheck.min.js"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{{ vendor_domain }}bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ vendor_domain }}bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.{{ lang }}.js"></script>
     <!-- Custom js -->
     <script src="{{ admin_domain }}js/plugins/bootstrap-confirmation.min.js"></script>
     <script src="{{ admin_domain }}js/form.js"></script>
     <script>
+        // datepicker
+        $('.datepicker').datepicker({
+            autoclose: true,
+            language: 'es'
+        });
+
         $('.delete-image').confirmation({
             rootSelector: '[data-toggle=confirmation]',
             singleton: true,
@@ -61,7 +76,7 @@
 
 {% block page_content %}
 
-    {% if languages|length %}
+    {% if languages|length > 1 %}
         <div class="box box-languages">
             <div class="box-body bg-gray form-horizontal">
                 <div class="form-group">

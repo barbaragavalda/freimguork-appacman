@@ -20,7 +20,7 @@ class ContentForm extends Content {
         $languages = array();
         if( $this->item->hasLang() ){
             $lang = new Language();
-            $success = $languages = $lang->get();
+            $languages = $lang->get();
         }
 
         // form

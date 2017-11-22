@@ -104,8 +104,8 @@ class Item extends Page {
             $post = array();
             $postLang = array();
             foreach($this->form as $input){
-                if( $input->canSave() ){
-                    $value = $input->getSaveValue();
+                $value = $input->getSaveValue();
+                if( $value != null ){
                     if( $input->isOnLangTable() ){
                         $postLang = array_merge_recursive($postLang, $value);
                     }else{
@@ -114,14 +114,23 @@ class Item extends Page {
                 }
             }
 
-            // update
-            $this->update($post);
-            foreach($postLang as $lang => $post){
-                $langID = str_replace('lang_', '', $lang);
-                $this->update($post, $langID);
+            if( $this->id ){
+                // update
+                $this->update($post);
+                foreach($postLang as $lang => $post){
+                    $langID = str_replace('lang_', '', $lang);
+                    $this->update($post, $langID);
+                }
+            }else{
+                //insert
+                $this->insert($post);
+                foreach($postLang as $lang => $post){
+                    $langID = str_replace('lang_', '', $lang);
+                    $this->insert($post, $langID);
+                }
             }
-
             $this->mysql->commit();
+
             return true;
 
         }catch (Exception $e){
@@ -131,26 +140,52 @@ class Item extends Page {
     }
 
     private function update($params, $langID = null){
-        $set = array();
-        foreach($params as $field => $param){
-            $set[] = '`' . $field.'` = :'.$field;
-        }
-
+        $fields = $this->getFields($params);
         $tableName = $this->table;
         $whereLang = '';
         if( $langID != null ){
             $tableName = $this->table . '_lang';
-            $whereLang = 'AND id_'.$tableName.' = :lang_id';
+            $whereLang = 'AND id_appacman_lang = :lang_id';
             $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
         }
 
         $sql = '
             UPDATE '.$tableName.'
-            SET '.implode(', ', $set).'    
+            SET '.$fields.'    
             WHERE id_'.$this->table.' = :id '.$whereLang.'
         ';
         $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
         $this->mysql->query($sql, $params);
+    }
+
+    private function insert($params, $langID = null){
+        $fields = $this->getFields($params);
+        $tableName = $this->table;
+        $extraFields = '';
+        if( $langID != null ){
+            $tableName = $this->table . '_lang';
+            $extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
+            $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+            $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+        }
+
+        $sql = '
+            INSERT INTO '.$tableName.'
+            SET '.$fields.$extraFields.'
+        ';
+        $this->mysql->query($sql, $params);
+
+        if( $langID == null ){
+            $this->id = $this->mysql->lastInsertId();
+        }
+    }
+
+    private function getFields($params){
+        $set = array();
+        foreach($params as $field => $param){
+            $set[] = '`' . $field.'` = :'.$field;
+        }
+        return implode(', ', $set);
     }
 
 }

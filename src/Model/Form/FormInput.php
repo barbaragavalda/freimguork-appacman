@@ -212,15 +212,17 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getInputValue($langID = null){
-        if( $langID == null && !is_array($this->value) ){
-            return $this->value;
-        }else{
-            if( $langID == null ){
-                $keys = array_keys($this->value);
-                return $this->value[$keys[0]];
+        if( !empty($this->value) ){
+            if( $langID == null && !is_array($this->value) ){
+                return $this->value;
             }else{
-                if( array_key_exists('lang_'.$langID, $this->value) ){
-                    return $this->value['lang_'.$langID];
+                if( $langID == null ){
+                    $keys = array_keys($this->value);
+                    return $this->value[$keys[0]];
+                }else{
+                    if( array_key_exists('lang_'.$langID, $this->value) ){
+                        return $this->value['lang_'.$langID];
+                    }
                 }
             }
         }
@@ -234,7 +236,7 @@ abstract class FormInput extends Model {
      * Can be saved on database?
      * @return bool
      */
-    public function canSave(){
+    public function canSave($langID = null){
         return true;
     }
 
@@ -252,18 +254,27 @@ abstract class FormInput extends Model {
      * @return array
      */
     public function getSaveValue(){
+        // multi language
         if( $this->onLangTable ){
             $values = array();
             foreach($this->languages as $language) {
-                $values['lang_'.$language['id']] = array(
-                    $this->fieldName => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->type)
-                );
+                if( $this->canSave($language['id']) ){
+                    $values['lang_'.$language['id']] = array(
+                        $this->fieldName => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->type)
+                    );
+                }
             }
             return $values;
         }
-        return array(
-            $this->fieldName => array('value'=>$this->getPostValue(), 'type'=>$this->type)
-        );
+
+        // no language
+        if( $this->canSave() ){
+            return array(
+                $this->fieldName => array('value'=>$this->getPostValue(), 'type'=>$this->type)
+            );
+        }
+
+        return null;
     }
 
     //*******************************************//

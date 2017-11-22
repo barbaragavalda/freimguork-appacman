@@ -14,11 +14,14 @@
     padding-top: 27px;
     text-align: center;
 }
+.sidebar-menu > li > a {
+    padding-right: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-/******************************
-****** E X T R A   C S S *****
-******************************/
-/* common */
+    /* common */
 .media-object{
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -100,9 +103,13 @@ form .form-label{
 form .alert h4{
     margin-bottom: 0px;
 }
-/* form image */
-.media-object + .btn-danger{
+/* form file */
+.media-object + .btn-danger,
+.pdf-file + .btn-danger{
     margin-left: 10px;
+}
+.pdf-file span::before{
+    font-size: 4em;
 }
 /* form textarea */
 [class^="wysiwyg-textarea"]{

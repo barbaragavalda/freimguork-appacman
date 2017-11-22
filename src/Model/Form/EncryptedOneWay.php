@@ -17,7 +17,7 @@ class EncryptedOneWay extends FormInput {
      * CANNOT save
      * @return bool
      */
-    public function canSave(){
+    public function canSave($langID = null){
         return false;
     }
 

@@ -22,6 +22,16 @@ class Date extends FormInput {
      * @return string
      */
     protected function getInputHTML($langID = null){
+        $postName = $this->getInputName($langID);
+        return '
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control datepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getSeeValue($langID).'">
+            </div>
+        ';
+
         return $this->inputType('text', $langID);
     }
 

@@ -182,3 +182,8 @@ a:hover, a:active, a:focus {
   background-color: #39CCCC;
   border-color: #36a8a9;
 }
+/* form datepicker */
+.datepicker table tr td.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active:hover,
+.datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover{
+  background-image: linear-gradient(to bottom,#39CCCC,#36a8a9);
+}

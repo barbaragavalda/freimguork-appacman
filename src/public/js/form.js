@@ -31,6 +31,11 @@ $(function () {
         minimumResultsForSearch: Infinity
     });
 
+    // check
+    $('input[type="checkbox"].custom-check').iCheck({
+        checkboxClass: 'icheckbox_flat-green'
+    });
+
     // language
     var language = new Namespace.Language();
     if( language.hasLanguage() ){

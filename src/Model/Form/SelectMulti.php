@@ -54,7 +54,7 @@ class SelectMulti extends Select {
      * TODO: save select
      * @return bool
      */
-    public function canSave(){
+    public function canSave($langID = null){
         return false;
     }
 
