@@ -1,5 +1,18 @@
 {% extends "List/basic.twig" %}
 
+{% block extra_scripts %}
+    {{ parent() }}
+
+    <script>
+        $('#list tr').click(function(e){
+            var id = $(this).attr('id');
+            if( $(e.target).is('td') && typeof(id) != 'undefined' && id ){
+                window.location = '{{ domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' }}' + id;
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block list %}
 
     <table id="list" class="table table-bordered table-hover">
@@ -13,7 +26,9 @@
         </thead>
         <tbody>
         {% for tr in list %}
-            <tr>
+            {% set trID = '' %}
+            {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '"' %}{% endif %}
+            <tr {{ trID|raw }}>
                 {% for th in list_headers %}
                     <td>{{ tr[th['field_name']]|raw }}</td>
                 {% endfor %}
