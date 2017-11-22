@@ -15,8 +15,12 @@ msgstr ""
 msgid "iniciar-sesion"
 msgstr "signin"
 
+
 msgid "he-olvidado-mi-contrasena"
 msgstr "forgot"
+
+msgid "cambiar-contrasena"
+msgstr "change-password"
 
 msgid "cerrar-sesion"
 msgstr "logout"
@@ -42,6 +46,12 @@ msgstr "Close"
 
 msgid "Error"
 msgstr "Error"
+
+msgid "Se ha producido un error en el servidor. Por favor, inténtalo más tarde."
+msgstr "An error occurred on the server. Please try again later."
+
+msgid "¡Hecho!"
+msgstr "Done!"
 
 msgid "Inicio"
 msgstr "Home"
@@ -86,6 +96,36 @@ msgstr "Enter an email address and we will send you the instructions to change y
 
 msgid "Recordar"
 msgstr "Remember"
+
+msgid "Se ha producido un error al enviar el email. Por favor, inténtalo más tarde."
+msgstr "There was an error sending the email. Please try again later."
+
+msgid "Haz click para cambiar tu contraseña"
+msgstr "Click to change your password"
+
+msgid "Comprueva tu correo para poder cambiar la contraseña."
+msgstr "Check your email to be able to change the password."
+
+msgid "Cambiar contraseña"
+msgstr "Change password"
+
+msgid "Repite la contraseña"
+msgstr "Repeat password"
+
+msgid "Tu contraseña se ha cambiado correctamente."
+msgstr "Your password has been successfully changed."
+
+msgid "Puedes iniciar sessión aquí."
+msgstr "You can login here."
+
+msgid "Link incorrecto."
+msgstr "Wrong link."
+
+msgid "Puedes obtener otro aquí."
+msgstr "You can get another one here."
+
+msgid "Las contraseñas no coinciden."
+msgstr "Passwords do not match."
 
 # footer
 msgid "Soporte técnico"
@@ -187,6 +227,18 @@ msgstr "Page not found"
 
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
 
 msgid ""
 msgstr ""

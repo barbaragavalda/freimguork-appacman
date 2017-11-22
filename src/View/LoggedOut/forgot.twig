@@ -4,8 +4,21 @@
 
     <h3 class="login-box-msg">{% trans %}Recordar contraseña{% endtrans %}</h3>
 
-    <form action="{{ domain }}" method="POST">
+    <form method="POST">
         <p>{% trans %}Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar la contraseña.{% endtrans %}</p>
+
+        {% if form_error %}
+            <div class="alert alert-danger">
+                <h4><i class="icon fa fa-ban"></i>{% trans %}Error{% endtrans %}</h4>
+                <p>{{ form_error }}</p>
+            </div>
+        {% elseif form_send %}
+            <div class="alert alert-success">
+                <h4><i class="icon fa fa-check"></i>{% trans %}¡Hecho!{% endtrans %}</h4>
+                <p>{% trans %}Comprueva tu correo para poder cambiar la contraseña.{% endtrans %}</p>
+            </div>
+        {% endif %}
+
         <div class="form-group has-feedback">
             <input type="email" name="user" class="form-control input-lg" placeholder="{% trans %}Email{% endtrans %}" value="{{ form['user'] }}" />
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

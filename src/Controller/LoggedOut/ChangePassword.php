@@ -8,25 +8,29 @@
 
 namespace Appacman\Controller\LoggedOut;
 
-
 use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 
-class Forgot extends AppacmanController {
+class ChangePassword extends AppacmanController {
 
     protected function run(){
         $send = false;
-        if( isset($_POST['remember']) ){
-            $form = new UserForm();
-            $form->remember();
+        $form = new UserForm();
+        $hash = $this->getParam('hash');
 
-            $send = $form->getSend();
-            $this->assign('form', $form->getForm());
-            $this->assign('form_error', $form->getError());
+        if( $form->canChange($hash) ){
+            if( isset($_POST['change']) ){
+                $form->change();
+
+                $send = $form->getSend();
+                $this->assign('form_error', $form->getError());
+            }
+        }else{
+            $this->assign('wrong_link', true);
         }
 
         $this->assign('form_send', $send);
-        $this->template('LoggedOut/forgot.twig');
+        $this->template('LoggedOut/change-password.twig');
     }
 
     protected function hasPermission(){
@@ -34,7 +38,7 @@ class Forgot extends AppacmanController {
     }
 
     protected function getTitle(){
-        return gettext('Recordar contraseña');
+        return gettext('Cambiar contraseña');
     }
 
     protected function getBreadcrumb(){

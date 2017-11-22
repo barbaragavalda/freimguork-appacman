@@ -23,7 +23,7 @@ abstract class AppacmanController extends Controller {
         parent::__construct();
 
         // logged out pages
-        $this->loggedOutPages = array(gettext('iniciar-sesion'), gettext('he-olvidado-mi-contrasena'));
+        $this->loggedOutPages = array(gettext('iniciar-sesion'), gettext('he-olvidado-mi-contrasena'), gettext('cambiar-contrasena'));
 
         // domain admin css
         $this->assign('admin_domain', $this->static_domain . APPACMAN . 'public/');

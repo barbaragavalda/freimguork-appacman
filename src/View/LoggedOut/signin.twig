@@ -4,7 +4,7 @@
 
     <h3 class="login-box-msg">{% trans %}Iniciar sesión{% endtrans %}</h3>
 
-    <form action="{{ domain }}{% trans %}iniciar-sesion{% endtrans %}" method="POST">
+    <form method="POST">
         {% if form_error %}
             <div class="alert alert-danger">
                 <h4><i class="icon fa fa-ban"></i>{% trans %}Error{% endtrans %}</h4>
