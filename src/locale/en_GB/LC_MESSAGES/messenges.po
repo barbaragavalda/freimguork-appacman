@@ -81,7 +81,7 @@ msgstr "I forgot my password"
 msgid "Recordar contraseña"
 msgstr "Remember password"
 
-msgid "Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar de contraseña."
+msgid "Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar la contraseña."
 msgstr "Enter an email address and we will send you the instructions to change your password."
 
 msgid "Recordar"

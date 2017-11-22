@@ -10,10 +10,20 @@ namespace Appacman\Controller\LoggedOut;
 
 
 use Appacman\Controller\AppacmanController;
+use Appacman\Model\LoggedOut\UserForm;
 
 class Forgot extends AppacmanController {
 
     protected function run(){
+        if( isset($_POST['remember']) ){
+            $form = new UserForm();
+            $form->signin();
+
+            $send = $form->getSend();
+            $this->assign('form', $form->getForm());
+            $this->assign('form_error', $form->getError());
+        }
+
         $this->template('LoggedOut/forgot.twig');
     }
 

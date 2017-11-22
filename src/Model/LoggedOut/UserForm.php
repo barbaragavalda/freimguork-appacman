@@ -10,16 +10,15 @@ use Core\Model\Form;
 
 class UserForm extends Form {
 
-    public function __construct(){
-        parent::__construct();
-
+    /**
+     * login into appacman
+     */
+    public function signin(){
         $this->form = array(
             'user' => $_POST['user'],
             'password' => $_POST['password']
         );
-    }
 
-    public function signin(){
         if( !empty($this->form['user']) && !empty($this->form['password']) ){
             if( filter_var($this->form['user'], FILTER_VALIDATE_EMAIL) ){
                 if( ($userInfo = $this->checkLogin()) !== false ){
@@ -38,6 +37,10 @@ class UserForm extends Form {
         }
     }
 
+    /**
+     * check user in database for login
+     * @return bool
+     */
     private function checkLogin(){
         $sql = '
             SELECT id_appacman_user, name, email, password, created
@@ -63,6 +66,26 @@ class UserForm extends Form {
 
         if( !$found ) $this->error = gettext('No existe ningún usuario con este email.');
         return false;
+    }
+
+    public function remember(){
+        $this->form = array(
+            'user' => $_POST['user']
+        );
+
+        if( !empty($this->form['user']) ){
+            if( filter_var($this->form['user'], FILTER_VALIDATE_EMAIL) ){
+
+            }else{
+                $this->error = gettext('Comprueba el formato del email.');
+            }
+        }else{
+            $this->error = gettext('Debes llenar todos los campos obligatorios.');
+        }
+    }
+
+    private function sendMailChangePassword(){
+
     }
 
 }
