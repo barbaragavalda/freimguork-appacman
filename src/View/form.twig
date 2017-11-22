@@ -88,11 +88,13 @@
                     <div class="margin alert alert-danger">
                         <h4><i class="icon fa fa-ban"></i> {% trans %}Ha habido un error al guardar los datos. Por favor, inténtalo d enuevo más tarde.{% endtrans %}</h4>
                     </div>
-                {% else %}
-                    <div class="margin alert alert-success">
-                        <h4><i class="icon fa fa-check"></i> {% trans %}Datos guardados correctamente.{% endtrans %}</h4>
-                    </div>
                 {% endif %}
+            {% endif %}
+
+            {% if pendingMessage %}
+                <div class="margin alert alert-success">
+                    <h4><i class="icon fa fa-check"></i> {{ pendingMessage }}</h4>
+                </div>
             {% endif %}
 
             <div class="box-header with-border">{{ formButtons }}</div>

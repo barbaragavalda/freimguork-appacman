@@ -6,6 +6,7 @@ use Appacman\Model\Business;
 use Appacman\Model\Menu;
 use Appacman\Model\User;
 use Core\Controller\Controller;
+use Core\Utils\Session;
 
 abstract class AppacmanController extends Controller {
 
@@ -32,6 +33,11 @@ abstract class AppacmanController extends Controller {
         //business info
         $business = new Business();
         $this->assign('business', $business->getInfo());
+
+        // pending messages
+        $session = Session::getInstance();
+        $this->assign('pendingMessage', $session->get('pendingMessage'));
+        $session->delete('pendingMessage');
     }
 
     public function build(){

@@ -5,6 +5,7 @@ namespace Appacman\Controller;
 use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
+use Core\Utils\Session;
 
 class ContentForm extends Content {
 
@@ -24,6 +25,7 @@ class ContentForm extends Content {
         }
 
         // form
+        $success = false;
         $this->assign('form', $this->item->get($languages));
         if( isset($_POST['save']) ){
             $success = $this->item->save();
@@ -33,11 +35,16 @@ class ContentForm extends Content {
             $this->assign('formSend', false);
         }
 
-        // common stuff
-        $this->assign('languages', $languages);
-        $this->assign('title', $this->getTitle());
-        $this->assign('breadcrumb', $this->getBreadcrumb());
-        $this->template('form.twig');
+        if( $success ){
+            $session = Session::getInstance();
+            $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
+            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
+        }else{
+            $this->assign('languages', $languages);
+            $this->assign('title', $this->getTitle());
+            $this->assign('breadcrumb', $this->getBreadcrumb());
+            $this->template('form.twig');
+        }
     }
 
     protected function hasPermission(){

@@ -32,6 +32,11 @@ class Check extends FormInput {
         ';
     }
 
+    public function canSave($langID = null){
+        $postName = $this->getInputName($langID);
+        return array_key_exists($postName, $_POST);
+    }
+
     /**
      * Post value is true or false
      * @param null $langID

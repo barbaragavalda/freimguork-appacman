@@ -135,7 +135,6 @@ class Item extends Page {
                 }
             }
             $this->mysql->commit();
-
             return true;
 
         }catch (Exception $e){
@@ -209,7 +208,7 @@ class Item extends Page {
     }
 
     /**
-     * delete item from both tables
+     * delete item
      * @return bool
      */
     public function delete(){
@@ -217,6 +216,9 @@ class Item extends Page {
         return $this->deleteFromDatabase();
     }
 
+    /**
+     * delete item files
+     */
     private function deleteFiles(){
         $this->get();
         $files = array();
@@ -239,6 +241,10 @@ class Item extends Page {
         }
     }
 
+    /**
+     * delete item on database
+     * @return bool
+     */
     private function deleteFromDatabase(){
         $success = false;
         $this->mysql->beginTransaction();
