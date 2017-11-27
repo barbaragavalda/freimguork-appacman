@@ -27,7 +27,7 @@
         <tbody>
         {% for tr in list %}
             {% set trID = '' %}
-            {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '"' %}{% endif %}
+            {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
             <tr {{ trID|raw }}>
                 {% for th in list_headers %}
                     <td>{{ tr[th['field_name']]|raw }}</td>

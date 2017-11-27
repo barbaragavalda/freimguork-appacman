@@ -21,7 +21,7 @@
     text-overflow: ellipsis;
 }
 
-    /* common */
+/* common */
 .media-object{
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -68,6 +68,9 @@
 /* list */
 #list td{
     vertical-align: middle !important;
+}
+#list tr.canGo{
+    cursor: pointer;
 }
 #list .media-object img{
     max-width: 150px;

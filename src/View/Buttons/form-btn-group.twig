@@ -1,5 +1,5 @@
 <div class="btn-group pull-right">
-    <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancel{% endtrans %}</a>
-    {% include "Buttons/delete.twig" with {'itemID': itemID} %}
     {% include "Buttons/edit.twig" with {'itemID': itemID} %}
+    {% include "Buttons/delete.twig" with {'itemID': itemID} %}
+    <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancel{% endtrans %}</a>
 </div>

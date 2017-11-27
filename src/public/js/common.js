@@ -92,7 +92,7 @@ var Namespace = Namespace || {};
                     })
                     .done( function( result ){
                         if( !result['error'] ){
-                            that.parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" />');
+                            that.parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
                         }else{
                             error();
                         }

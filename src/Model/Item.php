@@ -4,6 +4,7 @@ namespace Appacman\Model;
 
 use Core\Model\Encryptor\TwoWay;
 use Core\Model\File;
+use Core\Model\Utils\StringUtils;
 use Core\Utils\Exception;
 
 class Item extends Page {
@@ -17,7 +18,7 @@ class Item extends Page {
 
     public function getName(){
         if( count($this->info) ){
-            return $this->name;
+            return StringUtils::truncateHtml($this->name, 35);
         }
         return gettext('Crear nuevo item');
     }
