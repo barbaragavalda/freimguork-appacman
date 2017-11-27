@@ -40,6 +40,7 @@ class ContentForm extends Content {
             $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
             $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
         }else{
+            $this->assign('prevNext', $this->content->getNextPrevItems($this->item->getID()));
             $this->assign('languages', $languages);
             $this->assign('title', $this->getTitle());
             $this->assign('breadcrumb', $this->getBreadcrumb());

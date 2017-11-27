@@ -2,6 +2,8 @@
 
 namespace Appacman\Model;
 
+use Core\Utils\Session;
+
 class Content extends Page {
 
     public function getName(){
@@ -26,10 +28,12 @@ class Content extends Page {
         $orderBy = array();
         foreach($orders as $order){
             $array = explode(' ', $order);
+            $key = str_replace('`', '', $array[0]);
+            $key = str_replace('´', '', $key);
             if( count($array) == 2 ){
-                $orderBy[ $array[0] ] = $array[1];
+                $orderBy[$key] = $array[1];
             }else{
-                $orderBy[ $array[0] ] = 'asc';
+                $orderBy[$key] = 'asc';
             }
         }
 
@@ -47,14 +51,51 @@ class Content extends Page {
         return $order;
     }
 
+    public function getNextPrevItems($itemID){
+        $session = Session::getInstance();
+        $tableOrder = $session->get('tableOrder');
+
+        if( array_key_exists('tableOrder'.$this->id, $tableOrder) ){
+            $savedOrder = $tableOrder[ 'tableOrder'.$this->id ];
+            $fields = $this->fields->get();
+            $order = '`' . $fields[$savedOrder[0][0]]['field_name'] . '` ' . $savedOrder[0][1];
+        }else{
+            $order = $this->info['order_by'];
+        }
+
+        $rows = $this->get($order);
+        $previous = null;
+        $next = null;
+        for($i=0; $i<count($rows); $i++){
+            if( $rows[$i]['id'] == $itemID ){
+                if( $i > 0 )                $previous = $rows[$i-1]['id'];
+                if( $i < count($rows)-1 )   $next = $rows[$i+1]['id'];
+                break;
+            }
+        }
+
+        return array(
+            'previous' => $previous,
+            'next' => $next,
+        );
+    }
+
     /**
      * get the list of items for this content
+     * @param string|null $order
      * @return array
      */
-    public function get(){
+    public function get($order = null){
+        // fields
         $fields = $this->fields->getFieldsForList();
         $fieldsNames = array_column($fields, 'field_name');
         $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
+
+        // order
+        $orderBy = '';
+        if( $order != null ){
+            $orderBy = ' ORDER BY '.$order;
+        }
 
         // table rows
         $table = $this->info['table_name'];
@@ -68,7 +109,13 @@ class Content extends Page {
             $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
             $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
         }
+        $sql .= $orderBy;
         $rows = $this->mysql->query($sql, $params);
+
+        // prepare rows for form
+        if( $order != null ){
+            return $rows;
+        }
 
         // prepare rows for list
         foreach($rows as &$row){

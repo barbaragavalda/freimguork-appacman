@@ -227,18 +227,18 @@ msgstr "There was an error saving the data. Please try again later."
 msgid "Datos guardados correctamente."
 msgstr "Data saved correctly."
 
+msgid "Anterior"
+msgstr "Previous"
+
+msgid "Siguiente"
+msgstr "Next"
+
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"
 
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
 
 msgid ""
 msgstr ""

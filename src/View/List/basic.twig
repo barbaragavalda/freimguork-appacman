@@ -21,31 +21,45 @@
         {% endfor %}
         columns.push({ "orderable": false });
         $(function () {
-            $('#list').DataTable({
-                'paging'        : true,
-                'lengthChange'  : true,
-                'searching'     : true,
-                'ordering'      : true,
-                'info'          : true,
-                'autoWidth'     : false,
-                'pageLength'    : 25,
-                'columns'       : columns,
-                'order'         : {{ list_order|json_encode|raw }},
-                'language'      : {
-                    'lengthMenu': "{% trans %}Mostrar _MENU_ items por página{% endtrans %}",
-                    'zeroRecords': "{% trans %}Sin resultados{% endtrans %}",
-                    'info': "{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}",
-                    'infoEmpty': "{% trans %}No hay registros disponibles{% endtrans %}",
-                    'search': "{% trans %}Buscar{% endtrans %}: ",
-                    'infoFiltered': "{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}",
-                    'paginate': {
-                        'first': "{% trans %}Primero{% endtrans %}",
-                        'last': "{% trans %}Último{% endtrans %}",
-                        'previous': "{% trans %}Anterior{% endtrans %}",
-                        'next': "{% trans %}Siguiente{% endtrans %}"
+            var table = $('#list')
+                .DataTable({
+                    'paging': true,
+                    'pageLength': 25,
+                    'stateSave': true,
+                    'lengthChange': true,
+                    'searching': true,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false,
+                    'columns': columns,
+                    'order': {{ list_order|json_encode|raw }},
+                    'language': {
+                        'lengthMenu': "{% trans %}Mostrar _MENU_ items por página{% endtrans %}",
+                        'zeroRecords': "{% trans %}Sin resultados{% endtrans %}",
+                        'info': "{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}",
+                        'infoEmpty': "{% trans %}No hay registros disponibles{% endtrans %}",
+                        'search': "{% trans %}Buscar{% endtrans %}: ",
+                        'infoFiltered': "{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}",
+                        'paginate': {
+                            'first': "{% trans %}Primero{% endtrans %}",
+                            'last': "{% trans %}Último{% endtrans %}",
+                            'previous': "{% trans %}Anterior{% endtrans %}",
+                            'next': "{% trans %}Siguiente{% endtrans %}"
+                        }
                     }
-                }
-            });
+                })
+                .on('order.dt', function(){
+                    changeTableCookie(table.order(), 'tableOrder');
+                });
+
+            var _cookies = new Namespace.Cookie();
+            function changeTableCookie(currentValue, cookieName){
+                var savedValue = _cookies.get(cookieName);
+                if( savedValue == false ) savedValue = {};
+
+                savedValue[cookieName + '{{ contentID }}'] = currentValue;
+                _cookies.set(cookieName, savedValue, 1);
+            }
 
             // delete item
             var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
@@ -66,7 +80,9 @@
 {% block page_content %}
 
     {% set createButton %}
-        {% include "Buttons/create.twig" %}
+        <div class="clearfix">
+            {% include "Buttons/create.twig" %}
+        </div>
     {% endset %}
     <div class="row">
         <div class="col-xs-12">

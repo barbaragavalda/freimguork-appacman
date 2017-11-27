@@ -29,6 +29,37 @@ function alertError(title, body, close){
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
 
+    ns.Cookie = function(){
+
+        this.set = function(cname, cvalue, exdays) {
+            var d = new Date();;
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+
+            var expires = "expires="+ d.toUTCString();
+            cvalue = JSON.stringify(cvalue);
+
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        };
+
+        this.get = function(cname) {
+            var name = cname + "=",
+                decodedCookie = decodeURIComponent(document.cookie),
+                ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return JSON.parse(c.substring(name.length, c.length));
+                }
+            }
+            return false;
+        };
+
+        return this;
+    };
+
     ns.Delete = function(errorTitle, errorText, errorClose){
         var _errorTitle = errorTitle,
             _errorText = errorText,

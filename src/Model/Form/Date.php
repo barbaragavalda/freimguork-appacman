@@ -7,6 +7,14 @@ use Core\Model\Utils\DateUtils;
 class Date extends FormInput {
 
     /**
+     * show like database in order to sort it correctly
+     * @return mixed|string
+     */
+    public function getListValue(){
+        return parent::getSeeValue();
+    }
+
+    /**
      * format date for user
      * @param int|null $langID
      * @return string
