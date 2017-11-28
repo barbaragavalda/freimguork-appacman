@@ -9,12 +9,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.4\n"
 
 # url
 msgid "iniciar-sesion"
 msgstr "signin"
-
 
 msgid "he-olvidado-mi-contrasena"
 msgstr "forgot"
@@ -39,6 +38,9 @@ msgstr "delete-file"
 
 msgid "eliminar-item"
 msgstr "delete-item"
+
+msgid "informacion"
+msgstr "information"
 
 # generic
 msgid "Volver"
@@ -227,12 +229,6 @@ msgstr "There was an error saving the data. Please try again later."
 msgid "Datos guardados correctamente."
 msgstr "Data saved correctly."
 
-msgid "Anterior"
-msgstr "Previous"
-
-msgid "Siguiente"
-msgstr "Next"
-
 # form validation
 msgid "Campo obligatorio."
 msgstr "Mandatory field."
@@ -246,42 +242,6 @@ msgstr "The image must be of type %types%"
 msgid "Comprueba el formato del link: que empieze por http:// o https://."
 msgstr "Check the link format: it must start with http:// or https://."
 
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"
@@ -289,26 +249,9 @@ msgstr "Page not found"
 msgid "No hemos encontrado la página que estás buscando."
 msgstr "We could not find the page you were looking for."
 
-msgid ""
-msgstr ""
+# Information
+msgid "Información"
+msgstr "Information"
 
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
+msgid "Licencia"
+msgstr "Licencia"
