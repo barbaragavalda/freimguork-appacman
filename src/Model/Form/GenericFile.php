@@ -17,6 +17,8 @@ class GenericFile extends FormInput {
      */
     protected $fileURL = null;
 
+    private $fieldID = null;
+
     /**
      * initialize image and save its URL
      * @param $info
@@ -25,6 +27,8 @@ class GenericFile extends FormInput {
      */
     public function __construct($info, $id, $table){
         parent::__construct($info, $id, $table);
+
+        $this->fieldID = $info['id_appacman_field'];
 
         $this->fileID = parent::getSeeValue();
         $image = new File($this->fileID);
@@ -75,6 +79,10 @@ class GenericFile extends FormInput {
         if( isset($_FILES[$postName]) && !empty($_FILES[$postName]['tmp_name']) ){
             $image = new File();
             $fileID = $image->save( $_FILES[$postName] );
+            $resize = $this->getResize();
+            if( $resize ){
+                $image->resize($resize);
+            }
 
             if( $fileID === false ){
                 throw new Exception('Unable to save image <pre>' . print_r($_FILES[$this->fieldName], true) . '</pre>');
@@ -90,6 +98,27 @@ class GenericFile extends FormInput {
 
         //no value
         return null;
+    }
+
+    /**
+     * Resize description of han image
+     * @return false|array
+     */
+    private function getResize(){
+        $sql = '
+            SELECT afr.width, afr.height, afr.suffix
+            FROM appacman_file_resize AS afr
+            WHERE afr.id_appacman_field = :field_id
+        ';
+        $params = array(
+            'field_id' => array('value' => $this->fieldID, 'type' => \PDO::PARAM_STR)
+        );
+        $resize = $this->mysql->query($sql, $params);
+
+        if( count($resize) ){
+            return $resize;
+        }
+        return false;
     }
 
     /**
