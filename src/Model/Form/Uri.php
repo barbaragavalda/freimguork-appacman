@@ -25,4 +25,8 @@ class Uri extends FormInput {
         return urlencode( strip_tags($postValue) );
     }
 
+    public function hasError($langID = null){
+        return false;
+    }
+
 }

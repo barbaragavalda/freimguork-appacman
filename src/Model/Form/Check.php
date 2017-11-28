@@ -50,4 +50,8 @@ class Check extends FormInput {
         return true;
     }
 
+    public function hasError($langID = null){
+        return false;
+    }
+
 }

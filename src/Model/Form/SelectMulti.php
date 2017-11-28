@@ -58,4 +58,13 @@ class SelectMulti extends Select {
         return false;
     }
 
+    /**
+     * Check if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        return false;
+    }
+
 }

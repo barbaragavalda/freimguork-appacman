@@ -25,7 +25,7 @@ class Timestamp extends FormInput {
     }
 
     /**
-     * TODO: datepicker
+     * TODO: timepicker
      * @param int|null $langID
      * @return string
      */
@@ -42,6 +42,23 @@ class Timestamp extends FormInput {
     protected function getPostValue($langID = null){
         $value = parent::getPostValue($langID);
         return DateUtils::databaseTimestamp($value);
+    }
+
+    /**
+     * Check timestamp format and if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        $value = parent::getPostValue($langID);
+        $postValue = $this->getPostValue($langID);
+        if( !empty($value) && preg_match('/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4} ([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])$/', $value) == false ){
+            return str_replace('%format%', 'dd/mm/yyyy hh:mm:ss', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
+        }
+        if( $postValue == null && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
+        return false;
     }
 
 }

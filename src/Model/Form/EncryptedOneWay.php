@@ -21,4 +21,8 @@ class EncryptedOneWay extends FormInput {
         return false;
     }
 
+    public function hasError($langID = null){
+        return false;
+    }
+
 }

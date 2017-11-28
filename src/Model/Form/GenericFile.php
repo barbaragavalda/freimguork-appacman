@@ -65,19 +65,6 @@ class GenericFile extends FormInput {
     }
 
     /**
-     * only can save image if its set on form
-     * @param int|null $langID
-     * @return bool
-     */
-    public function canSave($langID = null){
-        $postName = $this->getInputName($langID);
-        if( isset($_FILES[$postName]) && !empty($_FILES[$postName]['tmp_name']) ){
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * saves image on disk and return its database id
      * @param int|null $langID
      * @return false|int
@@ -85,15 +72,24 @@ class GenericFile extends FormInput {
      */
     protected function getPostValue($langID = null){
         $postName = $this->getInputName($langID);
-        $image = new File();
-        $fileID = $image->save( $_FILES[$postName] );
+        if( isset($_FILES[$postName]) && !empty($_FILES[$postName]['tmp_name']) ){
+            $image = new File();
+            $fileID = $image->save( $_FILES[$postName] );
 
-        if( $fileID === false ){
-            throw new Exception('Unable to save image <pre>' . print_r($_FILES[$this->fieldName], true) . '</pre>');
+            if( $fileID === false ){
+                throw new Exception('Unable to save image <pre>' . print_r($_FILES[$this->fieldName], true) . '</pre>');
+            }
+            $this->fileID = $fileID;
+            $this->fileURL = $image->getAbsolutePath();
+            return $fileID;
         }
-        $this->fileID = $fileID;
-        $this->fileURL = $image->getAbsolutePath();
-        return $fileID;
+
+        // current image
+        $value = parent::getInputValue($langID);
+        if( !empty($value) ) return $value;
+
+        //no value
+        return null;
     }
 
     /**
@@ -108,6 +104,20 @@ class GenericFile extends FormInput {
                 '.basename($this->fileURL).'
             </a>
         ';
+    }
+
+    /**
+     * Check if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        $postName = $this->getInputName($langID);
+        $value = parent::getInputValue($langID);
+        if( empty($value) && empty($_FILES[$postName]['tmp_name']) && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
+        return false;
     }
 
 }

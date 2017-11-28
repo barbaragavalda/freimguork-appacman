@@ -63,4 +63,17 @@ class EncryptedTwoWay extends FormInput {
         return TwoWay::encrypt($postValue, $this->key);
     }
 
+    /**
+     * Check if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        $postValue = parent::getPostValue($langID);
+        if( empty($postValue) && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
+        return false;
+    }
+
 }

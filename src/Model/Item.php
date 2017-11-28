@@ -2,7 +2,6 @@
 
 namespace Appacman\Model;
 
-use Core\Model\Encryptor\TwoWay;
 use Core\Model\File;
 use Core\Model\Utils\StringUtils;
 use Core\Utils\Exception;
@@ -109,8 +108,11 @@ class Item extends Page {
             // prepare post
             $post = array();
             $postLang = array();
+            $error = false;
             foreach($this->form as $input){
                 $value = $input->getSaveValue();
+                $hasError = $input->getError();
+                if( !$error && $hasError ) $error = $hasError;
                 if( $value != null ){
                     if( $input->isOnLangTable() ){
                         $postLang = array_merge_recursive($postLang, $value);
@@ -120,28 +122,32 @@ class Item extends Page {
                 }
             }
 
-            if( $this->id ){
-                // update
-                $this->update($post);
-                foreach($postLang as $lang => $post){
-                    $langID = str_replace('lang_', '', $lang);
-                    $this->update($post, $langID);
+            if( !$error ){
+                if( $this->id ){
+                    // update
+                    $this->update($post);
+                    foreach($postLang as $lang => $post){
+                        $langID = str_replace('lang_', '', $lang);
+                        $this->update($post, $langID);
+                    }
+                }else{
+                    //insert
+                    $this->insert($post);
+                    foreach($postLang as $lang => $post){
+                        $langID = str_replace('lang_', '', $lang);
+                        $this->insert($post, $langID);
+                    }
                 }
-            }else{
-                //insert
-                $this->insert($post);
-                foreach($postLang as $lang => $post){
-                    $langID = str_replace('lang_', '', $lang);
-                    $this->insert($post, $langID);
-                }
+                $this->mysql->commit();
+                return true;
             }
-            $this->mysql->commit();
-            return true;
 
         }catch (Exception $e){
-            $this->mysql->rollBack();
-            return false;
+            //nothing
         }
+
+        $this->mysql->rollBack();
+        return false;
     }
 
     /**

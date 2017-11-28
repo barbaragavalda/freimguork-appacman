@@ -87,7 +87,11 @@
     <div class="content-wrapper">
         <!-- breadcrumb -->
         <section class="content-header">
-            <h1>{{ breadcrumb[breadcrumb|length -1]['name'] }}</h1>
+            {% set breadcrumbH1 = breadcrumb[breadcrumb|length -1]['name'] %}
+            {% if not breadcrumbH1 %}
+                {% set breadcrumbH1 = '&nbsp;' %}
+            {% endif %}
+            <h1>{{ breadcrumbH1|raw }}</h1>
             {% if breadcrumb|length > 0 %}
                 <ol class="breadcrumb">
                     <li><a href="{{ domain }}">{% trans %}Inicio{% endtrans %}</a></li>

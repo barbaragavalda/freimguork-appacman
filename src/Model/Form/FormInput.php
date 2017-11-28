@@ -62,6 +62,12 @@ abstract class FormInput extends Model {
      */
     protected $type = \PDO::PARAM_STR;
 
+    /**
+     * validation error
+     * @var false|string $error
+     */
+    protected $error = false;
+
     public function __construct($info, $id, $table = null){
         parent::__construct();
         $this->id = $id;
@@ -122,6 +128,14 @@ abstract class FormInput extends Model {
      */
     public function getValue(){
         return $this->value;
+    }
+
+    /**
+     * Get validation error
+     * @return string
+     */
+    public function getError(){
+        return $this->error;
     }
 
     /**
@@ -220,16 +234,23 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getInputValue($langID = null){
-        if( !empty($this->value) ){
-            if( $langID == null && !is_array($this->value) ){
-                return $this->value;
-            }else{
-                if( $langID == null ){
-                    $keys = array_keys($this->value);
-                    return $this->value[$keys[0]];
+        if( $this->error ){
+            $postName = $this->getInputName($langID);
+            if( array_key_exists($postName, $_POST) ){
+                return $_POST[$postName];
+            }
+        }else{
+            if( !empty($this->value) ){
+                if( $langID == null && !is_array($this->value) ){
+                    return $this->value;
                 }else{
-                    if( array_key_exists('lang_'.$langID, $this->value) ){
-                        return $this->value['lang_'.$langID];
+                    if( $langID == null ){
+                        $keys = array_keys($this->value);
+                        return $this->value[$keys[0]];
+                    }else{
+                        if( array_key_exists('lang_'.$langID, $this->value) ){
+                            return $this->value['lang_'.$langID];
+                        }
                     }
                 }
             }
@@ -267,9 +288,12 @@ abstract class FormInput extends Model {
             $values = array();
             foreach($this->languages as $language) {
                 if( $this->canSave($language['id']) ){
-                    $values['lang_'.$language['id']] = array(
-                        $this->fieldName => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->type)
-                    );
+                    $this->error = $this->hasError($language['id']);
+                    if( !$this->error ){
+                        $values['lang_'.$language['id']] = array(
+                            $this->fieldName => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->type)
+                        );
+                    }
                 }
             }
             return $values;
@@ -277,13 +301,22 @@ abstract class FormInput extends Model {
 
         // no language
         if( $this->canSave() ){
-            return array(
-                $this->fieldName => array('value'=>$this->getPostValue(), 'type'=>$this->type)
-            );
+            $this->error = $this->hasError();
+            if( !$this->error ) {
+                return array(
+                    $this->fieldName => array('value' => $this->getPostValue(), 'type' => $this->type)
+                );
+            }
         }
 
         return null;
     }
+
+    /**
+     * @param null $langID
+     * @return false|string
+     */
+    abstract protected function hasError($langID = null);
 
     //*******************************************//
     //*********** F O R M    U T I L S **********//
@@ -295,23 +328,29 @@ abstract class FormInput extends Model {
      * @return string
      */
     private function getFromRow($input, $language = null){
-        $classLang = '';
         $name = '';
-        $html = '';
+        $span = '';
+        $extraClass = '';
         if( $language != null ){
             $name = $language['name'];
-            $classLang = ($language['id'] == null) ? '' : 'lang_'.$language['id'];
+            $extraClass = ($language['id'] == null) ? '' : 'lang_'.$language['id'];
+        }
+        if( $this->error ){
+            $extraClass = ' has-error';
+            $span = '<span class="help-block"><i class="fa fa-times-circle-o"></i> '.$this->error.'</span>';
         }
 
-        $html .= '<div class="form-horizontal '.$classLang.'">';
-        $html .= '    <div class="form-group">';
-        $html .= '        <label class="col-sm-2 control-label">'.$name.'</label>';
-        $html .= '        <div class="col-sm-10">';
-        $html .= '            ' . $input;
-        $html .= '        </div>';
-        $html .= '    </div>';
-        $html .= '</div>';
-        return $html;
+        return '
+            <div class="form-horizontal '.$extraClass.'">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">'.$name.'</label>
+                    <div class="col-sm-10">
+                        '.$input.'
+                        '.$span.'
+                    </div>
+                </div>
+            </div>
+        ';
     }
 
     /**

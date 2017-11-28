@@ -233,6 +233,55 @@ msgstr "Previous"
 msgid "Siguiente"
 msgstr "Next"
 
+# form validation
+msgid "Campo obligatorio."
+msgstr "Mandatory field."
+
+msgid "Comprueba que sea una fecha correcta con el formato %format%."
+msgstr "Check that it is a correct date with %format% format."
+
+msgid "La imagen debe ser de tipo %types%"
+msgstr "The image must be of type %types%"
+
+msgid "Comprueba el formato del link: que empieze por http:// o https://."
+msgstr "Check the link format: it must start with http:// or https://."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"

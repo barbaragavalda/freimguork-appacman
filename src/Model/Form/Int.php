@@ -15,4 +15,6 @@ class Int extends FormInput {
         return $this->inputType('text', $langID);
     }
 
+    public function hasError($langID = null){}
+
 }

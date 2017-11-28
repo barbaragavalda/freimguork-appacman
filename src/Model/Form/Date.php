@@ -25,7 +25,7 @@ class Date extends FormInput {
     }
 
     /**
-     * TODO: datepicker
+     * datepicker input
      * @param int|null $langID
      * @return string
      */
@@ -39,8 +39,6 @@ class Date extends FormInput {
                 <input type="text" class="form-control datepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getSeeValue($langID).'">
             </div>
         ';
-
-        return $this->inputType('text', $langID);
     }
 
     /**
@@ -51,6 +49,23 @@ class Date extends FormInput {
     protected function getPostValue($langID = null){
         $value = parent::getPostValue($langID);
         return DateUtils::databaseDate($value);
+    }
+
+    /**
+     * Check date format and if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        $value = parent::getPostValue($langID);
+        $postValue = $this->getPostValue($langID);
+        if( !empty($value) && preg_match('/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/', $value) == false ){
+            return str_replace('%format%', 'dd/mm/yyyy', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
+        }
+        if( $postValue == null && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
+        return false;
     }
 
 }

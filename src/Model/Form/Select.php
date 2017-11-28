@@ -76,4 +76,17 @@ class Select extends FormInput {
         return array($this->getSeeValue($langID));
     }
 
+    /**
+     * Check if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        $postValue = $this->getPostValue($langID);
+        if( $postValue == null && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
+        return false;
+    }
+
 }

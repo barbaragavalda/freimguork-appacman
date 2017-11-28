@@ -1,12 +1,14 @@
-<div class="btn-group pull-left">
-    {% set enabled = ' disabled' %}
-    {% if prevNext['previous'] %}{% set enabled = '' %}{% endif %}
-    <a href="{{ domain }}{% trans %}formulario{% endtrans %}/{{ contentID }}/{{ prevNext['previous'] }}" class="btn btn-default{{ enabled }}"><i class="fa fa-arrow-left"></i> {% trans %}Anterior{% endtrans %}</a>
+{% if itemID %}
+    <div class="btn-group pull-left">
+        {% set enabled = ' disabled' %}
+        {% if prevNext['previous'] %}{% set enabled = '' %}{% endif %}
+        <a href="{{ domain }}{% trans %}formulario{% endtrans %}/{{ contentID }}/{{ prevNext['previous'] }}" class="btn btn-default{{ enabled }}"><i class="fa fa-arrow-left"></i> {% trans %}Anterior{% endtrans %}</a>
 
-    {% set enabled = ' disabled' %}
-    {% if prevNext['next'] %}{% set enabled = '' %}{% endif %}
-    <a href="{{ domain }}{% trans %}formulario{% endtrans %}/{{ contentID }}/{{ prevNext['next'] }}" class="btn btn-default{{ enabled }}">{% trans %}Siguiente{% endtrans %} <i class="fa fa-arrow-right"></i></a>
-</div>
+        {% set enabled = ' disabled' %}
+        {% if prevNext['next'] %}{% set enabled = '' %}{% endif %}
+        <a href="{{ domain }}{% trans %}formulario{% endtrans %}/{{ contentID }}/{{ prevNext['next'] }}" class="btn btn-default{{ enabled }}">{% trans %}Siguiente{% endtrans %} <i class="fa fa-arrow-right"></i></a>
+    </div>
+{% endif %}
 <div class="btn-group pull-right">
     {% include "Buttons/edit.twig" with {'itemID': itemID} %}
     {% include "Buttons/delete.twig" with {'itemID': itemID} %}

@@ -131,3 +131,10 @@ form .alert h4{
     border: 1px solid #dddddd;
     padding: 10px;
 }
+/* form validation */
+.has-error .form-control{
+    border-color: #dd4b39 !important;
+}
+.has-error .checkbox, .has-error .checkbox-inline, .has-error .control-label, .has-error .help-block, .has-error .radio, .has-error .radio-inline, .has-error.checkbox label, .has-error.checkbox-inline label, .has-error.radio label, .has-error.radio-inline label{
+    color: #dd4b39 !important;
+}
