@@ -128,7 +128,6 @@ class UserForm extends Form {
 
     /**
      * send mail to user
-     * @param $user
      * @param $hash
      * @return bool
      */

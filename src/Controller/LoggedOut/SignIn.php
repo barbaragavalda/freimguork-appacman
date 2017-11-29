@@ -12,7 +12,7 @@ namespace Appacman\Controller\LoggedOut;
 use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 
-class Signin extends AppacmanController {
+class SignIn extends AppacmanController {
 
     protected function run(){
         $send = false;
