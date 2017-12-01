@@ -2,7 +2,7 @@
 
 namespace Appacman\Model\Form;
 
-class Int extends FormInput {
+class Number extends FormInput {
 
     protected $type = \PDO::PARAM_INT;
 

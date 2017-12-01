@@ -112,13 +112,13 @@ var Namespace = Namespace || {};
                 onConfirm: function(){
                     var id = $(this).attr('data-id'),
                         name = $(this).attr('data-name'),
+                        field = $(this).attr('data-field'),
                         that = $(this);
 
-                    console.log(url);
                     $.ajax({
                         type:       'POST',
                         url:        url,
-                        data:       { fieldName: name, fieldID: id },
+                        data:       { fieldName: field, fieldID: id },
                         dataType:	'json'
                     })
                     .done( function( result ){

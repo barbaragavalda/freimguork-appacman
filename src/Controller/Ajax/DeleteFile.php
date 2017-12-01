@@ -16,9 +16,8 @@ class DeleteFile extends Content {
 
         $this->content->getTable();
 
-        $error = false;
         $file = new File($fileID);
-        $file->delete($this->content->getTable(), $fieldName, $itemID, $fileID);
+        $error = !$file->delete($this->content->getTable(), $fieldName, $itemID, $fileID);
 
         $this->removeInfo();
         $this->assign('error', $error);

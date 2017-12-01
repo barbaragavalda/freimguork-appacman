@@ -54,10 +54,8 @@ class Content extends Page {
     public function getNextPrevItems($itemID){
         $session = Session::getInstance();
         $tableOrder = $session->get('tableOrder');
-
-        $previous = null;
-        $next = null;
         if( $tableOrder == null ) $tableOrder = array();
+
         if( array_key_exists('tableOrder'.$this->id, $tableOrder) ){
             $savedOrder = $tableOrder[ 'tableOrder'.$this->id ];
             $fields = $this->fields->get();
@@ -66,6 +64,8 @@ class Content extends Page {
             $order = $this->info['order_by'];
         }
 
+        $previous = null;
+        $next = null;
         $rows = $this->get($order);
         for($i=0; $i<count($rows); $i++){
             if( $rows[$i]['id'] == $itemID ){

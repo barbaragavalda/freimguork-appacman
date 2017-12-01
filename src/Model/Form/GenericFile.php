@@ -61,7 +61,7 @@ class GenericFile extends FormInput {
             $fieldName = parent::getInputName($langID);
             return '
                 ' . $this->getFile() . '
-                <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
+                <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" data-field="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
                     <i class="fa fa-trash"></i>
                 </a>
             ';
