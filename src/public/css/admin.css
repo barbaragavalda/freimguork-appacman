@@ -64,6 +64,9 @@
 .small-box.bg-white:hover > .small-box-footer {
     background: rgba(0, 0, 0, 0.4);
 }
+.label-purple {
+    background-color: #605ca8;
+}
 
 /* list */
 #list td{

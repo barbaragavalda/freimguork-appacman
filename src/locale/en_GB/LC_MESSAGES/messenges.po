@@ -39,6 +39,9 @@ msgstr "delete-file"
 msgid "eliminar-item"
 msgstr "delete-item"
 
+msgid "exportar"
+msgstr "export"
+
 msgid "informacion"
 msgstr "information"
 
@@ -158,6 +161,9 @@ msgstr "Delete"
 
 msgid "Crear nuevo item"
 msgstr "Create new item"
+
+msgid "Exportar"
+msgstr "Export"
 
 msgid "Mostrando _START_ a _END_ de _TOTAL_ entradas"
 msgstr "Showing _START_ to _END_ of _TOTAL_ entries"

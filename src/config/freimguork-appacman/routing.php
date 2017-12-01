@@ -12,6 +12,7 @@ $config = array(
 
         //list
         gettext('listado').'/{contentID}'   => 'ContentList',
+        gettext('exportar').'/{contentID}'  => 'Export',
 
         //form
         gettext('formulario').'/{contentID}'                    => 'ContentForm',

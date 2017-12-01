@@ -4,7 +4,7 @@ namespace Appacman\Model\Form;
 
 class Select extends FormInput {
 
-	public function getSeeValue($langID = null){
+    public function getSeeValue($langID = null){
         if( $this->value ){
             $options = $this->getOptions();
             foreach($options as $option){
@@ -15,7 +15,7 @@ class Select extends FormInput {
         }
         return '-';
     }
-    
+
     /**
      * select simple (only one option)
      * @param int|null $langID
