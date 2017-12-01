@@ -4,6 +4,18 @@ namespace Appacman\Model\Form;
 
 class Select extends FormInput {
 
+	public function getSeeValue($langID = null){
+        if( $this->value ){
+            $options = $this->getOptions();
+            foreach($options as $option){
+                if( $option['id'] == $this->value ){
+                    return $option['name'];
+                }
+            }
+        }
+        return '-';
+    }
+    
     /**
      * select simple (only one option)
      * @param int|null $langID
