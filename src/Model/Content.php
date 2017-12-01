@@ -55,6 +55,9 @@ class Content extends Page {
         $session = Session::getInstance();
         $tableOrder = $session->get('tableOrder');
 
+        $previous = null;
+        $next = null;
+        if( $tableOrder == null ) $tableOrder = array();
         if( array_key_exists('tableOrder'.$this->id, $tableOrder) ){
             $savedOrder = $tableOrder[ 'tableOrder'.$this->id ];
             $fields = $this->fields->get();
@@ -64,8 +67,6 @@ class Content extends Page {
         }
 
         $rows = $this->get($order);
-        $previous = null;
-        $next = null;
         for($i=0; $i<count($rows); $i++){
             if( $rows[$i]['id'] == $itemID ){
                 if( $i > 0 )                $previous = $rows[$i-1]['id'];

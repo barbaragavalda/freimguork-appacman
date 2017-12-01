@@ -191,7 +191,7 @@ abstract class FormInput extends Model {
     //******** F O R M    E D I T A B L E    P R I N T *******//
     //********************************************************//
     /**
-     * Value to show on form when user CAM edit
+     * Value to show on form when user CAN edit
      * @return string
      */
     public function getFormHTML(){
@@ -202,6 +202,23 @@ abstract class FormInput extends Model {
             }
         }else{
             $html .= $this->getFromRow($this->getInputHTML());
+        }
+
+        return $html;
+    }
+
+    /**
+     * Value to show on form when user CANNOT edit
+     * @return string
+     */
+    public function getSeeHTML(){
+        $html = '';
+        if( $this->onLangTable ){
+            foreach($this->languages as $language) {
+                $html .= $this->getFromRow($this->getSeeValue($language['id']), $language);
+            }
+        }else{
+            $html .= $this->getFromRow($this->getSeeValue());
         }
 
         return $html;
