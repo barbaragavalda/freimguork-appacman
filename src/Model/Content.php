@@ -40,11 +40,15 @@ class Content extends Page {
         // setup order for javascript
         $order = array();
         $fields = $this->fields->get();
-        for($i=0; $i<count($fields)-1; $i++){
-            $field = $fields[$i]['field_name'];
-            if( array_key_exists($field, $orderBy) ){
-                $orderType = strtolower( $orderBy[$field] );
-                $order[] = array($i, $orderType);
+        $i = 1;
+        foreach($fields as $field){
+            if( $field['show_on_list'] ){
+                $fieldName = $field['field_name'];
+                if( array_key_exists($fieldName, $orderBy) ){
+                    $orderType = strtolower( $orderBy[$fieldName] );
+                    $order[] = array($i, $orderType);
+                }
+                $i++;
             }
         }
 

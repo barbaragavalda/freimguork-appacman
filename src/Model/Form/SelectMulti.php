@@ -4,6 +4,10 @@ namespace Appacman\Model\Form;
 
 class SelectMulti extends Select {
 
+    private $currentTable = '';
+
+    private $lateralTable = '';
+
     /**
      * select multiple (more than one option)
      * @param int|null $langID
@@ -33,15 +37,11 @@ class SelectMulti extends Select {
      * @return array
      */
     protected function loadValues($langID){
-        $table = $this->fieldName;
-        $tables = explode('_', $table);
-        $currentTable = $tables[0];
-        $lateralTable = $tables[1];
-
+        $this->initTables();
         $sql = '
-            SELECT id_'.$lateralTable.' AS id
-            FROM '.$table.'
-            WHERE id_'.$currentTable.' = :id
+            SELECT id_'.$this->lateralTable.' AS id
+            FROM '.$this->fieldName.'
+            WHERE id_'.$this->currentTable.' = :id
         ';
         $params = array(
             'id' => array('value'=> $this->id, 'type' => \PDO::PARAM_INT)
@@ -50,12 +50,42 @@ class SelectMulti extends Select {
         return array_column($values, 'id');
     }
 
-    /**
-     * TODO: save select
-     * @return bool
-     */
-    public function canSave($langID = null){
-        return false;
+    protected function getPostValue($langID = null){
+        $postName = $this->getFieldName($langID);
+        if( isset($_POST[$postName]) ){
+            $this->initTables();
+
+            // delete all
+            $sql = '
+                DELETE FROM '.$this->fieldName.'
+                WHERE id_'.$this->currentTable.' = :id
+            ';
+            $params = array(
+                'id' => array('value'=> $this->id, 'type' => \PDO::PARAM_INT)
+            );
+            $this->mysql->query($sql, $params);
+
+            // insert again
+            $values = array();
+            foreach($_POST[$postName] as $index => $id){
+                $values[] = '(:id, :lateral_id_'.$index.')';
+                $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+            }
+            $sql = '
+                INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->lateralTable.') 
+                VALUES '.implode(',', $values).'
+            ';
+            $this->mysql->query($sql, $params);
+        }
+
+        return null;
+    }
+
+    private function initTables(){
+        $table = $this->fieldName;
+        $tables = explode('_', $table);
+        $this->currentTable = $tables[0];
+        $this->lateralTable = $tables[1];
     }
 
     /**

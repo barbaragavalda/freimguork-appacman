@@ -77,7 +77,11 @@
 }
 #list .media-object img{
     max-width: 150px;
-    max-height: 50px;
+    max-height: 60px;
+}
+img[src$='.svg'] {
+    min-width: 60px;
+    min-height: 60px;
 }
 
 /* form */
