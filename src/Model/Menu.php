@@ -36,7 +36,6 @@ class Menu extends Model {
             SELECT ac.id_appacman_content, ac.icon, ac.id_appacman_block, ac.table_name, acl.name
             FROM appacman_content AS ac
             INNER JOIN appacman_content_lang AS acl ON ac.id_appacman_content = acl.id_appacman_content AND acl.id_appacman_lang = :lang
-            WHERE ac.id_appacman_content > 1
             ORDER BY ac.order ASC
         ';
         $params = array(
