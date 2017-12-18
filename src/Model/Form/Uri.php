@@ -2,6 +2,8 @@
 
 namespace Appacman\Model\Form;
 
+use Core\Model\Utils\StringUtils;
+
 class Uri extends FormInput {
 
     protected $isVisible = false;
@@ -22,7 +24,10 @@ class Uri extends FormInput {
      */
     protected function getPostValue($langID = null){
         $postValue = ($langID == null) ? $_POST['name'] : $_POST['name_'.$langID];
-        return urlencode( strip_tags($postValue) );
+
+        $noTags = strip_tags($postValue);
+        $lowerCase = strtolower($noTags);
+        return urlencode( StringUtils::removeSpecialCharacters($lowerCase) );
     }
 
     public function hasError($langID = null){
