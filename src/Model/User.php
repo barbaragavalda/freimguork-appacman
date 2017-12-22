@@ -19,11 +19,6 @@ class User {
     private static $instance;
 
     /**
-     * @var int $id. User id
-     */
-    private $id = null;
-
-    /**
      * @var \Appacman\Model\Utils\Permissions $permissions. User permissions
      */
     private $permissions = null;

@@ -180,14 +180,22 @@ class Item extends Page {
      * @param null $langID
      */
     private function insert($params, $langID = null){
-        $fields = $this->getFields($params);
         $tableName = $this->table;
-        $extraFields = '';
-        if( $langID != null ){
-            $tableName = $this->table . '_lang';
-            $extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
-            $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
-            $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+        $fields = $extraFields = '';
+        if( count($params) ){
+            $fields = $this->getFields($params);
+            if( $langID != null ){
+                $tableName = $this->table . '_lang';
+                $extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
+                $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+                $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+            }
+        }else{
+            $id = $this->mysql->getMaxId($this->table);
+            $fields = 'id_'.$this->table.' = :id';
+            $params = array(
+                'id' => array('value'=>$id, 'type'=>\PDO::PARAM_INT)
+            );
         }
 
         $sql = '
@@ -195,7 +203,6 @@ class Item extends Page {
             SET '.$fields.$extraFields.'
         ';
         $this->mysql->query($sql, $params);
-
         if( $langID == null ){
             $this->id = $this->mysql->lastInsertId();
         }

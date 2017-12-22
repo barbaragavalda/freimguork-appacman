@@ -16,8 +16,6 @@ class UserForm extends Form {
 
     private $user = array();
 
-    private $key = '';
-
     /**
      * login into appacman
      */

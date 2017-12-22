@@ -8,11 +8,6 @@ use Core\Model\Model;
 abstract class Page extends Model {
 
     /**
-     * @var int $id. Item id
-     */
-    protected $id = 0;
-
-    /**
      * @var string $name. Title of this item
      */
     protected $name = 0;
@@ -38,10 +33,6 @@ abstract class Page extends Model {
         $this->id = $id;
     }
 
-    public function getID(){
-        return $this->id;
-    }
-
     protected function initFields($tableName, $contentID = null){
         $this->fields = new Field($tableName, $contentID);
     }
@@ -57,7 +48,14 @@ abstract class Page extends Model {
 
         // input view class
         $inputClass = 'Appacman\\Model\\Form\\' . ucfirst( $field['type'] );
-        $id = count($info) ? $info['id_'.$this->table] : null;
+        $id = null;
+        if( count($info) ){
+            if( is_a($this, 'Appacman\\Model\\Item') ){
+                $id = $info['id_'.$this->table];
+            }else{
+                $id = $info['id'];
+            }
+        }
         return new $inputClass($field, $id, $this->table);
     }
 

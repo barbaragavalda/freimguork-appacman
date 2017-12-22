@@ -40,7 +40,7 @@ class Content extends Page {
         // setup order for javascript
         $order = array();
         $fields = $this->fields->get();
-        $i = 1;
+        $i = 0;
         foreach($fields as $field){
             if( $field['show_on_list'] ){
                 $fieldName = $field['field_name'];

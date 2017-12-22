@@ -31,6 +31,9 @@ class Timestamp extends FormInput {
      */
     protected function getInputHTML($langID = null){
         $value = self::getSeeValue($langID);
+        if( !$value ){
+            $value = date('H:i:s d/m/Y');
+        }
         return $this->label($value) . $this->inputType('hidden', $langID);
     }
 
@@ -54,9 +57,6 @@ class Timestamp extends FormInput {
         $postValue = $this->getPostValue($langID);
         if( !empty($value) && preg_match('/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4} ([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])$/', $value) == false ){
             return str_replace('%format%', 'dd/mm/yyyy hh:mm:ss', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
-        }
-        if( $postValue == null && $this->isRequired ){
-            return gettext('Campo obligatorio.');
         }
         return false;
     }

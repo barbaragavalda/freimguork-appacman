@@ -2,7 +2,13 @@
 
 namespace Appacman\Model\Form;
 
-class EncryptedOneWay extends FormInput {
+use Core\Model\Encryptor\OneWay;
+
+class EncryptedOneWay extends Encrypted {
+
+    public function getSeeValue($langID = null){
+        return $this->label( '<i class="fa fa-eye-slash"></i> ' . gettext('Valor oculto') );
+    }
 
     /**
      * all two-way encrypted values, cannot be displayed because it is impossible to decrypt them
@@ -10,19 +16,18 @@ class EncryptedOneWay extends FormInput {
      * @return string
      */
     protected function getInputHTML($langID = null){
-        return $this->label( '<i class="fa fa-eye-slash"></i> ' . gettext('Valor oculto') );
+        $postName = $this->getInputName($langID);
+        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="" />';
     }
 
     /**
-     * CANNOT save
-     * @return bool
+     * encrypt value in order to save on database
+     * @param null $langID
+     * @return string
      */
-    public function canSave($langID = null){
-        return false;
-    }
-
-    public function hasError($langID = null){
-        return false;
+    protected function getPostValue($langID = null){
+        $postValue = parent::getPostValue($langID);
+        return OneWay::encrypt($postValue, $this->key);
     }
 
 }
