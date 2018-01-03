@@ -4,6 +4,7 @@ namespace Appacman\Controller;
 
 use Appacman\Model\Business;
 use Appacman\Model\Menu;
+use Appacman\Model\Notification;
 use Appacman\Model\User;
 use Core\Controller\Controller;
 use Core\Utils\Session;
@@ -38,6 +39,11 @@ abstract class AppacmanController extends Controller {
         $session = Session::getInstance();
         $this->assign('pendingMessage', $session->get('pendingMessage'));
         $session->delete('pendingMessage');
+
+        if( class_exists('Appacman\Model\Notification') ){
+            $notifications = new Notification();
+            $this->assign('notifications', $notifications->get());
+        }
     }
 
     public function build(){
