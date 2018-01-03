@@ -13,7 +13,7 @@ class EncryptedTwoWay extends Encrypted {
      */
     public function getSeeValue($langID = null){
         if( $this->key ){
-            return TwoWay::decrypy(parent::getSeeValue($langID), $this->key);
+            return TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
         }
         return '';
     }
@@ -25,7 +25,7 @@ class EncryptedTwoWay extends Encrypted {
      */
     protected function getInputHTML($langID = null){
         $postName = $this->getInputName($langID);
-        $value = TwoWay::decrypy(parent::getSeeValue($langID), $this->key);
+        $value = TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
         return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$value.'" />';
     }
 

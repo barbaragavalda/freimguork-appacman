@@ -30,7 +30,7 @@ class UserForm extends Form {
                 if( $this->checkLogin() ){
                     $this->send = true;
                     $this->key = $this->user['id_appacman_user'] . '_' . $this->user['created'];
-                    $username = TwoWay::decrypy($this->user['name'], $this->key.'_name');
+                    $username = TwoWay::decrypt($this->user['name'], $this->key.'_name');
 
                     $user = User::getInstance();
                     $user->signin($this->user['id_appacman_user'], $username);
@@ -137,8 +137,8 @@ class UserForm extends Form {
         $domain = $config->getDomain();
         $mailConfig = $config->get('mail');
 
-        $userName = TwoWay::decrypy($this->user['name'], $this->key.'_name');
-        $userEmail = TwoWay::decrypy($this->user['email'], $this->key.'_email');
+        $userName = TwoWay::decrypt($this->user['name'], $this->key.'_name');
+        $userEmail = TwoWay::decrypt($this->user['email'], $this->key.'_email');
 
         $mail = new Mail();
         return $mail->send(
@@ -167,7 +167,7 @@ class UserForm extends Form {
 
         foreach($users as $user){
             $this->key = $user['id_appacman_user'] . '_' . $user['created'];
-            $decryptedEmail = TwoWay::decrypy($user['email'], $this->key.'_email');
+            $decryptedEmail = TwoWay::decrypt($user['email'], $this->key.'_email');
             if( $decryptedEmail == $this->form['user'] ){
                 $this->user = $user;
                 return true;
