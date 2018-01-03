@@ -140,6 +140,9 @@
 .skin-custom.layout-top-nav .main-header > .logo:hover {
   background-color: #3bb8b7;
 }
+.box-custom {
+  border-top-color: #39CCCC;
+}
 /* override */
 a {
   color: #36a8a9;

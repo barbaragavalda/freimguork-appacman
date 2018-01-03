@@ -12,7 +12,7 @@ class ContentForm extends Content {
     /**
      * @var \Appacman\Model\Item $item
      */
-    private $item = null;
+    protected $item = null;
 
     protected function run(){
         parent::run();
