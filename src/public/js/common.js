@@ -1,9 +1,24 @@
 function alertError(title, body, close){
+    alert('error', title, body, close);
+}
+
+function alertOK(title, body, close){
+    alert('ok', title, body, close);
+}
+
+function alert(type, title, body, close){
+    var id = 'message-error',
+        errorClass = 'btn-danger';
+    if( type == 'ok' ){
+        id = 'message-ok';
+        errorClass = 'btn-success';
+    }
+
     var html = '';
-    html += '<div id="error" class="modal fade bd-example-modal-sm" role="dialog">';
+    html += '<div id="' + id + '" class="modal fade bd-example-modal-sm" role="dialog">';
     html += '   <div class="modal-dialog modal-sm">';
     html += '       <div class="modal-content">';
-    html += '           <div class="modal-header btn-danger clearfix">';
+    html += '           <div class="modal-header ' + errorClass + ' clearfix">';
     html += '               <h5 class="modal-title pull-left">' + title + '</h5>';
     html += '               <button type="button" class="close" data-dismiss="modal" aria-label="' + close + '">';
     html += '                   <span aria-hidden="true">&times;</span>';
@@ -18,13 +33,12 @@ function alertError(title, body, close){
     html += '</div>';
     $('body').prepend(html);
 
-    var dialog = $('#error');
+    var dialog = $('#' + id);
     dialog.modal();
     dialog.on('hidden.bs.modal', function(e){
         dialog.remove();
     });
 }
-
 
 var Namespace = Namespace || {};
 (function (win, doc, ns) {

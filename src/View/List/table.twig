@@ -1,53 +1,20 @@
-{% extends "List/basic.twig" %}
+{% extends "List/table-structure.twig" %}
 
-{% block extra_scripts %}
-    {{ parent() }}
+{% block table_content %}
 
-    <script>
-        $('#list tr').click(function(e){
-            var id = $(this).attr('id');
-            if( $(e.target).is('td') && typeof(id) != 'undefined' && id ){
-                window.location = '{{ domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' }}' + id;
-            }
-        });
-    </script>
-{% endblock %}
-
-{% block list %}
-
-    <table id="list" class="table table-bordered table-hover">
-        <thead>
-        <tr>
+    {% for tr in list %}
+        {% set trID = '' %}
+        {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
+        <tr {{ trID|raw }}>
             {% for th in list_headers %}
-                <th>{{ th['name'] }}</th>
+                <td>{{ tr[th['field_name']]|raw }}</td>
             {% endfor %}
-            <th>{% trans %}Acciones{% endtrans %}</th>
+            <td>
+                {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
+                {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
+                {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        {% for tr in list %}
-            {% set trID = '' %}
-            {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
-            <tr {{ trID|raw }}>
-                {% for th in list_headers %}
-                    <td>{{ tr[th['field_name']]|raw }}</td>
-                {% endfor %}
-                <td>
-                    {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
-                    {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
-                    {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-        <tfoot>
-        <tr>
-            {% for th in list_headers %}
-                <th>{{ th['name'] }}</th>
-            {% endfor %}
-            <th>{% trans %}Acciones{% endtrans %}</th>
-        </tr>
-        </tfoot>
-    </table>
+    {% endfor %}
 
 {% endblock %}

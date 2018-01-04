@@ -1,0 +1,40 @@
+{% extends "List/basic.twig" %}
+
+{% block extra_scripts %}
+    {{ parent() }}
+
+    <script>
+        $('#list tr').click(function(e){
+            var id = $(this).attr('id');
+            if( $(e.target).is('td') && typeof(id) != 'undefined' && id ){
+                window.location = '{{ domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' }}' + id;
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block list %}
+
+    <table id="list" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            {% for th in list_headers %}
+                <th>{{ th['name'] }}</th>
+            {% endfor %}
+            <th>{% trans %}Acciones{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% block table_content %}{% endblock %}
+        </tbody>
+        <tfoot>
+        <tr>
+            {% for th in list_headers %}
+                <th>{{ th['name'] }}</th>
+            {% endfor %}
+            <th>{% trans %}Acciones{% endtrans %}</th>
+        </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}
