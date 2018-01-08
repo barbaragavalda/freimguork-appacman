@@ -48,15 +48,15 @@ abstract class AppacmanController extends Controller {
 
     public function build(){
         // do not redirect logged out pages
-        $isLogedOutPage = false;
+        $isLoggedOutPage = false;
         if( count($this->parts) ){
             $currentPage = $this->parts[0];
-            $isLogedOutPage = in_array($currentPage, $this->loggedOutPages ) === true;
+            $isLoggedOutPage = in_array($currentPage, $this->loggedOutPages ) === true;
         }
 
         $this->user = User::getInstance();
         $isLoggedIn = $this->user->loggedIn();
-        if( !$isLoggedIn && !$isLogedOutPage ){
+        if( !$isLoggedIn && !$isLoggedOutPage ){
             // redirect logedout users to signin page
             $this->redirect($this->domain . gettext('iniciar-sesion'), 401);
         }else{
