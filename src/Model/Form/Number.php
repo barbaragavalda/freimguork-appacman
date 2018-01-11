@@ -7,6 +7,19 @@ class Number extends FormInput {
     protected $type = \PDO::PARAM_INT;
 
     /**
+     * Post value must be a number
+     * @param null $langID
+     * @return bool
+     */
+    protected function getPostValue($langID = null){
+        $post = parent::getPostValue($langID);
+        if( empty($post) ){
+            return 0;
+        }
+        return $post;
+    }
+
+    /**
      * input type text
      * @param int|null $langID
      * @return string

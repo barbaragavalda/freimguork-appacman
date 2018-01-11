@@ -20,6 +20,9 @@ class Date extends FormInput {
      * @return string
      */
     public function getSeeValue($langID = null){
+        if( isset($_POST['save']) ){
+            return $this->getInputValue($langID);
+        }
         $value = parent::getSeeValue($langID);
         return DateUtils::userDate($value);
     }

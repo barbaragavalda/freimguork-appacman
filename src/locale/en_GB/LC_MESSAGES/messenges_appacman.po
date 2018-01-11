@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.4\n"
 
 # url
 msgid "iniciar-sesion"
