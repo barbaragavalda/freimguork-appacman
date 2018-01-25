@@ -21,7 +21,7 @@ class Timestamp extends FormInput {
      */
     public function getSeeValue($langID = null){
         $value = parent::getSeeValue($langID);
-        return DateUtils::userTimestamp($value);
+        return $value;
     }
 
     /**
@@ -32,7 +32,8 @@ class Timestamp extends FormInput {
     protected function getInputHTML($langID = null){
         $value = self::getSeeValue($langID);
         if( !$value ){
-            $value = date('H:i:s d/m/Y');
+            $value = date(DateUtils::FORMAT_TIMESTAMP_DB);
+            $this->value = $value;
         }
         return $this->label($value) . $this->inputType('hidden', $langID);
     }
@@ -44,7 +45,11 @@ class Timestamp extends FormInput {
      */
     protected function getPostValue($langID = null){
         $value = parent::getPostValue($langID);
-        return DateUtils::databaseTimestamp($value);
+        if( !$value ){
+            $value = date(DateUtils::FORMAT_TIMESTAMP_DB);
+            $this->value = $value;
+        }
+        return $value;
     }
 
     /**
@@ -53,11 +58,12 @@ class Timestamp extends FormInput {
      * @return false|string
      */
     public function hasError($langID = null){
+        /*
         $value = parent::getPostValue($langID);
-        $postValue = $this->getPostValue($langID);
         if( !empty($value) && preg_match('/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4} ([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])$/', $value) == false ){
             return str_replace('%format%', 'dd/mm/yyyy hh:mm:ss', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
         }
+        */
         return false;
     }
 

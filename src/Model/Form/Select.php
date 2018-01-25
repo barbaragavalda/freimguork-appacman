@@ -61,7 +61,7 @@ class Select extends FormInput {
      * @param string $lateralTable
      * @return array
      */
-    protected function loadOptions($lateralTable){
+    protected function loadOptions($lateralTable, $extraFields = ''){
         $lateralTableLang = $lateralTable . '_lang';
 
         $params = array();
@@ -71,7 +71,7 @@ class Select extends FormInput {
             $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
         }
         $sql = '
-            SELECT '.$lateralTable.'.id_'.$lateralTable.' AS id, name
+            SELECT '.$lateralTable.'.id_'.$lateralTable.' AS id, name ' . $extraFields . '
             FROM '.$lateralTable.'
             '.$innerJoin.'
             ORDER BY name ASC

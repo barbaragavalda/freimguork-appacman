@@ -30,4 +30,17 @@ class EncryptedOneWay extends Encrypted {
         return OneWay::encrypt($postValue, $this->key);
     }
 
+    /**
+     * not required if already exists item
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        if( $this->id ){
+            return false;
+        }else{
+            return parent::hasError($langID);
+        }
+    }
+
 }

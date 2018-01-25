@@ -8,7 +8,7 @@ use Core\Utils\Exception;
 
 class Item extends Page {
 
-    private $form = array();
+    protected $form = array();
 
     public function __construct($id, $table){
         parent::__construct($id);
@@ -20,6 +20,10 @@ class Item extends Page {
             return StringUtils::truncateHtml($this->name, 35);
         }
         return gettext('Crear nuevo item');
+    }
+
+    public function getForm(){
+        return $this->form;
     }
 
     public function hasLang(){
@@ -181,22 +185,20 @@ class Item extends Page {
      */
     private function insert($params, $langID = null){
         $tableName = $this->table;
-        $fields = $extraFields = '';
+        $extraFields = '';
+
         if( count($params) ){
-            $fields = $this->getFields($params);
             if( $langID != null ){
                 $tableName = $this->table . '_lang';
                 $extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
                 $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
                 $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
             }
-        }else{
-            $id = $this->mysql->getMaxId($this->table);
-            $fields = 'id_'.$this->table.' = :id';
-            $params = array(
-                'id' => array('value'=>$id, 'type'=>\PDO::PARAM_INT)
-            );
         }
+
+        $id = $this->mysql->getMaxId($this->table);
+        $params['id_'.$this->table] = array('value'=>$id, 'type'=>\PDO::PARAM_INT);
+        $fields = $this->getFields($params);
 
         $sql = '
             INSERT INTO '.$tableName.'

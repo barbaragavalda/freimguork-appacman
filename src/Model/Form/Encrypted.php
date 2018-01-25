@@ -34,7 +34,9 @@ abstract class Encrypted extends FormInput {
             }
         }else{
             $keyID = $this->mysql->getMaxId($table);
-            $keyCreated = $_POST['created'];
+            if( isset($_POST['created']) ){
+                $keyCreated = $_POST['created'];
+            }
         }
         $this->key = $keyID . '_' . $keyCreated . '_' . $this->fieldName;
     }

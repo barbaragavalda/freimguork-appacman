@@ -292,7 +292,10 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getPostValue($langID = null){
-        return $_POST[ $this->getInputName($langID) ];
+        if( isset($_POST[ $this->getInputName($langID) ]) ){
+            return $_POST[ $this->getInputName($langID) ];
+        }
+        return '';
     }
 
     /**
