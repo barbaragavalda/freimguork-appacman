@@ -19,6 +19,7 @@ $config = array(
         gettext('formulario').'/{contentID}/{itemID}'           => 'ContentForm',
         gettext('eliminar-item').'/{contentID}/{itemID}'        => 'Ajax\\DeleteItem',
         gettext('eliminar-archivo').'/{contentID}/{itemID}'     => 'Ajax\\DeleteFile',
+        gettext('bloquear').'/{contentID}/{itemID}'             => 'Ajax\\BlockItem',
 
 
         gettext('informacion')  => 'Info',

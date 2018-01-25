@@ -98,16 +98,16 @@ var Namespace = Namespace || {};
                         url:        url + id,
                         dataType:	'json'
                     })
-                    .done( function( result ){
-                        if( !result['error'] ){
-                            onSuccess();
-                        }else{
+                        .done( function( result ){
+                            if( !result['error'] ){
+                                onSuccess();
+                            }else{
+                                error();
+                            }
+                        })
+                        .fail( function(){
                             error();
-                        }
-                    })
-                    .fail( function(){
-                        error();
-                    });
+                        });
                 }
             });
         };
@@ -135,22 +135,76 @@ var Namespace = Namespace || {};
                         data:       { fieldName: field, fieldID: id },
                         dataType:	'json'
                     })
-                    .done( function( result ){
-                        if( !result['error'] ){
-                            that.parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
-                        }else{
+                        .done( function( result ){
+                            if( !result['error'] ){
+                                that.parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
+                            }else{
+                                error();
+                            }
+                        })
+                        .fail( function(){
                             error();
-                        }
-                    })
-                    .fail( function(){
-                        error();
-                    });
+                        });
                 }
             });
         };
 
         function error(){
             alertError(_errorTitle, _errorText, _errorClose);
+        };
+
+        return this;
+    };
+
+    ns.Block = function(errorTitle, errorClose, url){
+        var _errorTitle = errorTitle,
+            _errorClose = errorClose,
+            _url = url;
+
+        this.block = function(content, btnOkLabel, btnCancelLabel, errorText) {
+            doAjax(content, btnOkLabel, btnCancelLabel, errorText, 1, '.block-item');
+        };
+
+        this.unblock = function(content, btnOkLabel, btnCancelLabel, errorText) {
+            doAjax(content, btnOkLabel, btnCancelLabel, errorText, '0', '.unblock-item');
+        };
+
+        function doAjax(content, btnOkLabel, btnCancelLabel, errorText, state, identifier){
+            $(identifier).confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                singleton: true,
+                popout: true,
+                placement: 'left',
+                btnOkClass: 'btn btn-danger',
+                btnCancelClass: 'btn btn-default',
+                content: content,
+                btnOkLabel: btnOkLabel,
+                btnCancelLabel: btnCancelLabel,
+                onConfirm: function(){
+                    var id = $(this).attr('data-id');
+
+                    $.ajax({
+                        type:       'POST',
+                        url:        _url + id,
+                        data:       { state: state },
+                        dataType:	'json'
+                    })
+                    .done( function( result ){
+                        if( !result['error'] ){
+                            window.location.reload();
+                        }else{
+                            error(errorText);
+                        }
+                    })
+                    .fail( function(){
+                        error(errorText);
+                    });
+                }
+            });
+        }
+
+        function error(errorText){
+            alertError(_errorTitle, errorText, _errorClose);
         };
 
         return this;

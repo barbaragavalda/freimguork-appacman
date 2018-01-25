@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 # url
 msgid "iniciar-sesion"
@@ -41,6 +41,9 @@ msgstr "delete-item"
 
 msgid "exportar"
 msgstr "export"
+
+msgid "bloquear"
+msgstr "lock"
 
 msgid "informacion"
 msgstr "information"
@@ -195,6 +198,12 @@ msgstr "Edit"
 msgid "Eliminar"
 msgstr "Delete"
 
+msgid "Bloquear"
+msgstr "Block"
+
+msgid "Desbloquear"
+msgstr "Unlock"
+
 msgid "Crear nuevo item"
 msgstr "Create new item"
 
@@ -270,6 +279,15 @@ msgstr "There was an error saving the data. Please try again later."
 
 msgid "Datos guardados correctamente."
 msgstr "Data saved correctly."
+
+msgid "¿Seguro que quieres bloquear este item?"
+msgstr "Are you sure that you want to lock this item?"
+
+msgid "¿Seguro que quieres desbloquear este item?"
+msgstr "Are you sure that you want to unlock this item?"
+
+msgid "No se ha podido bloquear el item. Por favor, inténtalo más tarde."
+msgstr "The item could not be locked. Please try again later."
 
 # form validation
 msgid "Campo obligatorio."

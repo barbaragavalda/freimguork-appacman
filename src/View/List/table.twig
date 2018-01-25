@@ -7,12 +7,15 @@
         {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
         <tr {{ trID|raw }}>
             {% for th in list_headers %}
-                <td>{{ tr[th['field_name']]|raw }}</td>
+                {% if th['field_name'] != 'is_locked' %}
+                    <td>{{ tr[th['field_name']]|raw }}</td>
+                {% endif %}
             {% endfor %}
             <td>
                 {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
                 {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
                 {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
+                {% include "Buttons/lock.twig" with {'itemID': tr['id'], isLocked: tr['is_locked']} %}
             </td>
         </tr>
     {% endfor %}

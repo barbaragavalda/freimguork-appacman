@@ -1,0 +1,7 @@
+{% if canLock %}
+    {% if isLocked %}
+        <a href="#" data-id="{{ itemID }}" class="btn btn-success btn-xs unblock-item" title="{% trans %}Desbloquear{% endtrans %}" data-toggle="confirmation"><i class="fa fa-unlock"></i></a>
+    {% else %}
+        <a href="#" data-id="{{ itemID }}" class="btn btn-danger btn-xs block-item" title="{% trans %}Bloquear{% endtrans %}" data-toggle="confirmation"><i class="fa fa-lock"></i></a>
+    {% endif %}
+{% endif %}

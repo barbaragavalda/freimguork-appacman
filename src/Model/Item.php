@@ -211,6 +211,25 @@ class Item extends Page {
     }
 
     /**
+     * block / unblock item
+     * @param $state 0|1
+     * @return bool success
+     */
+    public function block($state){
+        $sql = '
+            UPDATE '.$this->table.'
+            SET is_blocked = :state
+            WHERE id_'.$this->table.' = :id
+        ';
+        $params = array(
+            'state' => array('value' => $state,     'type' => \PDO::PARAM_BOOL),
+            'id'    => array('value' => $this->id,  'type' => \PDO::PARAM_INT),
+        );
+        $this->mysql->query($sql, $params);
+        return $this->mysql->getState();
+    }
+
+    /**
      * fields for update / insert query
      * @param $params
      * @return string

@@ -42,8 +42,8 @@ class Content extends Page {
         $fields = $this->fields->get();
         $i = 0;
         foreach($fields as $field){
-            if( $field['show_on_list'] ){
-                $fieldName = $field['field_name'];
+            $fieldName = $field['field_name'];
+            if( $field['show_on_list'] && $fieldName != 'is_locked' ){
                 if( array_key_exists($fieldName, $orderBy) ){
                     $orderType = strtolower( $orderBy[$fieldName] );
                     $order[] = array($i, $orderType);

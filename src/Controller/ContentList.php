@@ -8,6 +8,7 @@ class ContentList extends Content {
 
     protected function run(){
         parent::run();
+
         $this->assign('list_headers', $this->content->getTableHeaders());
         $this->assign('list_order', $this->content->getOrderBy());
         $this->assign('list', $this->content->get());
@@ -24,14 +25,16 @@ class ContentList extends Content {
             $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
             $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
             $canExport = $this->user->hasPermission($contentID, Permissions::EXPORT);
+            $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
 
             // has permissions to see list?
-            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport ){
+            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock ){
                 $this->assign('canSee', $canSee);
                 $this->assign('canEdit', $canEdit);
                 $this->assign('canCreate', $canCreate);
                 $this->assign('canDelete', $canDelete);
                 $this->assign('canExport', $canExport);
+                $this->assign('canLock', $canLock);
             }
         }
 

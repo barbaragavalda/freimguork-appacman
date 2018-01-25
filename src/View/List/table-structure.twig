@@ -15,25 +15,26 @@
 
 {% block list %}
 
-    <table id="list" class="table table-bordered table-hover">
-        <thead>
+    {% set ths %}
         <tr>
             {% for th in list_headers %}
-                <th>{{ th['name'] }}</th>
+                {% if th['field_name'] != 'is_locked' %}
+                    <th>{{ th['name'] }}</th>
+                {% endif %}
             {% endfor %}
             <th>{% trans %}Acciones{% endtrans %}</th>
         </tr>
+    {% endset %}
+
+    <table id="list" class="table table-bordered table-hover">
+        <thead>
+            {{ ths }}
         </thead>
         <tbody>
             {% block table_content %}{% endblock %}
         </tbody>
         <tfoot>
-        <tr>
-            {% for th in list_headers %}
-                <th>{{ th['name'] }}</th>
-            {% endfor %}
-            <th>{% trans %}Acciones{% endtrans %}</th>
-        </tr>
+            {{ ths }}
         </tfoot>
     </table>
 

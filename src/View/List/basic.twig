@@ -17,7 +17,9 @@
         // tables
         var columns = [];
         {% for th in list_headers %}
-            columns.push({ "orderable": true });
+            {% if th['field_name'] != 'is_locked' %}
+                columns.push({ "orderable": true });
+            {% endif %}
         {% endfor %}
         columns.push({ "orderable": false });
         $(function () {
@@ -60,6 +62,21 @@
                     window.location.reload();
                 }
             );
+
+            var blockModel = new Namespace.Block('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}', '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
+            blockModel.block(
+                '{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}',
+                '{% trans %}Sí{% endtrans %}',
+                '{% trans %}No{% endtrans %}',
+                '{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+            );
+            blockModel.unblock(
+                '{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}',
+                '{% trans %}Sí{% endtrans %}',
+                '{% trans %}No{% endtrans %}',
+                '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+            );
+
         });
     </script>
 {% endblock %}
