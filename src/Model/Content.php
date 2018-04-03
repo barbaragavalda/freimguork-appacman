@@ -94,6 +94,9 @@ class Content extends Page {
         // fields
         $fields = $this->fields->getFieldsForList();
         $fieldsNames = array_column($fields, 'field_name');
+        foreach($fieldsNames as &$field){
+            $field = '`' . $field . '`';
+        }
         $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
 
         // order

@@ -37,10 +37,10 @@ class Select extends FormInput {
     protected function getOptionsHTML($langID){
         $optionsHTML = '';
         $options = $this->getOptions();
-        $values = $this->loadValues($langID);
+        $value = $this->getValue();
 
         foreach($options as $option){
-            $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
+            $selected = ($value == $option['id']) !== false ? 'selected' : '';
             $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $option['name'] . '</option>';
         }
 
