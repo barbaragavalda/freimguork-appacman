@@ -64,6 +64,9 @@ class GenericFile extends FormInput {
                 <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" data-field="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
                     <i class="fa fa-trash"></i>
                 </a>
+                <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
+                    <i class="fa fa-download"></i>
+                </a>
             ';
         }
     }

@@ -37,10 +37,10 @@ class Select extends FormInput {
     protected function getOptionsHTML($langID){
         $optionsHTML = '';
         $options = $this->getOptions();
-        $value = $this->getValue();
+        $values = $this->loadValues($langID);
 
         foreach($options as $option){
-            $selected = ($value == $option['id']) !== false ? 'selected' : '';
+            $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
             $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $option['name'] . '</option>';
         }
 
@@ -85,7 +85,7 @@ class Select extends FormInput {
      * @return array
      */
     protected function loadValues($langID){
-        return array($this->getSeeValue($langID));
+        return array($this->value);
     }
 
     /**

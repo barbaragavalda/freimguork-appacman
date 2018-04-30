@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.7\n"
 
 # url
 msgid "iniciar-sesion"
@@ -288,6 +288,9 @@ msgstr "Are you sure that you want to unlock this item?"
 
 msgid "No se ha podido bloquear el item. Por favor, inténtalo más tarde."
 msgstr "The item could not be locked. Please try again later."
+
+msgid "Descargar"
+msgstr "Download"
 
 # form validation
 msgid "Campo obligatorio."
