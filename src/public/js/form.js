@@ -32,8 +32,9 @@ $(function () {
     });
 
     // check
-    $('input[type="checkbox"].custom-check').iCheck({
-        checkboxClass: 'icheckbox_flat-green'
+    $('input[type="checkbox"].custom-check, input[type="radio"].custom-radio').iCheck({
+        checkboxClass:  'icheckbox_flat-green',
+        radioClass:     'iradio_flat-green'
     });
 
     // language
