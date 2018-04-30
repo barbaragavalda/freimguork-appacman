@@ -120,6 +120,7 @@
                     {{ input.getHTML()|raw }}
                 {% endif %}
             {% endfor %}
+            {% block extra_form %}{% endblock %}
 
             <div class="box-footer">{{ formButtons }}</div>
         </form>
