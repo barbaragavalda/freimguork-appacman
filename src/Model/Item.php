@@ -8,7 +8,7 @@ use Core\Utils\Exception;
 
 class Item extends Page {
 
-    private $form = array();
+    protected $form = array();
 
     public function __construct($id, $table){
         parent::__construct($id);
@@ -20,6 +20,10 @@ class Item extends Page {
             return StringUtils::truncateHtml($this->name, 35);
         }
         return gettext('Crear nuevo item');
+    }
+
+    public function getForm(){
+        return $this->form;
     }
 
     public function hasLang(){
@@ -138,7 +142,6 @@ class Item extends Page {
                         $this->insert($post, $langID);
                     }
                 }
-                
                 $this->mysql->commit();
                 return true;
             }
@@ -181,33 +184,51 @@ class Item extends Page {
      * @param null $langID
      */
     private function insert($params, $langID = null){
-        $fields = $this->getFields($params);
         $tableName = $this->table;
         $extraFields = '';
-        if( $langID != null ){
-            $tableName = $this->table . '_lang';
-            $extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
-            $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
-            $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+
+        if( count($params) ){
+            if( $langID != null ){
+                $tableName = $this->table . '_lang';
+                //$extraFields = ', id_'.$this->table.' = :id, id_appacman_lang = :lang_id';
+                $params['id_'.$this->table] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+                $params['id_appacman_lang'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+            }
         }
 
-        if( !$fields && !$extraFields ){
-            $table = $this->table;
-            if( $langID != null ) $table = $this->table . '_lang';
-            $this->id = $this->mysql->getMaxId($table);
-            $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
-            $fields = 'id_'.$table.' = :id';
-        }
+        $table = $this->table;
+        if( $langID != null ) $table = $this->table . '_lang';
+        $id = $this->mysql->getMaxId($table);
+        $params['id_'.$table] = array('value'=>$id, 'type'=>\PDO::PARAM_INT);
+        $fields = $this->getFields($params);
 
         $sql = '
             INSERT INTO '.$tableName.'
             SET '.$fields.$extraFields.'
         ';
         $this->mysql->query($sql, $params);
-
         if( $langID == null ){
             $this->id = $this->mysql->lastInsertId();
         }
+    }
+
+    /**
+     * block / unblock item
+     * @param $state 0|1
+     * @return bool success
+     */
+    public function block($state){
+        $sql = '
+            UPDATE '.$this->table.'
+            SET is_locked = :state
+            WHERE id_'.$this->table.' = :id
+        ';
+        $params = array(
+            'state' => array('value' => $state,     'type' => \PDO::PARAM_BOOL),
+            'id'    => array('value' => $this->id,  'type' => \PDO::PARAM_INT),
+        );
+        $this->mysql->query($sql, $params);
+        return $this->mysql->getState();
     }
 
     /**
