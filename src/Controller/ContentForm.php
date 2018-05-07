@@ -17,16 +17,10 @@ class ContentForm extends Content {
     protected function run(){
         parent::run();
 
-        // languages
-        $languages = array();
-        if( $this->item->hasLang() ){
-            $lang = new Language();
-            $languages = $lang->get();
-        }
+        $this->prepareForm();
 
         // form
         $success = false;
-        $this->assign('form', $this->item->get($languages));
         if( isset($_POST['save']) ){
             $success = $this->item->save();
             $this->assign('formSuccess', $success);
@@ -35,18 +29,32 @@ class ContentForm extends Content {
             $this->assign('formSend', false);
         }
 
-        $this->assign('prevNext', $this->content->getNextPrevItems($this->item->getID()));
-        $this->assign('languages', $languages);
-        $this->assign('title', $this->getTitle());
-        $this->assign('breadcrumb', $this->getBreadcrumb());
-
         if( $success ){
             $session = Session::getInstance();
             $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
             $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
         }else{
+            $this->prepareLinks();
             $this->template('form.twig');
         }
+    }
+
+    protected function prepareForm(){
+        // languages
+        $languages = array();
+        if( $this->item->hasLang() ){
+            $lang = new Language();
+            $languages = $lang->get();
+        }
+
+        $this->assign('form', $this->item->get($languages));
+        $this->assign('languages', $languages);
+    }
+
+    protected function prepareLinks(){
+        $this->assign('prevNext', $this->content->getNextPrevItems($this->item->getID()));
+        $this->assign('title', $this->getTitle());
+        $this->assign('breadcrumb', $this->getBreadcrumb());
     }
 
     protected function hasPermission(){

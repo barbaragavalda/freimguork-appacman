@@ -274,7 +274,7 @@ msgstr "The image could not be deleted because it does not exist."
 msgid "No se ha podido eliminar el archivo. Por favor, inténtalo más tarde."
 msgstr "The file could not be deleted. Please try again later."
 
-msgid "Ha habido un error al guardar los datos. Por favor, inténtalo d enuevo más tarde."
+msgid "Ha habido un error al guardar los datos. Por favor, inténtalo de nuevo más tarde."
 msgstr "There was an error saving the data. Please try again later."
 
 msgid "Datos guardados correctamente."
