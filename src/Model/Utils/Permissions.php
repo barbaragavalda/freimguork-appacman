@@ -12,11 +12,17 @@ class Permissions extends Model {
     const SEE = 'see';
     const EXPORT = 'export';
     const LOCK = 'lock';
+    const OWN = 'own';
 
     /**
      * @var int $userID
      */
     private $userID = 0;
+
+    /**
+     * @var int $profileID
+     */
+    private $profileID = null;
 
     /**
      * @var array $permissionsCodes
@@ -28,11 +34,12 @@ class Permissions extends Model {
      */
     private $permissions = array();
 
-    public function __construct($userID){
+    public function __construct($userID, $profileID = null){
         parent::__construct();
 
-        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK);
+        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN);
         $this->userID = $userID;
+        $this->profileID = $profileID;
     }
 
     public function load(){
@@ -48,6 +55,19 @@ class Permissions extends Model {
             'user_id'   => array('value' => $this->userID, 'type' => \PDO::PARAM_INT),
             'lang'      => array('value' => $this->langID, 'type' => \PDO::PARAM_INT)
         );
+        if( $this->profileID != null ){
+            $sql = '
+                SELECT aupp.id_appacman_content, aup.code, aupl.name
+                FROM appacman_user_profile_permission AS aupp
+                INNER JOIN appacman_user_permission AS aup ON aup.id_appacman_user_permission = aupp.id_appacman_user_permission
+                INNER JOIN appacman_user_permission_lang AS aupl ON aupl.id_appacman_user_permission = aup.id_appacman_user_permission AND aupl.id_appacman_lang = :lang
+                WHERE aupp.id_appacman_user_profile = :profile_id
+            ';
+            $params = array(
+                'profile_id'    => array('value' => $this->profileID,   'type' => \PDO::PARAM_INT),
+                'lang'          => array('value' => $this->langID,      'type' => \PDO::PARAM_INT)
+            );
+        }
         $permissions = $this->mysql->query($sql, $params);
 
         $this->permissions = array();

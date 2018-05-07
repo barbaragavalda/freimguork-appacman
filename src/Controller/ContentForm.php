@@ -58,17 +58,32 @@ class ContentForm extends Content {
             $canEdit = $this->user->hasPermission($contentID, Permissions::EDIT);
             $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
             $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
+            $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
 
             // has permission to create?
             $itemID = $this->getParam('itemID');
             $this->item = new Item($itemID, $this->content->getTable());
+            $hasPermission = false;
             if( $itemID == false && $canCreate){
                 $hasPermission = true;
                 // has permission to edit or see?
             }else if( $itemID > 0 ){
-                if( $this->item->exists() && ($canSee || $canEdit) ){
-                    $hasPermission = true;
-                    $this->assign('itemID', $itemID);
+                if( $this->item->exists() ){
+                    if( $canSee || $canEdit ){
+                        $hasPermission = true;
+                    }
+                    if( $canOwn ){
+                        $profileFilter = $this->user->getProfileFilter();
+                        if( $profileFilter != null ){
+                            $info = $this->item->getValues();
+                            if( array_key_exists($profileFilter['field'], $info) && $info[ $profileFilter['field'] ] == $profileFilter['value'] ){
+                                $hasPermission = true;
+                            }
+                        }else{
+                            $hasPermission = true;
+                        }
+                    }
+                    if( $hasPermission ) $this->assign('itemID', $itemID);
                 }
             }
 
@@ -76,6 +91,7 @@ class ContentForm extends Content {
             $this->assign('canEdit', $canEdit);
             $this->assign('canCreate', $canCreate);
             $this->assign('canDelete', $canDelete);
+            $this->assign('canOwn', $canOwn);
         }
 
         return $hasPermission;

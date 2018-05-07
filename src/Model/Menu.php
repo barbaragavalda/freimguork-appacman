@@ -2,14 +2,19 @@
 namespace Appacman\Model;
 
 
+use Appacman\Model\Utils\Permissions;
 use Core\Model\Model;
+use Core\Utils\Session;
 
 class Menu extends Model {
 
+    private $profileFilter = null;
+
     private $blocks = array();
 
-    public function __construct(){
+    public function __construct($profileFilter){
         parent::__construct();
+        $this->profileFilter = $profileFilter;
 
         $sql = '
             SELECT ab.id_appacman_block, abl.name
@@ -49,7 +54,14 @@ class Menu extends Model {
             foreach($contents as $content){
                 $permissions = $user->getContentPermissions($content['id_appacman_content']);
                 if( count($permissions) ){
-                    $content['counter'] = $this->getCounter($content['table_name']);
+                    $isOwn = false;
+                    foreach($permissions as $permission){
+                        if( $permission['code'] == Permissions::OWN ){
+                            $isOwn = true;
+                            break;
+                        }
+                    }
+                    $content['counter'] = $this->getCounter($content['table_name'], $isOwn);
                     $content['permissions'] = $permissions;
                     $aside['b'.$content['id_appacman_block']]['list'][] = $content;
                 }
@@ -59,11 +71,14 @@ class Menu extends Model {
         return $aside;
     }
 
-    private function getCounter($tableName){
+    private function getCounter($tableName, $isOwn){
         $sql = '
             SELECT COUNT(*) AS counter
             FROM '.$tableName.' AS t
         ';
+        if( $isOwn && $this->profileFilter != null ){
+            $sql .= 'WHERE t.' . $this->profileFilter['field'] . ' = ' . $this->profileFilter['value'];
+        }
         $counter = $this->mysql->query($sql);
 
         if( count($counter) ){

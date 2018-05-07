@@ -117,6 +117,12 @@ class Content extends Page {
             $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
             $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
         }
+        $session = Session::getInstance();
+        $profileFilter = $session->get('profile_filter');
+        if( $profileFilter != null && $this->mysql->fieldExists($table, $profileFilter['field']) ){
+            $sql .= ' WHERE t.' . $profileFilter['field'] . ' = :profile_filter';
+            $params['profile_filter'] = array('value'=> $profileFilter['value'], 'type' => \PDO::PARAM_STR);
+        }
         $sql .= $orderBy;
         $rows = $this->mysql->query($sql, $params);
 

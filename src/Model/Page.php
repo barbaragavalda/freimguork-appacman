@@ -33,6 +33,10 @@ abstract class Page extends Model {
         $this->id = $id;
     }
 
+    public function getValues(){
+        return $this->info;
+    }
+
     protected function initFields($tableName, $contentID = null){
         $this->fields = new Field($tableName, $contentID);
     }

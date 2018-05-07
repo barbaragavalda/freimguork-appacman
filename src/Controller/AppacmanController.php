@@ -70,7 +70,7 @@ abstract class AppacmanController extends Controller {
                 $this->assign('title', $this->getTitle());
 
                 // menu info
-                $menu = new Menu();
+                $menu = new Menu($this->user->getProfileFilter());
                 $this->assign('menu', $menu->get());
                 $this->assign('breadcrumb', $this->getBreadcrumb());
 

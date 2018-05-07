@@ -4,7 +4,7 @@
 
     {% for tr in list %}
         {% set trID = '' %}
-        {% if canSee or canEdit %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
+        {% if canSee or canEdit or canOwn %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
         <tr {{ trID|raw }}>
             {% for th in list_headers %}
                 {% if th['field_name'] != 'is_locked' %}
