@@ -118,10 +118,10 @@ class Content extends Page {
             $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
         }
         $session = Session::getInstance();
-        $profileFilter = $session->get('profile_filter');
-        if( $profileFilter != null && $this->mysql->fieldExists($table, $profileFilter['field']) ){
-            $sql .= ' WHERE t.' . $profileFilter['field'] . ' = :profile_filter';
-            $params['profile_filter'] = array('value'=> $profileFilter['value'], 'type' => \PDO::PARAM_STR);
+        $profileInfo = $session->get('profile_info');
+        if( $profileInfo != null && $this->mysql->fieldExists($table, $profileInfo['field']) ){
+            $sql .= ' WHERE t.' . $profileInfo['field'] . ' = :profile_filter';
+            $params['profile_filter'] = array('value'=> $profileInfo['value'], 'type' => \PDO::PARAM_STR);
         }
         $sql .= $orderBy;
         $rows = $this->mysql->query($sql, $params);

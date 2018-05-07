@@ -8,13 +8,13 @@ use Core\Utils\Session;
 
 class Menu extends Model {
 
-    private $profileFilter = null;
+    private $profileInfo = null;
 
     private $blocks = array();
 
-    public function __construct($profileFilter){
+    public function __construct($profileInfo){
         parent::__construct();
-        $this->profileFilter = $profileFilter;
+        $this->profileInfo = $profileInfo;
 
         $sql = '
             SELECT ab.id_appacman_block, abl.name
@@ -76,8 +76,8 @@ class Menu extends Model {
             SELECT COUNT(*) AS counter
             FROM '.$tableName.' AS t
         ';
-        if( $isOwn && $this->profileFilter != null ){
-            $sql .= 'WHERE t.' . $this->profileFilter['field'] . ' = ' . $this->profileFilter['value'];
+        if( $isOwn && $this->profileInfo != null ){
+            $sql .= 'WHERE t.' . $this->profileInfo['field'] . ' = ' . $this->profileInfo['value'];
         }
         $counter = $this->mysql->query($sql);
 

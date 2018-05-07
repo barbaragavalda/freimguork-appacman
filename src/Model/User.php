@@ -21,7 +21,7 @@ class User {
     /**
      * @var null|array. User forced profile
      */
-    private $profileFilter = null;
+    private $profileInfo = null;
 
     /**
      * @var \Appacman\Model\Utils\Permissions $permissions. User permissions
@@ -39,7 +39,7 @@ class User {
     private function __construct(){
         $this->session = Session::getInstance();
         $this->id = $this->session->get('user_id');
-        $this->profileFilter = $this->session->get('profile_filter');
+        $this->profileInfo = $this->session->get('profile_info');
 
         $this->loadPermissions();
     }
@@ -62,8 +62,8 @@ class User {
         return $this->session->get('user_name');
     }
 
-    public function getProfileFilter(){
-        return $this->profileFilter;
+    public function getProfileInfo(){
+        return $this->profileInfo;
     }
 
     /**
@@ -88,13 +88,13 @@ class User {
      * save session
      * @param $userID           int identifier
      * @param $username         string name
-     * @param $profileFilter    array custom profile
+     * @param $profileInfo      array custom profile
      */
-    public function signin($userID, $username, $profileFilter = null){
+    public function signin($userID, $username, $profileInfo = null){
         $this->id = $userID;
         $this->session->set('user_id', $userID);
         $this->session->set('user_name', $username);
-        if( $profileFilter != null ) $this->session->set('profile_filter', $profileFilter);
+        if( $profileInfo != null ) $this->session->set('profile_info', $profileInfo);
     }
 
     /**
@@ -102,7 +102,7 @@ class User {
      */
     private function loadPermissions(){
         $profileID = null;
-        if( $this->profileFilter != null ) $profileID = $this->profileFilter['profile'];
+        if( $this->profileInfo != null ) $profileID = $this->profileInfo['profile'];
         $this->permissions = new Permissions($this->id, $profileID);
         $this->permissions->load();
     }

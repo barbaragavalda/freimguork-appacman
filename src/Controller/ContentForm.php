@@ -73,10 +73,10 @@ class ContentForm extends Content {
                         $hasPermission = true;
                     }
                     if( $canOwn ){
-                        $profileFilter = $this->user->getProfileFilter();
-                        if( $profileFilter != null ){
+                        $profileInfo = $this->user->getProfileInfo();
+                        if( $profileInfo != null ){
                             $info = $this->item->getValues();
-                            if( array_key_exists($profileFilter['field'], $info) && $info[ $profileFilter['field'] ] == $profileFilter['value'] ){
+                            if( array_key_exists($profileInfo['field'], $info) && $info[ $profileInfo['field'] ] == $profileInfo['value'] ){
                                 $hasPermission = true;
                             }
                         }else{

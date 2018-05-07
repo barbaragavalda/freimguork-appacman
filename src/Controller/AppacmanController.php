@@ -60,6 +60,10 @@ abstract class AppacmanController extends Controller {
             // redirect logedout users to signin page
             $this->redirect($this->domain . gettext('iniciar-sesion'), 401);
         }else{
+            $profileInfo = $this->user->getProfileInfo();
+            if( $profileInfo != null && array_key_exists('logo', $profileInfo) ){
+                $this->info['business']['logo'] = $profileInfo['logo'];
+            }
             if( $this->hasPermission() ){
                 // execute currect page
                 if( $isLoggedIn ){
@@ -70,7 +74,7 @@ abstract class AppacmanController extends Controller {
                 $this->assign('title', $this->getTitle());
 
                 // menu info
-                $menu = new Menu($this->user->getProfileFilter());
+                $menu = new Menu($this->user->getProfileInfo());
                 $this->assign('menu', $menu->get());
                 $this->assign('breadcrumb', $this->getBreadcrumb());
 
