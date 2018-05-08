@@ -13,19 +13,15 @@ class SignIn extends AppacmanController {
             $form = new UserForm();
             $form->signin();
 
+            $extraUser = 'Appacman\\Model\\ExtraUser';
+            if( !$send && class_exists($extraUser) ){
+                $form = new $extraUser();
+                $form->signin();
+            }
+
             $send = $form->getSend();
             $this->assign('form', $form->getForm());
             $this->assign('form_error', $form->getError());
-
-            $extraUser = 'Appacman\\Model\\ExtraUser';
-            if( !$send && class_exists($extraUser) ){
-                $extraForm = new $extraUser();
-                $extraForm->signin();
-
-                $send = $extraForm->getSend();
-                $this->assign('form', $extraForm->getForm());
-                $this->assign('form_error', $extraForm->getError());
-            }
         }
 
         if( $send ){

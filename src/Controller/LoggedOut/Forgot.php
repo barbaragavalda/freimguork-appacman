@@ -13,6 +13,12 @@ class Forgot extends AppacmanController {
             $form = new UserForm();
             $form->remember();
 
+            $extraUser = 'Appacman\\Model\\ExtraUser';
+            if( !$send && class_exists($extraUser) ){
+                $form = new $extraUser();
+                $form->remember();
+            }
+
             $send = $form->getSend();
             $this->assign('form', $form->getForm());
             $this->assign('form_error', $form->getError());
