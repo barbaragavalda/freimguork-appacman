@@ -4,7 +4,7 @@ namespace Appacman\Model\Form;
 
 use Core\Model\Encryptor\TwoWay;
 
-class SelectEncryptedTwoWay extends Select  {
+class SelectEncryptedTwoWay extends Select {
 
     public function getSeeValue($langID = null){
         if( $this->value ){
@@ -17,6 +17,10 @@ class SelectEncryptedTwoWay extends Select  {
             }
         }
         return '-';
+    }
+
+    public function getInputHTML($langID = null){
+        return $this->getSeeValue($langID) . $this->inputType('hidden', $langID);
     }
 
     /**

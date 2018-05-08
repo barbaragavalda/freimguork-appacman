@@ -144,7 +144,7 @@
   border-top-color: #39CCCC;
 }
 /* override */
-a {
+a, .skin-custom-color{
   color: #36a8a9;
 }
 a:hover, a:active, a:focus {

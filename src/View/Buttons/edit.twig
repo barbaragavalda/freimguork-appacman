@@ -1,4 +1,4 @@
-{% if canEdit or canOwn %}
+{% if canEdit %}
     {% if small %}
         {% set link = domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' ~ itemID %}
         <a href="{{ link }}" class="btn btn-warning btn-xs" title="{% trans %}Edit{% endtrans %}"><i class="fa fa-pencil"></i></a>
