@@ -1,4 +1,4 @@
-{% if canDelete %}
+{% if canDelete and not (tr.canDelete is defined and tr.canDelete == false) %}
     {% if small %}
         <a href="#" data-id="{{ itemID }}" class="btn btn-danger btn-xs delete-item" title="{% trans %}Eliminar{% endtrans %}" data-toggle="confirmation"><i class="fa fa-trash"></i></a>
     {% else %}
