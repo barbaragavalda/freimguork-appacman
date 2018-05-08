@@ -67,6 +67,7 @@ class GenericFile extends FormInput {
                 <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
                     <i class="fa fa-download"></i>
                 </a>
+                ' . $this->inputType('hidden', $this->value) . '
             ';
         }
     }

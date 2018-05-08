@@ -21,6 +21,8 @@ $config = array(
         gettext('eliminar-archivo').'/{contentID}/{itemID}'     => 'Ajax\\DeleteFile',
         gettext('bloquear').'/{contentID}/{itemID}'             => 'Ajax\\BlockItem',
 
+        gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',
+
         // others
         gettext('informacion')  => 'Info',
 

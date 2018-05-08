@@ -13,6 +13,7 @@ class Permissions extends Model {
     const EXPORT = 'export';
     const LOCK = 'lock';
     const OWN = 'own';
+    const DUPLICATE = 'duplicate';
 
     /**
      * @var int $userID
@@ -37,7 +38,7 @@ class Permissions extends Model {
     public function __construct($userID, $profileID = null){
         parent::__construct();
 
-        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN);
+        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN, self::DUPLICATE);
         $this->userID = $userID;
         $this->profileID = $profileID;
     }

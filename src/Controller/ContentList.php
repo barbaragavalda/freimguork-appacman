@@ -27,9 +27,10 @@ class ContentList extends Content {
             $canExport = $this->user->hasPermission($contentID, Permissions::EXPORT);
             $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
             $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
+            $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
 
             // has permissions to see list?
-            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn ){
+            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate ){
                 $this->assign('canSee', $canSee);
                 $this->assign('canEdit', $canEdit);
                 $this->assign('canCreate', $canCreate);
@@ -37,6 +38,7 @@ class ContentList extends Content {
                 $this->assign('canExport', $canExport);
                 $this->assign('canLock', $canLock);
                 $this->assign('canOwn', $canOwn);
+                $this->assign('canDuplicate', $canDuplicate);
             }else{
                 $hasPermission = false;
             }

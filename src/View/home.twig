@@ -28,6 +28,7 @@
                                         {% if permission['code'] == 'delete' %}{% set classLabel = 'label-danger' %}{% endif %}
                                         {% if permission['code'] == 'create' %}{% set classLabel = 'label-success' %}{% endif %}
                                         {% if permission['code'] == 'export' %}{% set classLabel = 'label-purple' %}{% endif %}
+                                        {% if permission['code'] == 'duplicate' %}{% set classLabel = 'label-maroon' %}{% endif %}
                                         <span class="label {{ classLabel }}">{{ permission['name'] }}</span>
                                     {% endif %}
                                 {% endfor %}

@@ -251,11 +251,9 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getInputValue($langID = null){
-        if( $this->error ){
-            $postName = $this->getInputName($langID);
-            if( array_key_exists($postName, $_POST) ){
-                return $_POST[$postName];
-            }
+        $postName = $this->getInputName($langID);
+        if( array_key_exists($postName, $_POST) ){
+            return $_POST[$postName];
         }else{
             if( !empty($this->value) ){
                 if( $langID == null && !is_array($this->value) ){
@@ -265,7 +263,7 @@ abstract class FormInput extends Model {
                         $keys = array_keys($this->value);
                         return $this->value[$keys[0]];
                     }else{
-                        if( array_key_exists('lang_'.$langID, $this->value) ){
+                        if( is_array($this->value) && array_key_exists('lang_'.$langID, $this->value) ){
                             return $this->value['lang_'.$langID];
                         }
                     }

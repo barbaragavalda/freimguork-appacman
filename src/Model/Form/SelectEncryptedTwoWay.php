@@ -7,6 +7,7 @@ use Core\Model\Encryptor\TwoWay;
 class SelectEncryptedTwoWay extends Select {
 
     public function getSeeValue($langID = null){
+        if( $this->getPostValue($langID) ) $this->value = $this->getPostValue($langID);
         if( $this->value ){
             $options = $this->getOptions();
             foreach($options as $option){

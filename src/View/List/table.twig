@@ -16,6 +16,7 @@
                 {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
                 {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
                 {% include "Buttons/lock.twig" with {'itemID': tr['id'], isLocked: tr['is_locked']} %}
+                {% include "Buttons/duplicate.twig" with {'itemID': tr['id']} %}
             </td>
         </tr>
     {% endfor %}

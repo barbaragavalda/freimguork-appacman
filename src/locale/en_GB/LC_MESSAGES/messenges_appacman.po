@@ -48,6 +48,9 @@ msgstr "lock"
 msgid "informacion"
 msgstr "information"
 
+msgid "duplicar"
+msgstr "duplicate"
+
 # generic
 msgid "Volver"
 msgstr "Go back"
@@ -203,6 +206,9 @@ msgstr "Block"
 
 msgid "Desbloquear"
 msgstr "Unlock"
+
+msgid "Duplicar"
+msgstr "Duplicate"
 
 msgid "Crear nuevo item"
 msgstr "Create new item"
