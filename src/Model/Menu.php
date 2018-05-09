@@ -68,10 +68,29 @@ class Menu extends Model {
             }
         }
 
+        if( array_key_exists('b1', $aside) ){
+            $extraLinks = $this->getExtraLinks();
+            if( count($extraLinks) ){
+                foreach($extraLinks as $link){
+                    $link = json_decode($link, true);
+                    $aside['b1']['list'][] = array(
+                        'id_appacman_content' => null,
+                        'icon' => 'fa-bar-chart',
+                        'id_appacman_block' => 1,
+                        'table_name' => null,
+                        'name' => $link['name'],
+                        'counter' => 0,
+                        'permissions' => array(),
+                        'link' => $link['link'],
+                    );
+                }
+            }
+        }
+
         return $aside;
     }
 
-    private function getCounter($tableName, $isOwn){
+    private function getCounter($tableName, $isOwn = false){
         $sql = '
             SELECT COUNT(*) AS counter
             FROM '.$tableName.' AS t
@@ -85,6 +104,18 @@ class Menu extends Model {
             return $counter[0]['counter'];
         }
         return 0;
+    }
+
+    private function getExtraLinks(){
+        $sql = '
+            SELECT ac.value AS link
+            FROM appacman_config AS ac
+            WHERE ac.name = "extraLink"
+        ';
+        $extraLinks = $this->mysql->query($sql);
+
+        if( count($extraLinks) ) return array_column($extraLinks, 'link');
+        return array();
     }
 
 }

@@ -34,11 +34,13 @@
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    {% if notifications is defined and notifications['counter'] > 0 %}
+                    {% if notifications is defined %}
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning">{{ notifications['counter'] }}</span>
+                                {% if notifications['counter'] > 0  %}
+                                    <span class="label label-warning">{{ notifications['counter'] }}</span>
+                                {% endif %}
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -86,7 +88,13 @@
                             {% set active = '' %}
                             {% if li['id_appacman_content'] == contentID %}{% set active = ' class="active"' %}{% endif %}
                             <li{{ active|raw }}>
-                                <a href="{{ domain }}{% trans %}listado{% endtrans %}/{{ li['id_appacman_content'] }}">
+                                {% set link = domain ~ 'listado'|trans ~ '/' ~ li['id_appacman_content'] %}
+                                {% set target = '_self' %}
+                                {% if not li['id_appacman_content'] %}
+                                    {% set link = li['link'] %}
+                                    {% set target = '_blank' %}
+                                {% endif %}
+                                <a href="{{ link }}" target="{{ target }}">
                                     <i class="fa {{ icon }}"></i>
                                     <span>{{ li['name'] }}</span>
                                     {% if li['counter'] > 0 %}
