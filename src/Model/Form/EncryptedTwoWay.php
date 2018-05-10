@@ -26,7 +26,7 @@ class EncryptedTwoWay extends Encrypted {
     protected function getInputHTML($langID = null){
         $postName = $this->getInputName($langID);
         $value = TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
-        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$value.'" />';
+        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$value.'" />';
     }
 
     /**

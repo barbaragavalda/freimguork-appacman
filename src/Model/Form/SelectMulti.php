@@ -15,7 +15,7 @@ class SelectMulti extends Select {
      */
     protected function getInputHTML($langID = null){
         return '
-            <select name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getName().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <select name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';

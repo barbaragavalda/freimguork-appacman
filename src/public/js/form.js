@@ -28,7 +28,8 @@ $(function () {
 
     // multiselect without search field
     $('.select2').select2({
-        minimumResultsForSearch: Infinity
+        minimumResultsForSearch: Infinity,
+        allowClear: true
     });
 
     // check
@@ -42,6 +43,10 @@ $(function () {
     if( language.hasLanguage() ){
         language.setUpForm();
     }
+
+    // push notifications
+    var push = new Namespace.Push();
+    push.init();
 
 });
 
@@ -155,6 +160,47 @@ var Namespace = Namespace || {};
             $('.lang_' + langID).hide();
             _cookies.set('lang_' + langID, 'true', -1);
         }
+
+        return this;
+    };
+
+    ns.Push = function() {
+        var _mainSelect = null,
+            _secondarySelects = null;
+
+        this.init = function(){
+            _mainSelect = $('#deeplink');
+
+            if( _mainSelect.length > 0 ){
+                _secondarySelects = $('.deepLinkID');
+
+                var that = this;
+                _mainSelect.change(function(){
+                    that.hideSecondarySelects();
+                    that.showSecondarySelect($(this).val());
+                });
+
+                if( _secondarySelects.length > 0 ){
+                    this.hideSecondarySelects();
+                }
+                if( _mainSelect.val() != '' ){
+                    this.showSecondarySelect(_mainSelect.val());
+                }
+            }
+        };
+
+        this.showSecondarySelect = function(value){
+            var id = _mainSelect.find('option[value="' + value + '"]').attr('data-id');
+            if( id != '' ){
+                $('select[name="' + _mainSelect.attr('id') + '_' + id + '"]').next().show();
+            }
+        };
+
+        this.hideSecondarySelects = function(){
+            _secondarySelects.each(function(){
+                $(this).next().hide();
+            });
+        };
 
         return this;
     };

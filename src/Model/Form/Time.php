@@ -38,7 +38,7 @@ class Time extends FormInput {
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <input type="text" class="form-control timepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getSeeValue($langID).'">
+                <input type="text" class="form-control timepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getSeeValue($langID).'">
             </div>
         ';
     }

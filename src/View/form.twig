@@ -124,7 +124,7 @@
                     {% if canEdit and input.isRequired() %}{% set required = ' required' %}{% endif %}
                     <div class="with-border">
                         <div class="box-header{{ required }}">
-                            <div class="box-title">{{ input.name() }}</div>
+                            <div class="box-title">{{ input.name()|raw }}</div>
                         </div>
                         <div class="box-body">
                             <div class="form-group">

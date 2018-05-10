@@ -14,6 +14,7 @@ class Permissions extends Model {
     const LOCK = 'lock';
     const OWN = 'own';
     const DUPLICATE = 'duplicate';
+    const FIREBASE = 'firebase';
 
     /**
      * @var int $userID

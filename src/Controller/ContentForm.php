@@ -3,7 +3,6 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Item;
-use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 use Core\Utils\Session;
 
@@ -15,40 +14,40 @@ class ContentForm extends Content {
     protected $item = null;
 
     protected function run(){
-        parent::run();
-
-        $this->prepareForm();
-
-        // form
-        $success = false;
-        if( isset($_POST['save']) ){
-            $success = $this->item->save();
-            $this->assign('formSuccess', $success);
-            $this->assign('formSend', true);
+        /*
+        if( $this->content->getTable() == 'appacman_push' ){
+            $redirect = $this->domain . gettext('notificaciones-push') . '/' . $this->content->getID();
+            if( $this->item->getID() ) $redirect .= '/' . $this->item->getID();
+            $this->redirect($redirect);
         }else{
-            $this->assign('formSend', false);
-        }
+        */
+            parent::run();
 
-        if( $success ){
-            $session = Session::getInstance();
-            $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
-            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
-        }else{
-            $this->prepareLinks();
-            $this->template('form.twig');
-        }
+            $this->prepareForm();
+
+            // form
+            $success = false;
+            if( isset($_POST['save']) ){
+                $success = $this->item->save();
+                $this->assign('formSuccess', $success);
+                $this->assign('formSend', true);
+            }else{
+                $this->assign('formSend', false);
+            }
+
+            if( $success ){
+                $session = Session::getInstance();
+                $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
+                $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
+            }else{
+                $this->prepareLinks();
+                $this->template('form.twig');
+            }
+        //}
     }
 
     protected function prepareForm(){
-        // languages
-        $languages = array();
-        if( $this->item->hasLang() ){
-            $lang = new Language();
-            $languages = $lang->get();
-        }
-
-        $this->assign('form', $this->item->get($languages));
-        $this->assign('languages', $languages);
+        $this->assign('form', $this->getForm());
     }
 
     protected function prepareLinks(){

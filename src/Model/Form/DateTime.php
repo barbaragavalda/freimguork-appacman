@@ -16,7 +16,7 @@ class DateTime extends Timestamp {
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control datetimepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getSeeValue($langID).'">
+                <input type="text" class="form-control datetimepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getSeeValue($langID).'">
             </div>
         ';
     }
@@ -28,8 +28,8 @@ class DateTime extends Timestamp {
      */
     public function hasError($langID = null){
         $value = parent::getPostValue($langID);
-        if( !empty($value) && preg_match('/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4} ([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])$/', $value) == false ){
-            return str_replace('%format%', 'dd/mm/yyyy hh:mm:ss', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
+        if( !empty($value) && preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) ([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])$/', $value) == false ){
+            return str_replace('%format%', 'yyyy-mm-dd hh:mm:ss', gettext('Comprueba que sea una fecha correcta con el formato %format%.'));
         }
     }
 

@@ -23,7 +23,7 @@ class Select extends FormInput {
      */
     protected function getInputHTML($langID = null){
         return '
-            <select name="'.$this->fieldName.'" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <select name="'.$this->fieldName.'" class="deepLink form-control select2 select2-hidden-accessible" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
@@ -39,6 +39,7 @@ class Select extends FormInput {
         $options = $this->getOptions();
         $values = $this->loadValues($langID);
 
+        $optionsHTML .= '<option></option>';
         foreach($options as $option){
             $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
             $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $option['name'] . '</option>';
@@ -49,16 +50,20 @@ class Select extends FormInput {
 
     /**
      * from witch table has to load options?
+     * @param $table
+     * @param string $extraFields
      * @return array
      */
-    protected function getOptions(){
-        $lateralTable = str_replace('id_', '', $this->fieldName);
-        return $this->loadOptions($lateralTable);
+    protected function getOptions($table = null, $extraFields = ''){
+        $lateralTable = $table;
+        if( $lateralTable == null ) $lateralTable = str_replace('id_', '', $this->fieldName);
+        return $this->loadOptions($lateralTable, $extraFields);
     }
 
     /**
      * load all possible options form lateral table
      * @param string $lateralTable
+     * @param string $extraFields
      * @return array
      */
     protected function loadOptions($lateralTable, $extraFields = ''){

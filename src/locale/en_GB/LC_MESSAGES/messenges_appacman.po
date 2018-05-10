@@ -324,3 +324,16 @@ msgstr "Information"
 
 msgid "Licencia"
 msgstr "Licencia"
+
+# notifications
+msgid "notificaciones-push"
+msgstr "push-notifications"
+
+msgid "Notificaciones Push"
+msgstr "Push Notifications"
+
+msgid "Notificaciones"
+msgstr "Notifications"
+
+msgid "Push"
+msgstr "Push"

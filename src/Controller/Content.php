@@ -2,12 +2,19 @@
 
 namespace Appacman\Controller;
 
+use Appacman\Model\Utils\Language;
+
 class Content extends AppacmanController {
 
     /**
      * @var \Appacman\Model\Content $content
      */
     protected $content = null;
+
+    /**
+     * @var \Appacman\Model\Item $item
+     */
+    protected $item = null;
 
     protected function run(){
         $this->assign('contentID', $this->content->getID());
@@ -26,6 +33,21 @@ class Content extends AppacmanController {
         }
 
         return $hasPermission;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getForm(){
+        // languages
+        $languages = array();
+        if( $this->item->hasLang() ){
+            $lang = new Language();
+            $languages = $lang->get();
+        }
+        $this->assign('languages', $languages);
+
+        return $this->item->get($languages);
     }
 
     protected function getTitle(){

@@ -20,11 +20,14 @@ $config = array(
         gettext('eliminar-item').'/{contentID}/{itemID}'        => 'Ajax\\DeleteItem',
         gettext('eliminar-archivo').'/{contentID}/{itemID}'     => 'Ajax\\DeleteFile',
         gettext('bloquear').'/{contentID}/{itemID}'             => 'Ajax\\BlockItem',
-
         gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',
 
+        // push notifications
+        gettext('notificaciones-push').'/{contentID}'               => 'PushNotifications',
+        gettext('notificaciones-push').'/{contentID}/{itemID}'      => 'PushNotifications',
+
         // others
-        gettext('informacion')  => 'Info',
+        gettext('informacion')              => 'Info',
 
     )
 

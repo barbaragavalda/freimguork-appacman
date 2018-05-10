@@ -114,6 +114,10 @@ abstract class FormInput extends Model {
         return $this->name;
     }
 
+    public function getPlaceholder(){
+        return strip_tags($this->name);
+    }
+
     /**
      * Field name on database
      * @return string
@@ -388,7 +392,7 @@ abstract class FormInput extends Model {
      */
     protected function inputType($type = 'text', $langID = null){
         $postName = $this->getInputName($langID);
-        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="'.$this->getInputValue($langID).'" />';
+        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getInputValue($langID).'" />';
     }
 
 }

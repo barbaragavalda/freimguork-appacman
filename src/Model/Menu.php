@@ -49,8 +49,8 @@ class Menu extends Model {
         $contents = $this->mysql->query($sql, $params);
 
         $aside = $this->blocks;
+        $user = User::getInstance();
         if( count($contents) ){
-            $user = User::getInstance();
             foreach($contents as $content){
                 $permissions = $user->getContentPermissions($content['id_appacman_content']);
                 if( count($permissions) ){
@@ -68,22 +68,22 @@ class Menu extends Model {
             }
         }
 
-        if( array_key_exists('b1', $aside) ){
-            $extraLinks = $this->getExtraLinks();
-            if( count($extraLinks) ){
-                foreach($extraLinks as $link){
-                    $link = json_decode($link, true);
-                    $aside['b1']['list'][] = array(
-                        'id_appacman_content' => null,
-                        'icon' => 'fa-bar-chart',
-                        'id_appacman_block' => 1,
-                        'table_name' => null,
-                        'name' => $link['name'],
-                        'counter' => 0,
-                        'permissions' => array(),
-                        'link' => $link['link'],
-                    );
-                }
+        $firebasePermission = $user->hasPermission(0, Permissions::FIREBASE);
+        if( $user->hasPermission(0, Permissions::FIREBASE) ){
+            $link = array(
+                'id_appacman_content' => null,
+                'icon' => 'fa-bar-chart',
+                'id_appacman_block' => 1,
+                'table_name' => null,
+                'name' => $firebasePermission['name'],
+                'counter' => 0,
+                'permissions' => array(),
+                'link' => $this->getConfig('firebase'),
+            );
+            if( array_key_exists('b1', $aside) ){
+                $aside['b1']['list'][] = $link;
+            }else{
+                $aside['b1']['list'] = array( $link );
             }
         }
 
@@ -106,16 +106,19 @@ class Menu extends Model {
         return 0;
     }
 
-    private function getExtraLinks(){
+    private function getConfig($name){
         $sql = '
-            SELECT ac.value AS link
+            SELECT ac.value AS value
             FROM appacman_config AS ac
-            WHERE ac.name = "extraLink"
+            WHERE ac.name = :name
         ';
-        $extraLinks = $this->mysql->query($sql);
+        $params = array(
+            'name' => array('value' => $name, 'type' => \PDO::PARAM_STR)
+        );
+        $config = $this->mysql->query($sql, $params);
 
-        if( count($extraLinks) ) return array_column($extraLinks, 'link');
-        return array();
+        if( count($config) ) return $config[0]['value'];
+        return false;
     }
 
 }

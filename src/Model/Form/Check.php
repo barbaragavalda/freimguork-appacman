@@ -28,7 +28,7 @@ class Check extends FormInput {
         $postName = $this->getInputName($langID);
         $checked = parent::getInputValue($langID) ? 'checked' : '';
         return '
-            <input type="checkbox" class="custom-check" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" '.$checked.' value="1">
+            <input type="checkbox" class="custom-check" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" '.$checked.' value="1">
         ';
     }
 

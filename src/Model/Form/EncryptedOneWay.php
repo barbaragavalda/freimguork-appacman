@@ -17,7 +17,7 @@ class EncryptedOneWay extends Encrypted {
      */
     protected function getInputHTML($langID = null){
         $postName = $this->getInputName($langID);
-        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getName().'" value="" />';
+        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="" />';
     }
 
     /**
