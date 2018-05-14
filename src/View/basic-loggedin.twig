@@ -1,6 +1,6 @@
 {% extends "basic.twig" %}
 
-{% block body_class %}skin-custom sidebar-mini fixed{% endblock %}
+{% block body_class %}skin-custom sidebar-mini fixed {% endblock %}
 
 {% block extra_scripts %}
     {{ parent() }}
@@ -86,13 +86,13 @@
                             {% set icon = 'fa-list' %}
                             {% if li['icon'] %}{% set icon = li['icon'] %}{% endif %}
                             {% set active = '' %}
-                            {% if li['id_appacman_content'] == contentID %}{% set active = ' class="active"' %}{% endif %}
+                            {% if li['id_appacman_content'] is not null and li['id_appacman_content'] == contentID %}{% set active = ' class="active"' %}{% endif %}
                             <li{{ active|raw }}>
                                 {% set link = domain ~ 'listado'|trans ~ '/' ~ li['id_appacman_content'] %}
                                 {% set target = '_self' %}
                                 {% if not li['id_appacman_content'] %}
                                     {% set link = li['link'] %}
-                                    {% set target = '_blank' %}
+                                    {% if li['target'] is defined %}{% set target = li['target'] %}{% endif %}
                                 {% endif %}
                                 <a href="{{ link }}" target="{{ target }}">
                                     <i class="fa {{ icon }}"></i>

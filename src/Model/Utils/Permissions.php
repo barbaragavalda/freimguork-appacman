@@ -44,9 +44,13 @@ class Permissions extends Model {
         $this->profileID = $profileID;
     }
 
+    public function getProfileID(){
+        return $this->profileID;
+    }
+
     public function load(){
         $sql = '
-            SELECT aupp.id_appacman_content, aup.code, aupl.name
+            SELECT aupp.id_appacman_content, aup.code, aupl.name, aupp.id_appacman_user_profile
             FROM appacman_user AS au
             INNER JOIN appacman_user_profile_permission AS aupp ON aupp.id_appacman_user_profile = au.id_appacman_user_profile
             INNER JOIN appacman_user_permission AS aup ON aup.id_appacman_user_permission = aupp.id_appacman_user_permission
@@ -59,7 +63,7 @@ class Permissions extends Model {
         );
         if( $this->profileID != null ){
             $sql = '
-                SELECT aupp.id_appacman_content, aup.code, aupl.name
+                SELECT aupp.id_appacman_content, aup.code, aupl.name, aupp.id_appacman_user_profile
                 FROM appacman_user_profile_permission AS aupp
                 INNER JOIN appacman_user_permission AS aup ON aup.id_appacman_user_permission = aupp.id_appacman_user_permission
                 INNER JOIN appacman_user_permission_lang AS aupl ON aupl.id_appacman_user_permission = aup.id_appacman_user_permission AND aupl.id_appacman_lang = :lang
@@ -73,6 +77,7 @@ class Permissions extends Model {
         $permissions = $this->mysql->query($sql, $params);
 
         $this->permissions = array();
+        if( count($permissions) ) $this->profileID = $permissions[0]['id_appacman_user_profile'];
         foreach($permissions as $permission){
             $this->permissions['c'.$permission['id_appacman_content']][] = array(
                 'code' => $permission['code'],

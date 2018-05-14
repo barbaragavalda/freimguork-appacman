@@ -20,6 +20,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.sidebar-collapse .sidebar-menu > li > a {
+    padding-right: 0px;
+}
 
 /* common */
 .media-object{

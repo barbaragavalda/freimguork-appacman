@@ -91,6 +91,13 @@ abstract class FormInput extends Model {
     }
 
     /**
+     * is on lang table
+     */
+    public function setOnLangTable(){
+        $this->onLangTable = true;
+    }
+
+    /**
      * inputs can override this function in order to not be displayed of the form
      * @return bool
      */

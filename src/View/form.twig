@@ -128,7 +128,7 @@
                         </div>
                         <div class="box-body">
                             <div class="form-group">
-                                {% if canEdit %}
+                                {% if canEdit or canSend %}
                                     {{ input.getFormHTML()|raw }}
                                 {% else %}
                                     {{ input.getSeeHTML()|raw }}

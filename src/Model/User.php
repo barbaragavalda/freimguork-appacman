@@ -62,6 +62,10 @@ class User {
         return $this->session->get('user_name');
     }
 
+    public function getProfileID(){
+        return $this->permissions->getProfileID();
+    }
+
     public function getProfileInfo(){
         return $this->profileInfo;
     }

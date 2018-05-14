@@ -14,36 +14,28 @@ class ContentForm extends Content {
     protected $item = null;
 
     protected function run(){
-        /*
-        if( $this->content->getTable() == 'appacman_push' ){
-            $redirect = $this->domain . gettext('notificaciones-push') . '/' . $this->content->getID();
-            if( $this->item->getID() ) $redirect .= '/' . $this->item->getID();
-            $this->redirect($redirect);
+        parent::run();
+
+        $this->prepareForm();
+
+        // form
+        $success = false;
+        if( isset($_POST['save']) ){
+            $success = $this->item->save();
+            $this->assign('formSuccess', $success);
+            $this->assign('formSend', true);
         }else{
-        */
-            parent::run();
+            $this->assign('formSend', false);
+        }
 
-            $this->prepareForm();
-
-            // form
-            $success = false;
-            if( isset($_POST['save']) ){
-                $success = $this->item->save();
-                $this->assign('formSuccess', $success);
-                $this->assign('formSend', true);
-            }else{
-                $this->assign('formSend', false);
-            }
-
-            if( $success ){
-                $session = Session::getInstance();
-                $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
-                $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
-            }else{
-                $this->prepareLinks();
-                $this->template('form.twig');
-            }
-        //}
+        if( $success ){
+            $session = Session::getInstance();
+            $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
+            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
+        }else{
+            $this->prepareLinks();
+            $this->template('form.twig');
+        }
     }
 
     protected function prepareForm(){

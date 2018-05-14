@@ -8,7 +8,7 @@ class Language extends Model {
 
     public function get(){
         $sql = '
-            SELECT id_appacman_lang AS id, name
+            SELECT id_appacman_lang AS id, name, culture
             FROM appacman_lang
             ORDER BY `order` ASC
         ';

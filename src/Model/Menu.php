@@ -1,7 +1,6 @@
 <?php
 namespace Appacman\Model;
 
-
 use Appacman\Model\Utils\Permissions;
 use Core\Model\Model;
 use Core\Utils\Session;
@@ -71,19 +70,25 @@ class Menu extends Model {
         $firebasePermission = $user->hasPermission(0, Permissions::FIREBASE);
         if( $user->hasPermission(0, Permissions::FIREBASE) ){
             $link = array(
-                'id_appacman_content' => null,
-                'icon' => 'fa-bar-chart',
-                'id_appacman_block' => 1,
-                'table_name' => null,
-                'name' => $firebasePermission['name'],
-                'counter' => 0,
-                'permissions' => array(),
-                'link' => $this->getConfig('firebase'),
+                'id_appacman_content'   => null,
+                'icon'                  => 'fa-bar-chart',
+                'id_appacman_block'     => 1,
+                'table_name'            => null,
+                'name'                  => $firebasePermission['name'],
+                'counter'               => 0,
+                'permissions'           => array(),
+                'link'                  => $this->getConfig('firebase'),
+                'target'                => '_blank'
             );
-            if( array_key_exists('b1', $aside) ){
-                $aside['b1']['list'][] = $link;
-            }else{
-                $aside['b1']['list'] = array( $link );
+            $this->addLink($aside, $link);
+        }
+
+        $extraMenu = 'Appacman\\Model\\ExtraMenu';
+        if( class_exists($extraMenu) ){
+            $menu = new $extraMenu();
+            $link = $menu->get();
+            if( $link != null ){
+                $this->addLink($aside, $link);
             }
         }
 
@@ -119,6 +124,14 @@ class Menu extends Model {
 
         if( count($config) ) return $config[0]['value'];
         return false;
+    }
+
+    private function addLink(&$aside, $link){
+        if( array_key_exists('b1', $aside) ){
+            $aside['b1']['list'][] = $link;
+        }else{
+            $aside['b1']['list'] = array( $link );
+        }
     }
 
 }
