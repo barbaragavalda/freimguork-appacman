@@ -28,7 +28,7 @@ $(function () {
 
     // multiselect without search field
     $('.select2').select2({
-        minimumResultsForSearch: Infinity,
+        minimumResultsForSearch: 10,
         allowClear: true
     });
 

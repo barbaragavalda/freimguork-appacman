@@ -62,7 +62,9 @@ class SelectPush extends FormInput {
      */
     protected function getPostValue($langID = null){
         if( isset($_POST[ $this->getInputName($langID) ]) ){
-            return implode(',', $_POST[ $this->getInputName($langID) ]);
+            $values = $_POST[ $this->getInputName($langID) ];
+            foreach($values as &$value) $value = '"' . $value . '"';
+            return implode(',', $values);
         }
         return '';
     }

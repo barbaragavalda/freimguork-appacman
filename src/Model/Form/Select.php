@@ -2,6 +2,8 @@
 
 namespace Appacman\Model\Form;
 
+use Core\Model\Encryptor\TwoWay;
+
 class Select extends FormInput {
 
     public function getSeeValue($langID = null){
@@ -42,7 +44,12 @@ class Select extends FormInput {
         $optionsHTML .= '<option></option>';
         foreach($options as $option){
             $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
-            $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $option['name'] . '</option>';
+            $name = $option['name'];
+            if( array_key_exists('created', $option) ){
+                $hash = $option['id'] . '_' . $option['created'] . '_name';
+                $name = TwoWay::decrypt($option['name'], $hash);
+            }
+            $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $name . '</option>';
         }
 
         return $optionsHTML;

@@ -26,9 +26,8 @@ class Uri extends FormInput {
         $postValue = ($langID == null) ? $_POST['name'] : $_POST['name_'.$langID];
 
         $noTags = strip_tags($postValue);
-        $noSpecial = StringUtils::removeSpecialCharacters($noTags);
-        $lowerCase = strtolower($noSpecial);
-        return urlencode($lowerCase);
+        $lowerCase = strtolower($noTags);
+        return urlencode( StringUtils::removeSpecialCharacters($lowerCase) );
     }
 
     public function hasError($langID = null){

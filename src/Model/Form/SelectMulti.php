@@ -85,7 +85,7 @@ class SelectMulti extends Select {
         $table = $this->fieldName;
         $tables = explode('_', $table);
         $this->currentTable = $tables[0];
-        $this->lateralTable = $tables[1];
+        if( count($tables) > 1 ) $this->lateralTable = $tables[1];
     }
 
     /**
