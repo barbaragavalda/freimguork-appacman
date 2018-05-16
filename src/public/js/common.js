@@ -43,6 +43,21 @@ function alert(type, title, body, close){
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
 
+    ns.Loader = function(){
+        this._loader = null;
+
+        this.show = function(){
+            if( this._loader == null ) this._loader = $('#loader');
+            this._loader.show();
+        };
+
+        this.hide = function(){
+            if( this._loader != null ) this._loader.hide();
+        };
+
+        return this;
+    };
+
     ns.Cookie = function(){
 
         this.set = function(cname, cvalue, exdays) {

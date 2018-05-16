@@ -39,6 +39,9 @@ msgstr "delete-file"
 msgid "eliminar-item"
 msgstr "delete-item"
 
+msgid "subir-archivo"
+msgstr "upload-file"
+
 msgid "exportar"
 msgstr "export"
 

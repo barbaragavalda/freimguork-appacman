@@ -20,6 +20,7 @@ $config = array(
         gettext('eliminar-item').'/{contentID}/{itemID}'        => 'Ajax\\DeleteItem',
         gettext('eliminar-archivo').'/{contentID}/{itemID}'     => 'Ajax\\DeleteFile',
         gettext('bloquear').'/{contentID}/{itemID}'             => 'Ajax\\BlockItem',
+        gettext('subir-archivo') .'/{contentID}/{itemID}'       => 'Ajax\\Upload',
         gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',
 
         // push notifications

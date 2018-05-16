@@ -136,13 +136,15 @@ form .alert h4{
     border: 1px solid #dddddd;
     background: #ecf0f5;
 }
+[class^="wysiwyg-textarea"] .panel{
+    margin-bottom: 0px;
+}
 [class^="wysiwyg-textarea"] textarea{
     width: 100%;
-    height: 200px;
     font-size: 14px;
     line-height: 18px;
     border: 1px solid #dddddd;
-    padding: 10px;
+    padding: 0px;
 }
 /* form validation */
 .has-error .form-control{
@@ -150,4 +152,17 @@ form .alert h4{
 }
 .has-error .checkbox, .has-error .checkbox-inline, .has-error .control-label, .has-error .help-block, .has-error .radio, .has-error .radio-inline, .has-error.checkbox label, .has-error.checkbox-inline label, .has-error.radio label, .has-error.radio-inline label{
     color: #dd4b39 !important;
+}
+
+/* loader */
+#loader{
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 2000;
+    background: url("../img/loader.gif") no-repeat center rgba(0,0,0,0.5);
+    background-size: 100px;
 }

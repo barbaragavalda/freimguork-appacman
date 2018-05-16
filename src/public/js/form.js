@@ -1,31 +1,5 @@
 $(function () {
 
-    // bootstrap WYSIHTML5 - text editor
-    $('.wysiwyg-textarea textarea').wysihtml5({
-        toolbar: {
-            "font-styles": true, // Font styling, e.g. h1, h2, etc.
-            "emphasis": true, // Italics, bold, etc.
-            "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
-            "html": false, // Button which allows you to edit the generated HTML.
-            "link": true, // Button to insert a link.
-            "image": true, // Button to insert an image.
-            "color": true, // Button to change color of font
-            "blockquote": false, // Blockquote
-        }
-    });
-    $('.wysiwyg-textarea-simple textarea').wysihtml5({
-        toolbar: {
-            "font-styles": false, // Font styling, e.g. h1, h2, etc.
-            "emphasis": true, // Italics, bold, etc.
-            "lists": false, // (Un)ordered lists, e.g. Bullets, Numbers.
-            "html": false, // Button which allows you to edit the generated HTML.
-            "link": false, // Button to insert a link.
-            "image": false, // Button to insert an image.
-            "color": false, // Button to change color of font
-            "blockquote": false, // Blockquote
-        }
-    });
-
     // multiselect without search field
     $('.select2').select2({
         minimumResultsForSearch: 10,
@@ -52,6 +26,72 @@ $(function () {
 
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
+
+    ns.Textarea = function(){
+
+        this.completeTextarea = function(uploadDomain){
+            // summernote WYSIWYG - text editor
+            $('.wysiwyg-textarea textarea').summernote({
+                height: 250,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize', 'color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['media', ['picture', 'link']],
+                    ['extra', ['codeview']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        var loader = new Namespace.Loader(),
+                            data = new FormData(),
+                            summernote = $(this);
+
+                        loader.show();
+                        $.each(files, function(key, value){
+                            data.append(key, value);
+                        });
+
+                        $.ajax({
+                            url: uploadDomain,
+                            type: 'POST',
+                            data: data,
+                            cache: false,
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                            success: function(result) {
+                                if( !result.error ){
+                                    var paths = result.path;
+                                    for(var i in paths){
+                                        var image = $('<img>').attr('src',  paths[i]);
+                                        summernote.summernote('insertNode', image[0]);
+                                    }
+                                }
+                                loader.hide();
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // Handle errors here
+                                loader.hide();
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+        this.simpleTextarea = function(){
+            // summernote WYSIWYG - simple text editor
+            $('.wysiwyg-textarea-simple textarea').summernote({
+                height: 150,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']]
+                ]
+            });
+        };
+
+        return this;
+    };
 
     ns.Cookie = function(){
 
