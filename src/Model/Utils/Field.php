@@ -54,6 +54,17 @@ class Field extends Model {
         return $names;
     }
 
+    public function getFieldsForExport(){
+        $names = array();
+        foreach($this->fields as $field){
+            if( !in_array($field['type'], array('unmodifiable', 'encryptedOneWay', 'timestamp')) ){
+                $names[] = $field;
+            }
+        }
+
+        return $names;
+    }
+
     public function get(){
         return $this->fields;
     }

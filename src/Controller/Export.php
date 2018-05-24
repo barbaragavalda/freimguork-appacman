@@ -9,7 +9,7 @@ class Export extends Content {
     protected function run(){
         parent::run();
 
-        $this->assign('csv', $this->content->get());
+        $this->assign('csv', $this->content->getExportList());
         $this->export($this->content->getTable());
     }
 

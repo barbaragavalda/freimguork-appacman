@@ -93,6 +93,16 @@ class Content extends Page {
     public function get($order = null){
         // fields
         $fields = $this->fields->getFieldsForList();
+        return $this->getList($order, $fields);
+    }
+
+    /**
+     * prepare list
+     * @param string|null $order
+     * @param array $fields
+     * @return array
+     */
+    private function getList($order, $fields){
         $fieldsNames = array_column($fields, 'field_name');
         foreach($fieldsNames as &$field){
             $field = '`' . $field . '`';
@@ -139,6 +149,22 @@ class Content extends Page {
             }
         }
         return $rows;
+    }
+
+    /**
+     * prepare list
+     * @return array
+     */
+    public function getExportList(){
+        $fields = $this->fields->getFieldsForExport();
+        $titles = array();
+        foreach($fields as $field){
+            $titles[] = $field['name'];
+        }
+        return array(
+            'titles' => $titles,
+            'list' => $this->getList(null, $fields)
+        );
     }
 
     /**
