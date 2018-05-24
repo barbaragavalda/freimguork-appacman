@@ -19,7 +19,7 @@
         <tr>
             {% for th in list_headers %}
                 {% if th['field_name'] != 'is_locked' %}
-                    <th>{{ th['name'] }}</th>
+                    <th>{{ th['name']|raw }}</th>
                 {% endif %}
             {% endfor %}
             <th>{% trans %}Acciones{% endtrans %}</th>

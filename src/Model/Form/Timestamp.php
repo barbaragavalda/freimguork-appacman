@@ -15,16 +15,6 @@ class Timestamp extends FormInput {
     }
 
     /**
-     * format timestamp for user
-     * @param int|null $langID
-     * @return string
-     */
-    public function getSeeValue($langID = null){
-        $value = parent::getSeeValue($langID);
-        return $value;
-    }
-
-    /**
      * TODO: timepicker
      * @param int|null $langID
      * @return string
@@ -45,10 +35,12 @@ class Timestamp extends FormInput {
      */
     protected function getPostValue($langID = null){
         $value = parent::getPostValue($langID);
-        if( !$value ){
-            $value = date(DateUtils::FORMAT_TIMESTAMP_DB);
-            $this->value = $value;
+        if( !$value && $this->isRequired ){
+            $date = new \DateTime( date(DateUtils::FORMAT_TIMESTAMP_DB) );
+            $date->add(new \DateInterval('PT5M'));
+            $value = $date->format('Y-m-d H:i:s');
         }
+        $this->value = $value;
         return $value;
     }
 
@@ -58,6 +50,10 @@ class Timestamp extends FormInput {
      * @return false|string
      */
     public function hasError($langID = null){
+        $postValue = $this->getPostValue($langID);
+        if( $postValue == null && $this->isRequired ){
+            return gettext('Campo obligatorio.');
+        }
         return false;
     }
 

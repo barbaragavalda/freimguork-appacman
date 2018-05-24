@@ -150,6 +150,14 @@ abstract class FormInput extends Model {
     }
 
     /**
+     * set validation error
+     * @param string $error
+     */
+    public function setError($error){
+        $this->error = $error;
+    }
+
+    /**
      * is on lang table?
      * @return bool
      */

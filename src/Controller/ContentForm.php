@@ -28,14 +28,7 @@ class ContentForm extends Content {
             $this->assign('formSend', false);
         }
 
-        if( $success ){
-            $session = Session::getInstance();
-            $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
-            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
-        }else{
-            $this->prepareLinks();
-            $this->template('form.twig');
-        }
+        $this->printForm($success);
     }
 
     protected function prepareForm(){
@@ -46,6 +39,17 @@ class ContentForm extends Content {
         $this->assign('prevNext', $this->content->getNextPrevItems($this->item->getID()));
         $this->assign('title', $this->getTitle());
         $this->assign('breadcrumb', $this->getBreadcrumb());
+    }
+
+    protected function printForm($success){
+        if( $success ){
+            $session = Session::getInstance();
+            $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
+            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
+        }else{
+            $this->prepareLinks();
+            $this->template('form.twig');
+        }
     }
 
     protected function hasPermission(){

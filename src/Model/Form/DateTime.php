@@ -16,7 +16,7 @@ class DateTime extends Timestamp {
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control datetimepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getSeeValue($langID).'">
+                <input type="text" class="form-control datetimepicker" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getPostValue($langID).'">
             </div>
         ';
     }

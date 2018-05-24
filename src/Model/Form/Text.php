@@ -28,7 +28,7 @@ class Text extends FormInput {
     protected function getInputHTML($langID = null){
         return '
             <div class="'.$this->class.'">
-                <textarea name="'.$this->getInputName($langID).'" placeholder="'.$this->getPlaceholder().'">'. parent::getInputValue($langID) .'</textarea>
+                <textarea id="'.$this->getInputName($langID).'" name="'.$this->getInputName($langID).'" placeholder="'.$this->getPlaceholder().'">'. parent::getInputValue($langID) .'</textarea>
             </div>
         ';
     }

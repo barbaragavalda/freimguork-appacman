@@ -166,3 +166,7 @@ form .alert h4{
     background: url("../img/loader.gif") no-repeat center rgba(0,0,0,0.5);
     background-size: 100px;
 }
+
+.text-muted{
+    display: inline;
+}
