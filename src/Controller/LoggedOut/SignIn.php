@@ -12,6 +12,7 @@ class SignIn extends AppacmanController {
         if( isset($_POST['enter']) ){
             $form = new UserForm();
             $form->signin();
+            $send = $form->getSend();
 
             $extraUser = 'Appacman\\Model\\ExtraUser';
             if( !$send && class_exists($extraUser) ){
