@@ -35,6 +35,7 @@ class Timestamp extends FormInput {
      */
     protected function getPostValue($langID = null){
         $value = parent::getPostValue($langID);
+        if( !$value && $this->value ) $value = $this->value;
         if( !$value && $this->isRequired ){
             $date = new \DateTime( date(DateUtils::FORMAT_TIMESTAMP_DB) );
             $date->add(new \DateInterval('PT5M'));

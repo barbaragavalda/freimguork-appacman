@@ -10,48 +10,55 @@
             {% endif %}
 
             {% for i in 0..(block['list']|length -1) %}
-                {% if block['list'][i]['id_appacman_content'] %}
-                    {% if i % 4 == 0 %}
-                        <div class="row">
-                    {% endif %}
-                    <div class="col-lg-3 col-xs-6">
-                        <div class="small-box bg-white">
-                            <!-- resume -->
-                            <div class="inner">
+                {% if i % 4 == 0 %}
+                    <div class="row">
+                {% endif %}
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-white">
+                        <!-- resume -->
+                        <div class="inner">
+                            {% set title = 'Ver listado'|trans %}
+                            {% if block['list'][i]['target'] is defined %}
+                                {% set title = 'Ir'|trans %}
+                                <h3>&nbsp;</h3>
+                            {% else %}
                                 <h3>{{ block['list'][i]['counter'] }}</h3>
-                                <p>{{ block['list'][i]['name'] }}</p>
-                                <p>
-                                    {% for permission in block['list'][i]['permissions'] %}
-                                        {% if permission['code'] != 'own' %}
-                                            {% set classLabel = 'label-custom' %}
-                                            {% if permission['code'] == 'see' %}{% set classLabel = 'label-default' %}{% endif %}
-                                            {% if permission['code'] == 'edit' %}{% set classLabel = 'label-warning' %}{% endif %}
-                                            {% if permission['code'] == 'delete' %}{% set classLabel = 'label-danger' %}{% endif %}
-                                            {% if permission['code'] == 'create' %}{% set classLabel = 'label-success' %}{% endif %}
-                                            {% if permission['code'] == 'export' %}{% set classLabel = 'label-purple' %}{% endif %}
-                                            {% if permission['code'] == 'duplicate' %}{% set classLabel = 'label-maroon' %}{% endif %}
-                                            <span class="label {{ classLabel }}">{{ permission['name'] }}</span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                            </div>
-                            <!-- icon -->
-                            <div class="icon">
-                                <i class="fa {{ block['list'][i]['icon'] }}"></i>
-                            </div>
-                            <!-- link -->
-                            {% set link = domain ~ 'listado'|trans ~ '/' ~ block['list'][i]['id_appacman_content'] %}
-                            {% if block['list'][i]['link'] %}
-                                {% set link = domain ~ block['list'][i]['link'] %}
                             {% endif %}
-                            <a href="{{ link }}" class="small-box-footer">
-                                {% trans %}Ver listado{% endtrans %} <i class="fa fa-arrow-circle-right"></i>
-                            </a>
+                            <p>{{ block['list'][i]['name'] }}</p>
+                            <p>
+                                {% for permission in block['list'][i]['permissions'] %}
+                                    {% if permission['code'] != 'own' %}
+                                        {% set classLabel = 'label-custom' %}
+                                        {% if permission['code'] == 'see' %}{% set classLabel = 'label-default' %}{% endif %}
+                                        {% if permission['code'] == 'edit' %}{% set classLabel = 'label-warning' %}{% endif %}
+                                        {% if permission['code'] == 'delete' %}{% set classLabel = 'label-danger' %}{% endif %}
+                                        {% if permission['code'] == 'create' %}{% set classLabel = 'label-success' %}{% endif %}
+                                        {% if permission['code'] == 'export' %}{% set classLabel = 'label-purple' %}{% endif %}
+                                        {% if permission['code'] == 'duplicate' %}{% set classLabel = 'label-maroon' %}{% endif %}
+                                        <span class="label {{ classLabel }}">{{ permission['name'] }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
                         </div>
+                        <!-- icon -->
+                        <div class="icon">
+                            <i class="fa {{ block['list'][i]['icon'] }}"></i>
+                        </div>
+                        <!-- link -->
+                        {% set link = domain ~ 'listado'|trans ~ '/' ~ block['list'][i]['id_appacman_content'] %}
+                        {% set target = '_self' %}
+                        {% if not block['list'][i]['id_appacman_content'] %}
+                            {% set link = block['list'][i]['link'] %}
+                            {% if block['list'][i]['target'] is defined %}{% set target = block['list'][i]['target'] %}{% endif %}
+                        {% endif %}
+
+                        <a href="{{ link }}" target="{{ target }}" class="small-box-footer">
+                            {{ title }}&nbsp;<i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
-                    {% if i % 4 == 3 %}
-                        </div>
-                    {% endif %}
+                </div>
+                {% if i % 4 == 3 %}
+                    </div>
                 {% endif %}
             {% endfor %}
 
