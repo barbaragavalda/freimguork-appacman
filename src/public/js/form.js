@@ -34,7 +34,7 @@ var Namespace = Namespace || {};
             $('.wysiwyg-textarea textarea').summernote({
                 height: 250,
                 toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
                     ['fontsize', ['fontsize', 'color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['table', ['table']],
