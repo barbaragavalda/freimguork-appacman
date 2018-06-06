@@ -10,6 +10,10 @@ class Item extends Page {
 
     protected $form = array();
 
+    private $post = array();
+    private $postLang = array();
+    private $error = false;
+
     public function __construct($id, $table){
         parent::__construct($id);
         $this->table = $table;
@@ -102,6 +106,28 @@ class Item extends Page {
     }
 
     /**
+     * prepare post
+     */
+    public function preparePost(){
+        // prepare post
+        $this->post = array();
+        $this->postLang = array();
+        $this->error = false;
+        foreach($this->form as $input){
+            $value = $input->getSaveValue();
+            $hasError = $input->getError();
+            if( !$this->error && $hasError ) $this->error = $hasError;
+            if( $value != null ){
+                if( $input->isOnLangTable() ){
+                    $this->postLang = array_merge_recursive($this->postLang, $value);
+                }else{
+                    $this->post = array_merge_recursive($this->post, $value);
+                }
+            }
+        }
+    }
+
+    /**
      * saves item
      * @return bool
      */
@@ -109,35 +135,18 @@ class Item extends Page {
         $this->mysql->beginTransaction();
 
         try{
-            // prepare post
-            $post = array();
-            $postLang = array();
-            $error = false;
-            foreach($this->form as $input){
-                $value = $input->getSaveValue();
-                $hasError = $input->getError();
-                if( !$error && $hasError ) $error = $hasError;
-                if( $value != null ){
-                    if( $input->isOnLangTable() ){
-                        $postLang = array_merge_recursive($postLang, $value);
-                    }else{
-                        $post = array_merge_recursive($post, $value);
-                    }
-                }
-            }
-
-            if( !$error ){
+            if( !$this->error ){
                 if( $this->id ){
                     // update
-                    $this->update($post);
-                    foreach($postLang as $lang => $post){
+                    $this->update($this->post);
+                    foreach($this->postLang as $lang => $post){
                         $langID = str_replace('lang_', '', $lang);
                         $this->update($post, $langID);
                     }
                 }else{
                     //insert
-                    $this->insert($post);
-                    foreach($postLang as $lang => $post){
+                    $this->insert($this->post);
+                    foreach($this->postLang as $lang => $post){
                         $langID = str_replace('lang_', '', $lang);
                         $this->insert($post, $langID);
                     }
