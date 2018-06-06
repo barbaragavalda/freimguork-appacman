@@ -97,4 +97,8 @@ class SelectMulti extends Select {
         return false;
     }
 
+    public function canSave($langID = null){
+        return false;
+    }
+
 }

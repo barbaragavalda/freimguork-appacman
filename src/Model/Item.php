@@ -129,44 +129,59 @@ class Item extends Page {
 
     /**
      * saves item
-     * @return bool
+     * @return bool success
      */
     public function save(){
         $this->mysql->beginTransaction();
 
+        $error = false;
         try{
             if( !$this->error ){
                 if( $this->id ){
                     // update
-                    $this->update($this->post);
-                    foreach($this->postLang as $lang => $post){
-                        $langID = str_replace('lang_', '', $lang);
-                        $this->update($post, $langID);
+                    $error = $this->update($this->post);
+                    if( !$error ){
+                        foreach($this->postLang as $lang => $post){
+                            $langID = str_replace('lang_', '', $lang);
+                            $error = $this->update($post, $langID);
+                            if( $error ){
+                                break;
+                            }
+                        }
                     }
                 }else{
                     //insert
-                    $this->insert($this->post);
-                    foreach($this->postLang as $lang => $post){
-                        $langID = str_replace('lang_', '', $lang);
-                        $this->insert($post, $langID);
+                    $error = $this->insert($this->post);
+                    if( !$error ){
+                        foreach($this->postLang as $lang => $post){
+                            $langID = str_replace('lang_', '', $lang);
+                            $error = $this->insert($post, $langID);
+                            if( $error ){
+                                break;
+                            }
+                        }
                     }
                 }
-                $this->mysql->commit();
-                return true;
             }
 
         }catch (Exception $e){
-            //nothing
+            $error = true;
         }
 
-        $this->mysql->rollBack();
-        return false;
+        if( $error ){
+            $this->mysql->rollBack();
+            return false;
+        }else{
+            $this->mysql->commit();
+            return true;
+        }
     }
 
     /**
      * update item
      * @param $params
      * @param null $langID
+     * @return bool error
      */
     private function update($params, $langID = null){
         $fields = $this->getFields($params);
@@ -185,12 +200,14 @@ class Item extends Page {
         ';
         $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
         $this->mysql->query($sql, $params);
+        return !$this->mysql->getState();
     }
 
     /**
      * create new item
      * @param $params
      * @param null $langID
+     * @return bool error
      */
     private function insert($params, $langID = null){
         $tableName = $this->table;
@@ -219,6 +236,7 @@ class Item extends Page {
         if( $langID == null ){
             $this->id = $this->mysql->lastInsertId();
         }
+        return !$this->mysql->getState();
     }
 
     /**

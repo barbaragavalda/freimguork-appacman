@@ -103,10 +103,10 @@
     <div class="box">
         <form class="form-horizontal" method="POST" enctype="multipart/form-data">
             {% if formSend %}
-                {% if formError %}
+                {% if formError or not formSuccess %}
                     <div class="margin alert alert-danger">
                         <h4><i class="icon fa fa-ban"></i>
-                            {% if formError is same as(false) %}
+                            {% if formError is not defined %}
                                 {% trans %}Ha habido un error al guardar los datos. Por favor, inténtalo de nuevo más tarde.{% endtrans %}
                             {% else %}
                                 {{ formError }}
