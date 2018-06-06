@@ -50,7 +50,29 @@ class SelectMulti extends Select {
         return array_column($values, 'id');
     }
 
-    protected function getPostValue($langID = null){
+    private function initTables(){
+        $table = $this->fieldName;
+        $tables = explode('_', $table);
+        $this->currentTable = $tables[0];
+        if( count($tables) > 1 ) $this->lateralTable = $tables[1];
+    }
+
+    /**
+     * Check if its required
+     * @param null $langID
+     * @return false|string
+     */
+    public function hasError($langID = null){
+        return false;
+    }
+
+    public function canSave($langID = null){
+        $this->saveLateralTable($langID);
+
+        return false;
+    }
+
+    private function saveLateralTable($langID = null){
         $postName = $this->getFieldName($langID);
         if( isset($_POST[$postName]) ){
             $this->initTables();
@@ -79,26 +101,6 @@ class SelectMulti extends Select {
         }
 
         return null;
-    }
-
-    private function initTables(){
-        $table = $this->fieldName;
-        $tables = explode('_', $table);
-        $this->currentTable = $tables[0];
-        if( count($tables) > 1 ) $this->lateralTable = $tables[1];
-    }
-
-    /**
-     * Check if its required
-     * @param null $langID
-     * @return false|string
-     */
-    public function hasError($langID = null){
-        return false;
-    }
-
-    public function canSave($langID = null){
-        return false;
     }
 
 }
