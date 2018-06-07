@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.0.8\n"
 
 # url
 msgid "iniciar-sesion"
@@ -303,6 +303,18 @@ msgstr "The item could not be locked. Please try again later."
 
 msgid "Descargar"
 msgstr "Download"
+
+msgid "Cambios en %s"
+msgstr "Changes on %s"
+
+msgid "Este es un email automático para informarte que se han producido cambios en %s a través del gestor."
+msgstr "This is an automatic email to inform you that there have been changes in %s through the manager."
+
+msgid "Fecha cambio"
+msgstr "Change date"
+
+msgid "Guardar y enviar cambios por email"
+msgstr "Save and send changes by email"
 
 # form validation
 msgid "Campo obligatorio."

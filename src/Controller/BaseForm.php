@@ -3,7 +3,10 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Item;
+use Appacman\Model\Utils\Admin;
+use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
+use Core\Model\Utils\Mail;
 use Core\Utils\Session;
 
 abstract class BaseForm extends Content {
@@ -26,6 +29,11 @@ abstract class BaseForm extends Content {
                 $success = $this->item->save();
                 $this->assign('formSuccess', $success);
                 $this->assign('formSend', true);
+
+                $contentID = $this->content->getID();
+                if( $success && $this->user->hasPermission($contentID, Permissions::SEND_CHANGES) ){
+                    $this->sendEmail();
+                }
             }
         }else{
             $this->assign('formSend', false);
@@ -100,6 +108,7 @@ abstract class BaseForm extends Content {
             $this->assign('canCreate', $canCreate);
             $this->assign('canDelete', $canDelete);
             $this->assign('canOwn', $canOwn);
+            $this->assign('canSendChanges', $this->user->hasPermission($contentID, Permissions::SEND_CHANGES));
         }
 
         return $hasPermission;
@@ -114,6 +123,29 @@ abstract class BaseForm extends Content {
             array('name' => $this->content->getName(), 'link' => $this->domain . gettext('listado') . '/' . $this->content->getID() ),
             array('name' => $this->item->getName(), 'link' => null)
         );
+    }
+
+    private function sendEmail(){
+        $languagesModel = new Language();
+        $languages = $languagesModel->get();
+        $message = '<p style="font-size: 1.5em;">' . sprintf(gettext('Este es un email automático para informarte que se han producido cambios en %s a través del gestor.'), '"' . $this->item->getName() . '"') . '</p>';
+        foreach($this->info['form'] as $input){
+            if( !is_a($input, 'Appacman\Model\Form\Uri') ){
+                if( $input->isOnLangTable() ){
+                    foreach($languages as $language){
+                        $message .= '<p><b>' . $input->getName() . ' (' . $language['name'] . '):</b> ' . $input->getSeeValue($language['id']) . '</p>';
+                    }
+                }else{
+                    $message .= '<p><b>' . $input->getName() . ':</b> ' . $input->getSeeValue() . '</p>';
+                }
+            }
+        }
+        $message .= '<p style="color: red;"><b>' . gettext('Fecha cambio') . ':</b> ' . date('d-m-Y H:i:s') . '</p>';
+
+        $admins = new Admin();
+        $email = new Mail();
+        $subject = sprintf(gettext('Cambios en %s'), '"' . $this->item->getName() . '"');
+        $email->send(null, $admins->getEmails(), $subject, $message);
     }
 
 }

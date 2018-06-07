@@ -50,7 +50,7 @@ class Item extends Page {
 
             // page title
             if( $field['show_on_breadcrumb'] && $this->name == '' ){
-                $this->name = strip_tags( $input->getSeeValue() );
+                $this->name = strip_tags( $input->getSeeValue($this->langID) );
             }
             unset($field['show_on_breadcrumb']);
             unset($field['show_on_list']);

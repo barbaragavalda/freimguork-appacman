@@ -3,6 +3,12 @@
         {% set link = domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' ~ itemID %}
         <a href="{{ link }}" class="btn btn-warning btn-xs" title="{% trans %}Edit{% endtrans %}"><i class="fa fa-pencil"></i></a>
     {% else %}
-        <button type="submit" name="save" value="1" class="btn btn-warning"><i class="fa fa-check"></i> {% trans %}Guardar{% endtrans %}</button>
+        <button type="submit" name="save" value="1" class="btn btn-warning"><i class="fa fa-check"></i>
+            {% if canSendChanges %}
+                {% trans %}Guardar y enviar cambios por email{% endtrans %}
+            {% else %}
+                {% trans %}Guardar{% endtrans %}
+            {% endif %}
+        </button>
     {% endif %}
 {% endif %}

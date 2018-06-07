@@ -15,6 +15,7 @@ class Permissions extends Model {
     const OWN = 'own';
     const DUPLICATE = 'duplicate';
     const FIREBASE = 'firebase';
+    const SEND_CHANGES = 'send-changes';
 
     /**
      * @var int $userID
@@ -39,7 +40,7 @@ class Permissions extends Model {
     public function __construct($userID, $profileID = null){
         parent::__construct();
 
-        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN, self::DUPLICATE);
+        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN, self::DUPLICATE, self::SEND_CHANGES);
         $this->userID = $userID;
         $this->profileID = $profileID;
     }
