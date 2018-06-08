@@ -192,15 +192,18 @@ class Item extends Page {
             $whereLang = 'AND id_appacman_lang = :lang_id';
             $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
         }
-
-        $sql = '
-            UPDATE '.$tableName.'
-            SET '.$fields.'    
-            WHERE id_'.$this->table.' = :id '.$whereLang.'
-        ';
-        $params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
-        $this->mysql->query($sql, $params);
-        return !$this->mysql->getState();
+		
+		if( $fields ){
+        	$sql = '
+            	UPDATE '.$tableName.'
+            	SET '.$fields.'    
+            	WHERE id_'.$this->table.' = :id '.$whereLang.'
+        	';
+       		$params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+        	$this->mysql->query($sql, $params);
+        	return !$this->mysql->getState();
+        }
+        return false;
     }
 
     /**
