@@ -1,0 +1,81 @@
+<?php
+
+namespace Appacman\Controller;
+
+use Appacman\Model\Utils\Permissions;
+
+abstract class BaseContentList extends Content {
+
+    protected function run(){
+        parent::run();
+
+        // headers
+        $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
+        $this->assign('list_headers', $headers);
+
+        // list items
+        $list = $this->content->get();
+        $list = $this->extraFields( $list );
+        $this->assign('list', $list);
+
+        // order by
+        $this->assign('list_order', $this->content->getOrderBy());
+
+        $this->template('List/' . $this->content->getListType() . '.twig');
+    }
+
+    protected function hasPermission(){
+        $hasPermission = parent::hasPermission();
+        if( $hasPermission ){
+            $contentID = $this->content->getID();
+            $canSee = $this->user->hasPermission($contentID, Permissions::SEE);
+            $canEdit = $this->user->hasPermission($contentID, Permissions::EDIT);
+            $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
+            $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
+            $canExport = $this->user->hasPermission($contentID, Permissions::EXPORT);
+            $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
+            $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
+            $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
+
+            // has permissions to see list?
+            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate ){
+                $this->assign('canSee', $canSee);
+                $this->assign('canEdit', $canEdit);
+                $this->assign('canCreate', $canCreate);
+                $this->assign('canDelete', $canDelete);
+                $this->assign('canExport', $canExport);
+                $this->assign('canLock', $canLock);
+                $this->assign('canOwn', $canOwn);
+                $this->assign('canDuplicate', $canDuplicate);
+            }else{
+                $hasPermission = false;
+            }
+        }
+
+        return $hasPermission;
+    }
+
+    protected function getTitle(){
+        return gettext('Listado') . ' ' . $this->content->getName();
+    }
+
+    protected function getBreadcrumb(){
+        return array(
+            array('name' => $this->content->getName(), 'link' => null)
+        );
+    }
+
+    /**
+     * append extra columns (if necessary)
+     * @return array    array of extra fields array( array('name' => '<display_name>', 'field_name' => '<field>') )
+     */
+    abstract protected function extraHeaders();
+
+    /**
+     * append extra fields to items (if necessary)
+     * @param $list     array of current list
+     * @return array    modified list
+     */
+    abstract protected function extraFields($list);
+
+}

@@ -285,6 +285,7 @@ abstract class FormInput extends Model {
                         if( is_array($this->value) && array_key_exists('lang_'.$langID, $this->value) ){
                             return $this->value['lang_'.$langID];
                         }
+                        return $this->value;
                     }
                 }
             }

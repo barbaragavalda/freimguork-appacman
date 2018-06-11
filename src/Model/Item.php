@@ -55,7 +55,6 @@ class Item extends Page {
             unset($field['show_on_breadcrumb']);
             unset($field['show_on_list']);
         }
-
         return $this->form;
     }
 

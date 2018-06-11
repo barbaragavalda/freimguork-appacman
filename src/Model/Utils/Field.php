@@ -57,7 +57,7 @@ class Field extends Model {
     public function getFieldsForExport(){
         $names = array();
         foreach($this->fields as $field){
-            if( !in_array($field['type'], array('unmodifiable', 'encryptedOneWay', 'timestamp')) ){
+            if( !in_array($field['type'], array('unmodifiable', 'encryptedOneWay', 'timestamp', 'image', 'imageSeeOnly', 'genericFile')) ){
                 $names[] = $field;
             }
         }

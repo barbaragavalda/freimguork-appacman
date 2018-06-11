@@ -9,7 +9,7 @@ use Appacman\Model\Utils\Permissions;
 use Core\Model\Utils\Mail;
 use Core\Utils\Session;
 
-abstract class BaseForm extends Content {
+abstract class BaseContentForm extends Content {
 
     /**
      * @var \Appacman\Model\Item $item

@@ -7,7 +7,7 @@ use Appacman\Model\Utils\Permissions;
 use Core\Model\Push\Base;
 use Core\Utils\Session;
 
-class ContentForm extends BaseForm {
+class ContentForm extends BaseContentForm {
 
     protected function hasErrors(){
         return false;
