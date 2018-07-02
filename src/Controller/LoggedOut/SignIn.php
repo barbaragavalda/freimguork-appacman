@@ -26,7 +26,7 @@ class SignIn extends AppacmanController {
         }
 
         if( $send ){
-            $this->redirect($this->domain . gettext(''));
+            $this->redirect($this->domain);
         }else{
             $this->template('LoggedOut/signin.twig');
         }

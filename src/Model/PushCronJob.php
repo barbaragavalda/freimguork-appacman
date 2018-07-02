@@ -94,21 +94,29 @@ class PushCronJob extends Model {
             $whereUser = 'WHERE ' . implode(' AND ', $wheres);
         }
 
+        $union = '';
+        if( $this->mysql->tableExists('user') ){
+            $union = '
+                UNION(
+                    SELECT apd.token, apd.platform, u.language AS user_language
+                    FROM appacman_push_device AS apd
+                    INNER JOIN user AS u USING(id_user)
+                    INNER JOIN user_appacman_notification AS uan ON u.id_user = uan.id_user WHERE uan.id_appacman_notification = :type
+                    ' . $whereUser . '
+                )
+            ';
+        }
+
         $sql = '
             SELECT GROUP_CONCAT(DISTINCT(t.token)) AS tokens, LOWER(t.platform) AS name, t.language AS user_language
             FROM
             (
                 (
-                    SELECT apd.token, apd.platform, "es" AS `language`
+                    SELECT apd.token, apd.platform, apd.language
                     FROM appacman_push_device AS apd
                     WHERE apd.id_user IS NULL ' . $whereNoUser . '
-                )UNION(
-                    SELECT apd.token, apd.platform, u.language
-                    FROM appacman_push_device AS apd
-                    INNER JOIN user AS u USING(id_user)
-                    INNER JOIN user_appacman_notification AS uan ON u.id_user = uan.id_user WHERE uan.id_appacman_notification = :type
-                    ' . $whereUser . '
-                ) 
+                )
+                ' . $union . '
             )AS t
             GROUP BY platform, user_language
         ';
