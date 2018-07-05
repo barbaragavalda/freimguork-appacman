@@ -34,6 +34,10 @@ class Item extends Page {
         return $this->mysql->tableExists( $this->table.'_lang' );
     }
 
+    public function getError(){
+        return $this->error;
+    }
+
     /**
      * get the formulari for that item
      * @param array $languages

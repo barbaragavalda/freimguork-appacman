@@ -10,7 +10,7 @@ use Core\Utils\Session;
 class ContentForm extends BaseContentForm {
 
     protected function hasErrors(){
-        return false;
+        return $this->item->getError();
     }
 
 }
