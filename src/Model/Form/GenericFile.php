@@ -79,6 +79,9 @@ class GenericFile extends FormInput {
      * @throws Exception
      */
     protected function getPostValue($langID = null){
+        if( $this->fileID ){
+            return $this->fileID;
+        }
         $postName = $this->getInputName($langID);
         if( isset($_FILES[$postName]) && !empty($_FILES[$postName]['tmp_name']) ){
             $image = new File();
