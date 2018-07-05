@@ -17,6 +17,8 @@
 
 {% block extra_scripts %}
     {{ parent() }}
+    <!-- google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" ></script>
     <!-- summernote - text editor -->
     <script src="{{ admin_domain }}js/plugins/summernote/dist/summernote.min.js"></script>
     <!-- Select2 -->

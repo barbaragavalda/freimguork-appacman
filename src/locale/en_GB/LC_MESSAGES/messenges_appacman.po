@@ -329,6 +329,9 @@ msgstr "The image must be of type %types%"
 msgid "Comprueba el formato del link: que empieze por http:// o https://."
 msgstr "Check the link format: it must start with http:// or https://."
 
+msgid "Asegúrate de haber creado un marcador en el mapa con la dirección correcta."
+msgstr "Make sure you have created a marker on the map with the correct address."
+
 # 404
 msgid "Página no encontrada"
 msgstr "Page not found"
