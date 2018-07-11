@@ -145,7 +145,16 @@
             <a href="{{ domain }}{% trans %}informacion{% endtrans %}"><span class="fa fa-info-circle"></span></a>
         </div>
         <div class="pull-left">
-            <b>{% trans %}Soporte técnico{% endtrans %}:</b> <a href="mailto:info@appaqui.com" target="_blank">info@appaqui.com</a>, <a href="tel:+34933935968" target="_blank">+34 93 393 59 68</a>
+            <b>{% trans %}Soporte técnico{% endtrans %}:</b>
+            {% set supportEmail = 'info@appaqui.com' %}
+            {% if business['support_email'] %}
+                {% set supportEmail = business['support_email'] %}
+            {% endif %}
+            {% set supportPhone = '+34 93 393 59 68' %}
+            {% if business['support_phone'] %}
+                {% set supportPhone = business['support_phone'] %}
+            {% endif %}
+            <a href="mailto:{{ supportEmail }}" target="_blank">{{ supportEmail }}</a>, <a href="tel:{{ supportPhone|replace({' ':''}) }}" target="_blank">{{ supportPhone }}</a>
         </div>
     </footer>
 

@@ -36,7 +36,7 @@ class PushCronJob extends Model {
             'now'   => array('value' => $now,           'type' => \PDO::PARAM_STR)
         );
         $notifications = $this->mysql->query($sql, $params);
-		
+
         $deleteIDs = array();
         $translatedNotifications = $this->getTranslation($notifications);
         foreach($translatedNotifications as $notification){
@@ -87,7 +87,7 @@ class PushCronJob extends Model {
             $wheres[] = 'apd.app_version IN (' . $this->getWhereIn($info['app_version']) . ')';
         }
         if( array_key_exists('last_connection', $info) && $info['last_connection'] ){
-            $wheres[] = 'apd.last_connection <= "' . $info['last_connection'] . ' %"';
+            $wheres[] = 'apd.last_connection <= "' . $info['last_connection'] . ' 23:59:59"';
         }
         $whereNoUser = $whereUser = '';
         if( count($wheres) ){
