@@ -36,22 +36,23 @@ class PushCronJob extends Model {
             'now'   => array('value' => $now,           'type' => \PDO::PARAM_STR)
         );
         $notifications = $this->mysql->query($sql, $params);
-
-        $ids = array();
+		
+        $deleteIDs = array();
         $translatedNotifications = $this->getTranslation($notifications);
         foreach($translatedNotifications as $notification){
-            $ids[] = $notification['id'];
+            $deleteIDs[] = $notification['id'];
             $devices = $this->getDevices($notification, $this->systemType);
-
-            $message = $notification['name'][ $devices[0]['user_language'] ];
-            if( $message ){
-                $push = new Push();
-                $push->send($devices, $message, $notification['deeplink']);
+            foreach($devices as $device){
+                $message = $notification['name'][ $device['user_language'] ];
+                if( $message ){
+                    $push = new Push();
+                    $push->send(array($device), $message, $notification['deeplink']);
+                }
             }
         }
 
-        if( count($ids) ){
-            $this->delete($ids);
+        if( count($deleteIDs) ){
+            $this->delete($deleteIDs);
         }
     }
 
@@ -90,7 +91,7 @@ class PushCronJob extends Model {
         }
         $whereNoUser = $whereUser = '';
         if( count($wheres) ){
-            $whereNoUser = 'WHERE ' . implode(' AND ', $wheres);
+            $whereNoUser = ' AND ' . implode(' AND ', $wheres);
             $whereUser = 'WHERE ' . implode(' AND ', $wheres);
         }
 
@@ -98,10 +99,10 @@ class PushCronJob extends Model {
         if( $this->mysql->tableExists('user') ){
             $union = '
                 UNION(
-                    SELECT apd.token, apd.platform, u.language AS user_language
+                    SELECT apd.token, apd.platform, u.language
                     FROM appacman_push_device AS apd
                     INNER JOIN user AS u USING(id_user)
-                    INNER JOIN user_appacman_notification AS uan ON u.id_user = uan.id_user WHERE uan.id_appacman_notification = :type
+                    INNER JOIN user_appacman_notification AS uan ON u.id_user = uan.id_user AND uan.id_appacman_notification = :type
                     ' . $whereUser . '
                 )
             ';
@@ -112,7 +113,7 @@ class PushCronJob extends Model {
             FROM
             (
                 (
-                    SELECT apd.token, apd.platform, apd.language
+                    SELECT apd.token, apd.platform,  IFNULL(apd.language,"es") AS language
                     FROM appacman_push_device AS apd
                     WHERE apd.id_user IS NULL ' . $whereNoUser . '
                 )

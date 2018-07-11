@@ -1,5 +1,13 @@
 $(function () {
 
+    //prevent submission
+    $('form').find('input,textarea').keypress(function(e){
+        if( e.which == 13 ){
+            $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
+            return false;
+        }
+    });
+
     // multiselect without search field
     $('.select2').select2({
         minimumResultsForSearch: 10,
