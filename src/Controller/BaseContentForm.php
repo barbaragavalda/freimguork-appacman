@@ -29,11 +29,11 @@ abstract class BaseContentForm extends Content {
         $success = false;
         if( isset($_POST['save']) ){
             $this->item->preparePost();
+            $this->assign('formSend', true);
             if( !$this->hasErrors() ){
                 $success = $this->item->save();
 
                 $this->assign('formSuccess', $success);
-                $this->assign('formSend', true);
 
                 $contentID = $this->content->getID();
                 if( $success && $this->user->hasPermission($contentID, Permissions::SEND_CHANGES) ){
