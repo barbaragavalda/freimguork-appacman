@@ -26,16 +26,18 @@
         </tr>
     {% endset %}
 
-    <table id="list" class="table table-bordered table-hover">
-        <thead>
-            {{ ths }}
-        </thead>
-        <tbody>
-            {% block table_content %}{% endblock %}
-        </tbody>
-        <tfoot>
-            {{ ths }}
-        </tfoot>
-    </table>
+    <div class="table-responsive">
+        <table id="list" class="table table-bordered table-hover">
+            <thead>
+                {{ ths }}
+            </thead>
+            <tbody>
+                {% block table_content %}{% endblock %}
+            </tbody>
+            <tfoot>
+                {{ ths }}
+            </tfoot>
+        </table>
+    </div>
 
 {% endblock %}
