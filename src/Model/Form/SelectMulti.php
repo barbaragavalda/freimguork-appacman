@@ -67,12 +67,10 @@ class SelectMulti extends Select {
     }
 
     public function canSave($langID = null){
-        $this->saveLateralTable($langID);
-
         return false;
     }
 
-    private function saveLateralTable($langID = null){
+    public function save($itemID, $langID = null){
         $postName = $this->getFieldName($langID);
         if( isset($_POST[$postName]) ){
             $this->initTables();
@@ -83,24 +81,28 @@ class SelectMulti extends Select {
                 WHERE id_'.$this->currentTable.' = :id
             ';
             $params = array(
-                'id' => array('value'=> $this->id, 'type' => \PDO::PARAM_INT)
+                'id' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
             );
             $this->mysql->query($sql, $params);
 
-            // insert again
-            $values = array();
-            foreach($_POST[$postName] as $index => $id){
-                $values[] = '(:id, :lateral_id_'.$index.')';
-                $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+            if( $this->mysql->getState() ){
+                // insert again
+                $values = array();
+                foreach($_POST[$postName] as $index => $id){
+                    $values[] = '(:id, :lateral_id_'.$index.')';
+                    $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+                }
+                $sql = '
+                    INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->lateralTable.') 
+                    VALUES '.implode(',', $values).'
+                ';
+                $this->mysql->query($sql, $params);
+                if( $this->mysql->getState() ){
+                    return false;
+                }
             }
-            $sql = '
-                INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->lateralTable.') 
-                VALUES '.implode(',', $values).'
-            ';
-            $this->mysql->query($sql, $params);
         }
-
-        return null;
+        return true;
     }
 
 }

@@ -35,4 +35,8 @@ class Varchar extends FormInput {
         return false;
     }
 
+    public function save($itemID, $langID = null){
+        return false;
+    }
+
 }

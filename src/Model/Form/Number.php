@@ -28,6 +28,12 @@ class Number extends FormInput {
         return $this->inputType('text', $langID);
     }
 
-    public function hasError($langID = null){}
+    public function hasError($langID = null){
+        return false;
+    }
+
+    public function save($itemID, $langID = null){
+        return false;
+    }
 
 }

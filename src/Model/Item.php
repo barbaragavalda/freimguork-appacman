@@ -147,9 +147,7 @@ class Item extends Page {
                         foreach($this->postLang as $lang => $post){
                             $langID = str_replace('lang_', '', $lang);
                             $error = $this->update($post, $langID);
-                            if( $error ){
-                                break;
-                            }
+                            if( $error ) break;
                         }
                     }
                 }else{
@@ -159,11 +157,25 @@ class Item extends Page {
                         foreach($this->postLang as $lang => $post){
                             $langID = str_replace('lang_', '', $lang);
                             $error = $this->insert($post, $langID);
-                            if( $error ){
-                                break;
-                            }
+                            if( $error ) break;
                         }
                     }
+                }
+            }
+
+            if( !$error ){
+                // save extra info of some inputs
+                foreach($this->form as $input){
+                    if( $input->isOnLangTable() ){
+                        foreach($this->postLang as $lang => $post){
+                            $langID = str_replace('lang_', '', $lang);
+                            $error = $input->save($this->id, $langID);
+                            if( $error ) break;
+                        }
+                    }else{
+                        $error = $input->save($this->id);
+                    }
+                    if( $error ) break;
                 }
             }
 

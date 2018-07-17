@@ -2,8 +2,6 @@
 
 namespace Appacman\Model\Form;
 
-use Core\Model\Utils\DateUtils;
-
 class Time extends FormInput {
 
     /**
@@ -59,6 +57,10 @@ class Time extends FormInput {
         if( $postValue == null && $this->isRequired ){
             return gettext('Campo obligatorio.');
         }
+        return false;
+    }
+
+    public function save($itemID, $langID = null){
         return false;
     }
 

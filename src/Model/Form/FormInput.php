@@ -356,6 +356,14 @@ abstract class FormInput extends Model {
      */
     abstract protected function hasError($langID = null);
 
+    /**
+     * save extra info
+     * @param int $itemID
+     * @param null $langID
+     * @return boolean     error
+     */
+    abstract public function save($itemID, $langID = null);
+
     //*******************************************//
     //*********** F O R M    U T I L S **********//
     //*******************************************//
