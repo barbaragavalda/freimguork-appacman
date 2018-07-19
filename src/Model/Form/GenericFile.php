@@ -28,11 +28,12 @@ class GenericFile extends FormInput {
     public function __construct($info, $id, $table){
         parent::__construct($info, $id, $table);
 
-        $this->fieldID = $info['id_appacman_field'];
+        //$this->fieldID = $info['id_appacman_field'];
 
         $this->fileID = parent::getSeeValue();
         $image = new File($this->fileID);
         $this->fileURL = $image->getAbsolutePath();
+        if( !$this->fileURL ) $this->fileID = null;
     }
 
     /**
@@ -61,13 +62,15 @@ class GenericFile extends FormInput {
             $fieldName = parent::getInputName($langID);
             return '
                 ' . $this->getFile() . '
-                <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" data-field="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
-                    <i class="fa fa-trash"></i>
-                </a>
-                <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
-                    <i class="fa fa-download"></i>
-                </a>
-                ' . $this->inputType('hidden', $this->value) . '
+                <div class="pull-left file-actions">
+                    <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" data-field="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
+                        <i class="fa fa-download"></i>
+                    </a>
+                    ' . $this->inputType('hidden', $this->value) . '
+                </div>
             ';
         }
     }

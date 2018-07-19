@@ -101,6 +101,8 @@ class SelectMulti extends Select {
                     return false;
                 }
             }
+        }else{
+            return false;
         }
         return true;
     }

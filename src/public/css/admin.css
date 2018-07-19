@@ -130,6 +130,9 @@ form .alert h4{
 .pdf-file + .btn-danger{
     margin-left: 10px;
 }
+.file-actions{
+    padding: 5px;
+}
 .pdf-file span::before{
     font-size: 4em;
 }
