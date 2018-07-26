@@ -25,7 +25,7 @@ class SelectMulti extends Select {
      * from witch table has to load options?
      * @return array
      */
-    protected function getOptions(){
+    protected function getOptions($table = null, $extraFields = ''){
         $tables = explode('_', $this->fieldName);
         $lateralTable = $tables[1];
         return $this->loadOptions($lateralTable);

@@ -10,7 +10,7 @@ class Business extends Model {
     /**
      * @var array $config. Business info
      */
-    public $info = '';
+    public $info = array();
 
     public function __construct(){
         parent::__construct();

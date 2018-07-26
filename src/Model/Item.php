@@ -82,11 +82,12 @@ class Item extends Page {
                         if( !array_key_exists($field, $this->info) ){
                             $this->info[$field] = array();
                         }
-                        $this->info[$field]['lang_'.$langID] = $value;
+                        if( is_array($this->info[$field]) ){
+                            $this->info[$field]['lang_'.$langID] = $value;
+                        }
                     }
                 }
             }
-
             return true;
         }
         return false;

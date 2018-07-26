@@ -45,7 +45,7 @@ class GenericFile extends FormInput {
         if( $this->fileURL == null ){
             return '-';
         }else{
-            return $this->getFile();
+            return $this->getLinkFile();
         }
     }
 
@@ -71,6 +71,7 @@ class GenericFile extends FormInput {
                     </a>
                     ' . $this->inputType('hidden', $this->value) . '
                 </div>
+                ' . $this->getLinkFile() . '
             ';
         }
     }
@@ -135,7 +136,7 @@ class GenericFile extends FormInput {
      * image tag with link to see it
      * @return string
      */
-    protected function getFile(){
+    protected function getLinkFile(){
         return '
             <a href="'.$this->fileURL.'" class="pull-left pdf-file" target="_blank">
                 <span class="fa fa-file-pdf-o"></span>
