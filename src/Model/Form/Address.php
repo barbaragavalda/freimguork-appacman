@@ -4,18 +4,31 @@ namespace Appacman\Model\Form;
 
 class Address extends FormInput {
 
-    protected function getInputHTML($langID = null){
-        $latitude = $longitude = '';
+	/**
+	 * var $latitude
+	 */
+	private $latitude = '';
+
+	/**
+	 * var $longitude
+	 */
+	private $longitude = '';
+	
+	public function __construct($info, $id, $table){
+        parent::__construct($info, $id, $table);
+        
         $position = $this->getPosition();
         if( $position ){
-            $latitude = $position['latitude'];
-            $longitude = $position['longitude'];
+            $this->latitude = $position['latitude'];
+            $this->longitude = $position['longitude'];
         }
+    }
 
+    protected function getInputHTML($langID = null){
         return $this->inputType('text', $langID) . '
             <div id="map-' . $this->fieldName . '" class="map"></div>
-            <input type="hidden" name="latitude-' . $this->fieldName . '" value="'.$latitude.'" />
-            <input type="hidden" name="longitude-' . $this->fieldName . '" value="'.$longitude.'" />
+            <input type="hidden" name="latitude-' . $this->fieldName . '" value="'.$this->latitude.'" />
+            <input type="hidden" name="longitude-' . $this->fieldName . '" value="'.$this->longitude.'" />
         ';
     }
 
@@ -30,21 +43,27 @@ class Address extends FormInput {
     }
 
     public function save($itemID, $langID = null){
-        $sql = '
-            UPDATE '.$this->table.'
-            SET latitude = :latitude, longitude = :longitude
-            WHERE id_'.$this->table.' = :id
-        ';
-        $params = array(
-            'id'        => array('value' => $itemID,                                    'type' => \PDO::PARAM_INT),
-            'latitude'  => array('value' => $_POST['latitude-' . $this->fieldName],     'type' => \PDO::PARAM_STR),
-            'longitude' => array('value' => $_POST['longitude-' . $this->fieldName],    'type' => \PDO::PARAM_STR)
-        );
-        $this->mysql->query($sql, $params);
-        if( $this->mysql->rowCount() == 1 ){
-            return false;
-        }
-        return true;
+    	$lat = $_POST['latitude-' . $this->fieldName];
+    	$lng = $_POST['longitude-' . $this->fieldName];
+    	
+    	if( $lat != $this->latitude || $lng != $this->longitude ){
+			$sql = '
+				UPDATE '.$this->table.'
+				SET latitude = :latitude, longitude = :longitude
+				WHERE id_'.$this->table.' = :id
+			';
+			$params = array(
+				'id'        => array('value' => $itemID,                                    'type' => \PDO::PARAM_INT),
+				'latitude'  => array('value' => $_POST['latitude-' . $this->fieldName],     'type' => \PDO::PARAM_STR),
+				'longitude' => array('value' => $_POST['longitude-' . $this->fieldName],    'type' => \PDO::PARAM_STR)
+			);
+			$this->mysql->query($sql, $params);
+			if( $this->mysql->getState() ){
+				return false;
+			}
+			return true;
+    	}
+    	return false;
     }
 
     private function getPosition(){
