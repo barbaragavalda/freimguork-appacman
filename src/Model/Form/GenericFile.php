@@ -28,7 +28,7 @@ class GenericFile extends FormInput {
     public function __construct($info, $id, $table){
         parent::__construct($info, $id, $table);
 
-        //$this->fieldID = $info['id_appacman_field'];
+        $this->fieldID = $info['id_appacman_field'];
 
         $this->fileID = parent::getSeeValue();
         $image = new File($this->fileID);
@@ -61,7 +61,7 @@ class GenericFile extends FormInput {
         }else{
             $fieldName = parent::getInputName($langID);
             return '
-                ' . $this->getFile() . '
+                ' . $this->getLinkFile() . '
                 <div class="pull-left file-actions">
                     <a href="#" data-id="'. $this->fileID.'" data-name="'.$fieldName.'" data-field="'.$this->fieldName.'" class="btn btn-danger btn-xs delete-file" title="'.gettext('Eliminar').'" data-toggle="confirmation">
                         <i class="fa fa-trash"></i>
@@ -71,7 +71,6 @@ class GenericFile extends FormInput {
                     </a>
                     ' . $this->inputType('hidden', $this->value) . '
                 </div>
-                ' . $this->getLinkFile() . '
             ';
         }
     }

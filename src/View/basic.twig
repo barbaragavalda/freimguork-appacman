@@ -36,6 +36,8 @@
     <!-- Custom css -->
     <link rel="stylesheet" href="{{ admin_domain }}css/admin.css?v=2">
     <link rel="stylesheet" href="{{ admin_domain }}css/skin-custom.css">
+    <!-- jQuery 3 -->
+    <script src="{{ vendor_domain }}bower_components/jquery/dist/jquery.min.js"></script>
 </head>
 <body class="hold-transition {% block body_class %}{% endblock %}">
 
@@ -43,8 +45,6 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- jQuery 3 -->
-    <script src="{{ vendor_domain }}bower_components/jquery/dist/jquery.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ vendor_domain }}dist/js/adminlte.min.js"></script>
     {% block extra_scripts %}{% endblock %}

@@ -106,7 +106,8 @@ img[src$='.svg'] {
 form .with-border .box-header{
     padding: 10px 10px 0 10px;
 }
-.required .box-title::after{
+.required .box-title::after,
+label.required::after{
     content: " *";
     color: #dd4b39;
 }

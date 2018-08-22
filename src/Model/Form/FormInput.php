@@ -53,6 +53,12 @@ abstract class FormInput extends Model {
     protected $onLangTable = false;
 
     /**
+     * post value on array
+     * @var bool
+     */
+    protected $isMultiple = false;
+
+    /**
      * @var array $languages. Available languages on database
      */
     protected $languages = array();
@@ -77,9 +83,16 @@ abstract class FormInput extends Model {
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
+        if( in_array($info['type'], array('dynamic', 'selectMulti')) ){
+            $this->isRequired = false;
+        }
         if( $this->mysql->fieldExists($this->table.'_lang', $this->fieldName) ){
             $this->onLangTable = true;
         }
+    }
+
+    public function isMultiple($position = true){
+        $this->isMultiple = $position;
     }
 
     /**
@@ -139,6 +152,10 @@ abstract class FormInput extends Model {
      */
     public function getValue(){
         return $this->value;
+    }
+
+    public function setValue($value){
+        $this->value = $value;
     }
 
     /**
@@ -227,6 +244,14 @@ abstract class FormInput extends Model {
     }
 
     /**
+     * hidden input
+     * @return string
+     */
+    public function getHTML(){
+        return '';
+    }
+
+    /**
      * Value to show on form when user CANNOT edit
      * @return string
      */
@@ -253,14 +278,16 @@ abstract class FormInput extends Model {
     /**
      * Name of the input for post value
      * @param int|null $langID
+     * @param boolean $withMultiple
      * @return string
      */
-    protected function getInputName($langID = null){
+    protected function getInputName($langID = null, $withMultiple = true){
         $fieldName = $this->fieldName;
+        $multiple = $this->isMultiple && $withMultiple ? '[]' : '';
         if( $langID == null ){
-            return $fieldName;
+            return $fieldName . $multiple;
         }else{
-            return $fieldName . '_' .$langID;
+            return $fieldName . '_' .$langID . $multiple;
         }
     }
 
@@ -310,8 +337,17 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getPostValue($langID = null){
-        if( isset($_POST[ $this->getInputName($langID) ]) ){
-            return $_POST[ $this->getInputName($langID) ];
+        $name = $this->getInputName($langID, false);
+        if( isset($_POST[$name]) ){
+            if( $this->isMultiple === false ){
+                return $_POST[$name];
+            }else{
+                if( $_POST[$name] ){
+                    return $_POST[$name][ $this->isMultiple ];
+                }else{
+                    return null;
+                }
+            }
         }
         return '';
     }

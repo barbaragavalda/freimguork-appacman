@@ -316,6 +316,15 @@ msgstr "Change date"
 msgid "Guardar y enviar cambios por email"
 msgstr "Save and send changes by email"
 
+msgid "Añadir"
+msgstr "Add"
+
+msgid "anadir-campo"
+msgstr "add-field"
+
+msgid "eliminar-campo"
+msgstr "delete-field"
+
 # form validation
 msgid "Campo obligatorio."
 msgstr "Mandatory field."

@@ -55,6 +55,17 @@
         textarea.completeTextarea('{{ domain }}{% trans %}subir-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}');
         textarea.simpleTextarea();
 
+        // dynamic fiels
+        var dynamic = new Namespace.Dynamic('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+        dynamic.add('{{ domain }}{% trans %}anadir-campo{% endtrans %}/{{ contentID }}/{{ itemID }}');
+        dynamic.delete(
+            '{{ domain }}{% trans %}eliminar-campo{% endtrans %}/{{ contentID }}/{{ itemID }}',
+            '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}',
+            '{% trans %}Este proceso es irreversible{% endtrans %}',
+            '{% trans %}Sí{% endtrans %}',
+            '{% trans %}No{% endtrans %}'
+        );
+
         // delete item
         var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
         deleteModel.item(

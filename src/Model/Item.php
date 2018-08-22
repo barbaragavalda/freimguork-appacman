@@ -30,6 +30,10 @@ class Item extends Page {
         return $this->form;
     }
 
+    public function setForm($form){
+        $this->form = $form;
+    }
+
     public function hasLang(){
         return $this->mysql->tableExists( $this->table.'_lang' );
     }
@@ -136,7 +140,11 @@ class Item extends Page {
      * @return bool success
      */
     public function save(){
-        $this->mysql->beginTransaction();
+        $canCommit = false;
+        if( !$this->mysql->inTransaction() ){
+            $canCommit = true;
+            $this->mysql->beginTransaction();
+        }
 
         $error = false;
         try{
@@ -185,10 +193,10 @@ class Item extends Page {
         }
 
         if( $error ){
-            $this->mysql->rollBack();
+            if( $canCommit ) $this->mysql->rollBack();
             return false;
         }else{
-            $this->mysql->commit();
+            if( $canCommit ) $this->mysql->commit();
             return true;
         }
     }
@@ -255,6 +263,7 @@ class Item extends Page {
         if( $langID == null ){
             $this->id = $this->mysql->lastInsertId();
         }
+        //r($sql, $params, $this->mysql->getState(), $this->mysql->rowCount());
         return !$this->mysql->getState();
     }
 

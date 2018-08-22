@@ -1,24 +1,6 @@
 $(function () {
 
-    //prevent submission
-    $('form').find('input,textarea').keypress(function(e){
-        if( e.which == 13 ){
-            $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
-            return false;
-        }
-    });
-
-    // multiselect without search field
-    $('.select2').select2({
-        minimumResultsForSearch: 10,
-        allowClear: true
-    });
-
-    // check
-    $('input[type="checkbox"].custom-check, input[type="radio"].custom-radio').iCheck({
-        checkboxClass:  'icheckbox_flat-green',
-        radioClass:     'iradio_flat-green'
-    });
+    new Namespace.Form();
 
     // language
     var language = new Namespace.Language();
@@ -41,6 +23,45 @@ $(function () {
 
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
+
+    ns.Form = function () {
+
+        this.init = function(){
+            this.select();
+            this.check();
+            this.events();
+        };
+
+        this.select = function(){
+            // multiselect without search field
+            $('.select2').select2({
+                minimumResultsForSearch: 10,
+                allowClear: true
+            });
+        };
+
+        this.check = function(){
+            // check
+            $('input[type="checkbox"].custom-check, input[type="radio"].custom-radio').iCheck({
+                checkboxClass:  'icheckbox_flat-green',
+                radioClass:     'iradio_flat-green'
+            });
+        };
+
+        this.events = function(){
+            //prevent submission
+            $('form').find('input,textarea').keypress(function(e){
+                if( e.which == 13 ){
+                    $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
+                    return false;
+                }
+            });
+        };
+
+        this.init();
+
+        return this;
+    };
 
     ns.Textarea = function(){
 
@@ -108,6 +129,121 @@ var Namespace = Namespace || {};
         return this;
     };
 
+    ns.Dynamic = function(errorTitle, errorClose){
+        var _errorTitle = errorTitle,
+            _errorClose = errorClose;
+
+        this.add = function(path){
+            var that = this;
+            $('.add-dynamic-field').click(function(e){
+                var fieldName = $(this).attr('data-field'),
+                    data = new FormData(),
+                    loader = new Namespace.Loader();
+
+                data.append('field', fieldName);
+                data.append('id', $(this).attr('data-id'));
+                data.append('table', $(this).attr('data-table'));
+
+                loader.show();
+
+                $.ajax({
+                    url: path,
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function(result) {
+                        $('#content-' + fieldName).append( result['html'] );
+                        loader.hide();
+
+                        new Namespace.Form();
+                        that.delete('');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR, textStatus, errorThrown);
+                        // Handle errors here
+                        loader.hide();
+                    }
+                });
+
+                e.preventDefault();
+                return false;
+            });
+        };
+
+        this.delete = function(path, errorText, content, btnOkLabel, btnCancelLabel){
+            var that = this;
+            $('.delete-dynamic-field').unbind('click').bind('click', function(e){
+                var id = $(this).attr('data-id'),
+                    button = this;
+
+                if( id == '' ){
+                    that.removeForm( $(button) );
+                }else{
+                    $(this).confirmation({
+                        rootSelector: '[data-toggle=confirmation]',
+                        singleton: true,
+                        popout: true,
+                        placement: 'left',
+                        btnOkClass: 'btn btn-danger',
+                        btnCancelClass: 'btn btn-default',
+                        content: content,
+                        btnOkLabel: btnOkLabel,
+                        btnCancelLabel: btnCancelLabel,
+                        onConfirm: function(){
+                            var data = new FormData(),
+                                loader = new Namespace.Loader();
+
+                            data.append('field', $(that).attr('data-field'));
+                            data.append('id', $(that).attr('data-id'));
+                            data.append('table', $(that).attr('data-table'));
+
+                            loader.show();
+
+                            $.ajax({
+                                url: path,
+                                type: 'POST',
+                                data: data,
+                                cache: false,
+                                dataType: 'json',
+                                processData: false,
+                                contentType: false,
+                                success: function(result) {
+                                    if( !result['error'] ){
+                                        that.removeForm( $(button) );
+                                    }else{
+                                        error(errorText);
+                                    }
+                                    loader.hide();
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    error(errorText);
+                                    // Handle errors here
+                                    loader.hide();
+                                }
+                            });
+                        }
+                    });
+                }
+
+                e.preventDefault();
+                return false;
+            });
+        };
+
+        function error(errorText){
+            alertError(_errorTitle, errorText, _errorClose);
+        };
+
+        this.removeForm = function(object){
+            object.parent().parent().remove();
+        };
+
+        return this;
+    };
+
     ns.Cookie = function(){
 
         this.set = function(cname, cvalue, exdays) {
@@ -146,7 +282,7 @@ var Namespace = Namespace || {};
         this.init = function() {
             _cookies = new ns.Cookie();
             _container = $('.box-languages');
-        }
+        };
 
         this.hasLanguage = function(){
             this.init();
