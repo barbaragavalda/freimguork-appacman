@@ -97,7 +97,12 @@ class Select extends FormInput {
      * @return array
      */
     protected function loadValues($langID){
-        return array($this->value);
+        $values = array($this->value);
+        $postValue = $this->getPostValue($langID);
+        if( $postValue ){
+            $values = array($postValue);
+        }
+        return $values;
     }
 
     /**

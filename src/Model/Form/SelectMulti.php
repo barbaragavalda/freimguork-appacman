@@ -26,8 +26,7 @@ class SelectMulti extends Select {
      * @return array
      */
     protected function getOptions($table = null, $extraFields = ''){
-        $tables = explode('_', $this->fieldName);
-        $lateralTable = $tables[1];
+        $lateralTable = substr(strstr($this->fieldName, '_'), 1);
         return $this->loadOptions($lateralTable);
     }
 
@@ -51,10 +50,9 @@ class SelectMulti extends Select {
     }
 
     private function initTables(){
-        $table = $this->fieldName;
-        $tables = explode('_', $table);
+        $tables = explode('_', $this->fieldName);
         $this->currentTable = $tables[0];
-        if( count($tables) > 1 ) $this->lateralTable = $tables[1];
+        $this->lateralTable = substr(strstr($this->fieldName, '_'), 1);
     }
 
     /**
