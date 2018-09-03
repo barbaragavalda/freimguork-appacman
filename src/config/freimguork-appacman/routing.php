@@ -22,6 +22,7 @@ $config = array(
         gettext('bloquear').'/{contentID}/{itemID}'             => 'Ajax\\BlockItem',
         gettext('subir-archivo') .'/{contentID}'                => 'Ajax\\Upload',
         gettext('subir-archivo') .'/{contentID}/{itemID}'       => 'Ajax\\Upload',
+        gettext('anadir-campo') .'/{contentID}'                 => 'Ajax\\Dynamic\\Add',
         gettext('anadir-campo') .'/{contentID}/{itemID}'        => 'Ajax\\Dynamic\\Add',
         gettext('eliminar-campo') .'/{contentID}/{itemID}'      => 'Ajax\\Dynamic\\Delete',
         gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',

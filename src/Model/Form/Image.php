@@ -25,10 +25,9 @@ class Image extends GenericFile {
      */
     public function hasError($langID = null){
         $error = parent::hasError($langID);
-        $postName = parent::getInputName($langID);
-        if( !$error && !empty($_FILES[$postName]['tmp_name']) ){
-            $postName = parent::getInputName($langID);
-            $extension = pathinfo($_FILES[$postName]['name'], PATHINFO_EXTENSION);
+        $file = $this->getPostFile($langID);
+        if( !$error && !empty($file['tmp_name']) ){
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             if( !in_array($extension, $this->allowedExtensions) ){
                 return str_replace('%types%', implode(', ', $this->allowedExtensions), gettext('La imagen debe ser de tipo %types%'));
             }

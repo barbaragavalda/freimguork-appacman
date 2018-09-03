@@ -263,7 +263,6 @@ class Item extends Page {
         if( $langID == null ){
             $this->id = $this->mysql->lastInsertId();
         }
-        //r($sql, $params, $this->mysql->getState(), $this->mysql->rowCount());
         return !$this->mysql->getState();
     }
 

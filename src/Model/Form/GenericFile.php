@@ -31,9 +31,33 @@ class GenericFile extends FormInput {
         $this->fieldID = $info['id_appacman_field'];
 
         $this->fileID = parent::getSeeValue();
+        if( !is_array($this->fileID) ){
+            $this->initFile();
+        }
+    }
+
+    public function initFile(){
+        $this->fileID = parent::getSeeValue();
+
         $image = new File($this->fileID);
         $this->fileURL = $image->getAbsolutePath();
         if( !$this->fileURL ) $this->fileID = null;
+    }
+
+    public function getPostFile($langID = null){
+        $postName = $this->getInputName($langID);
+        if( isset($_FILES[$postName]) ){
+            if( $this->isMultiple === false ){
+                return $_FILES[$postName];
+            }else{
+                $file = array();
+                foreach($_FILES[$postName] as $key => $value){
+                    $file[$key] = $value[$this->isMultiple];
+                }
+                return $file;
+            }
+        }
+        return null;
     }
 
     /**
@@ -69,7 +93,7 @@ class GenericFile extends FormInput {
                     <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
                         <i class="fa fa-download"></i>
                     </a>
-                    ' . $this->inputType('hidden', $this->value) . '
+                    ' . $this->inputType('hidden', $langID) . '
                 </div>
             ';
         }
@@ -85,17 +109,17 @@ class GenericFile extends FormInput {
         if( $this->fileID ){
             return $this->fileID;
         }
-        $postName = $this->getInputName($langID);
-        if( isset($_FILES[$postName]) && !empty($_FILES[$postName]['tmp_name']) ){
+        $file = $this->getPostFile($langID);
+        if( $file && !empty($file['tmp_name']) ){
             $image = new File();
-            $fileID = $image->save( $_FILES[$postName] );
+            $fileID = $image->save( $file );
             $resize = $this->getResize();
             if( $resize ){
                 $image->resize($resize);
             }
 
             if( $fileID === false ){
-                throw new Exception('Unable to save image <pre>' . print_r($_FILES[$this->fieldName], true) . '</pre>');
+                throw new Exception('Unable to save image <pre>' . print_r($file, true) . '</pre>');
             }
             $this->fileID = $fileID;
             $this->fileURL = $image->getAbsolutePath();
@@ -151,9 +175,9 @@ class GenericFile extends FormInput {
      * @return false|string
      */
     public function hasError($langID = null){
-        $postName = $this->getInputName($langID);
         $value = parent::getInputValue($langID);
-        if( empty($value) && empty($_FILES[$postName]['tmp_name']) && $this->isRequired ){
+        $file = $this->getPostFile($langID);
+        if( empty($value) && empty($file['tmp_name']) && $this->isRequired ){
             return gettext('Campo obligatorio.');
         }
         return false;

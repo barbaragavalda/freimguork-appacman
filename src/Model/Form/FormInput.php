@@ -281,7 +281,7 @@ abstract class FormInput extends Model {
      * @param boolean $withMultiple
      * @return string
      */
-    protected function getInputName($langID = null, $withMultiple = true){
+    public function getInputName($langID = null, $withMultiple = true){
         $fieldName = $this->fieldName;
         $multiple = $this->isMultiple && $withMultiple ? '[]' : '';
         if( $langID == null ){
@@ -299,7 +299,7 @@ abstract class FormInput extends Model {
     protected function getInputValue($langID = null){
         $postName = $this->getInputName($langID);
         if( array_key_exists($postName, $_POST) ){
-            return $_POST[$postName];
+            return $this->getPost($postName);
         }else{
             if( !empty($this->value) ){
                 if( $langID == null && !is_array($this->value) ){
@@ -337,13 +337,26 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getPostValue($langID = null){
-        $name = $this->getInputName($langID, false);
-        if( isset($_POST[$name]) ){
+        $postName = $this->getInputName($langID, false);
+        $value = $this->getPost($postName);
+
+        if( $value ){
+            return $value;
+        }else{
+            if( $this->isRequired() ){
+                return '';
+            }
+        }
+        return null;
+    }
+
+    private function getPost($postName){
+        if( isset($_POST[$postName]) ){
             if( $this->isMultiple === false ){
-                return $_POST[$name];
+                return $_POST[$postName];
             }else{
-                if( $_POST[$name] ){
-                    return $_POST[$name][ $this->isMultiple ];
+                if( $_POST[$postName] && isset($_POST[$postName][ $this->isMultiple ]) ){
+                    return $_POST[$postName][ $this->isMultiple ];
                 }else{
                     return null;
                 }

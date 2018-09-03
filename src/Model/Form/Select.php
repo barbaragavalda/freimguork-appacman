@@ -25,7 +25,7 @@ class Select extends FormInput {
      */
     protected function getInputHTML($langID = null){
         return '
-            <select name="'.$this->fieldName.'" class="deepLink form-control select2 select2-hidden-accessible" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <select name="'.$this->getInputName($langID).'" class="deepLink form-control select2 select2-hidden-accessible" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
