@@ -150,16 +150,16 @@ var Namespace = Namespace || {};
                         data:       { fieldName: field, fieldID: id },
                         dataType:	'json'
                     })
-                        .done( function( result ){
-                            if( !result['error'] ){
-                                that.parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
-                            }else{
-                                error();
-                            }
-                        })
-                        .fail( function(){
+                    .done( function( result ){
+                        if( !result['error'] ){
+                            that.parent().parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
+                        }else{
                             error();
-                        });
+                        }
+                    })
+                    .fail( function(){
+                        error();
+                    });
                 }
             });
         };
