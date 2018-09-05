@@ -98,7 +98,7 @@ class Dynamic extends FormInput {
             }
         }
         $html .= '
-                    <a href="#" data-id="' . $form->getID() . '" data-field="' . $this->fieldName. '" data-table="' . $this->table. '" class="delete-dynamic-field pull-right btn btn-danger btn-xs" title="' . gettext('Eliminar') . '" data-toggle="confirmation"><i class="fa fa-trash"></i></a>
+                    <a href="#" data-id="' . $form->getID() . '" data-field="' . $this->fieldName. '" class="delete-dynamic-field pull-right btn btn-danger btn-xs" title="' . gettext('Eliminar') . '" data-toggle="confirmation"><i class="fa fa-trash"></i></a>
                 </div>
             </div>
         ';

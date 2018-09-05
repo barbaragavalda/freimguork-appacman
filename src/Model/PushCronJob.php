@@ -11,7 +11,7 @@ class PushCronJob extends Model {
 
     public function __construct(){
         parent::__construct();
-        
+
         $sql = '
             SELECT id_appacman_notification
             FROM appacman_notification
@@ -36,7 +36,7 @@ class PushCronJob extends Model {
             'now'   => array('value' => $now,           'type' => \PDO::PARAM_STR)
         );
         $notifications = $this->mysql->query($sql, $params);
-		
+
         $deleteIDs = array();
         $translatedNotifications = $this->getTranslation($notifications);
         foreach($translatedNotifications as $notification){
@@ -45,7 +45,7 @@ class PushCronJob extends Model {
         if( count($deleteIDs) ){
             $this->delete($deleteIDs);
         }
-        
+
         foreach($translatedNotifications as $notification){
             $devices = $this->getDevices($notification, $this->systemType);
             foreach($devices as $device){

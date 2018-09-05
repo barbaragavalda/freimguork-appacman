@@ -140,14 +140,16 @@ var Namespace = Namespace || {};
                 btnCancelLabel: btnCancelLabel,
                 onConfirm: function(){
                     var id = $(this).attr('data-id'),
+                        itemID = $(this).attr('data-item'),
                         name = $(this).attr('data-name'),
                         field = $(this).attr('data-field'),
+                        table = $(this).attr('data-table'),
                         that = $(this);
 
                     $.ajax({
                         type:       'POST',
                         url:        url,
-                        data:       { fieldName: field, fieldID: id },
+                        data:       { fieldName: field, fieldID: id, itemID: itemID, tableName: table },
                         dataType:	'json'
                     })
                     .done( function( result ){

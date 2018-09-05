@@ -83,7 +83,7 @@ abstract class FormInput extends Model {
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
-        if( array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti')) ){
+        if( in_array($info['type'], array('dynamic', 'selectMulti')) ){
             $this->isRequired = false;
         }
         if( $this->mysql->fieldExists($this->table.'_lang', $this->fieldName) ){
@@ -297,7 +297,7 @@ abstract class FormInput extends Model {
      * @return string
      */
     protected function getInputValue($langID = null){
-        $postName = $this->getInputName($langID);
+        $postName = $this->getInputName($langID, false);
         if( array_key_exists($postName, $_POST) ){
             return $this->getPost($postName);
         }else{
@@ -350,7 +350,7 @@ abstract class FormInput extends Model {
         return null;
     }
 
-    private function getPost($postName){
+    protected function getPost($postName){
         if( isset($_POST[$postName]) ){
             if( $this->isMultiple === false ){
                 return $_POST[$postName];

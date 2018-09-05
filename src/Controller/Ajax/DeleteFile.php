@@ -14,14 +14,13 @@ class DeleteFile extends Ajax {
     }
 
     protected function run(){
-        $itemID = $this->getParam('itemID');
+        $itemID = $_POST['itemID'];
         $fileID = $_POST['fieldID'];
         $fieldName = $_POST['fieldName'];
-
-        $this->content->getTable();
+        $tableName = $_POST['tableName'];
 
         $file = new File($fileID);
-        $error = !$file->delete($this->content->getTable(), $fieldName, $itemID, $fileID);
+        $error = !$file->delete($tableName, $fieldName, $itemID, $fileID);
         $this->setError( $error );
     }
 

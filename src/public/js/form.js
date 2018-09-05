@@ -196,9 +196,8 @@ var Namespace = Namespace || {};
                             var data = new FormData(),
                                 loader = new Namespace.Loader();
 
-                            data.append('field', $(that).attr('data-field'));
-                            data.append('id', $(that).attr('data-id'));
-                            data.append('table', $(that).attr('data-table'));
+                            data.append('field', $(button).attr('data-field'));
+                            data.append('id', $(button).attr('data-id'));
 
                             loader.show();
 

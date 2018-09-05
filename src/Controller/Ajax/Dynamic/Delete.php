@@ -4,6 +4,7 @@ namespace Appacman\Controller\Ajax\Dynamic;
 
 use Appacman\Controller\Ajax\Ajax;
 use Appacman\Model\Form\Dynamic;
+use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 
@@ -16,19 +17,9 @@ class Delete extends Ajax {
     }
 
     protected function run(){
-        $field = new Dynamic(
-            array(
-                'field_name' => $_POST['field'],
-                'name' => '',
-                'value' => '',
-                'required' => false,
-                'type' => 'dynamic'
-            ),
-            null,
-            $_POST['table']
-        );
-
-        $success = $field->deleteWithID(array(array('id' => $_POST['id'])));
+        $item = new Item($_POST['id'], $_POST['field']);
+        $item->exists();
+        $success = $item->delete();
         $this->setError( !$success );
 
         $this->json();
