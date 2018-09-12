@@ -14,13 +14,17 @@ class ImageSeeOnly extends Image {
         if( $this->fileURL == null ){
             return $this->inputType('file', $langID);
         }else{
-            return '
-                ' . $this->getLinkFile() . '
-                <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
-                    <i class="fa fa-download"></i>
-                </a>
-            ';
+            return $this->getImage();
         }
+    }
+
+    protected function getImage(){
+        return '
+            ' . $this->getLinkFile() . '
+            <a href="'.$this->fileURL.'" class="btn bg-purple btn-xs" title="'.gettext('Descargar').'" download target="_blank">
+                <i class="fa fa-download"></i>
+            </a>
+        ';
     }
 
     public function canSave($langID = null){

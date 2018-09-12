@@ -325,6 +325,12 @@ msgstr "add-field"
 msgid "eliminar-campo"
 msgstr "delete-field"
 
+msgid "El QR se generará automáticamente al guardar."
+msgstr "The QR will be generated automatically when saving."
+
+msgid "No se ha podido generar el QR."
+msgstr "The QR could not be generated."
+
 # form validation
 msgid "Campo obligatorio."
 msgstr "Mandatory field."
