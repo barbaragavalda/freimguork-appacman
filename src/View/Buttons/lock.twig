@@ -8,7 +8,7 @@
     {% else %}
         {% if itemID %}
             {% if isLocked %}
-                <a href="#" data-id="{{ itemID }}" class="btn btn-danger unblock-item" title="{% trans %}Desbloquear{% endtrans %}" data-toggle="confirmation"><i class="fa fa-unlock"></i> {% trans %}Desbloquear{% endtrans %}</a>
+                <a href="#" data-id="{{ itemID }}" class="btn btn-success unblock-item" title="{% trans %}Desbloquear{% endtrans %}" data-toggle="confirmation"><i class="fa fa-unlock"></i> {% trans %}Desbloquear{% endtrans %}</a>
             {% else %}
                 <a href="#" data-id="{{ itemID }}" class="btn btn-danger block-item" title="{% trans %}Bloquear{% endtrans %}" data-toggle="confirmation"><i class="fa fa-lock"></i> {% trans %}Bloquear{% endtrans %}</a>
             {% endif %}

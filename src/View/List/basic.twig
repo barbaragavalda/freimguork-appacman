@@ -86,6 +86,7 @@
 
     {% set createButton %}
         <div class="clearfix">
+            {% block extra_buttons %}{% endblock %}
             {% include "Buttons/create.twig" %}
             {% include "Buttons/export.twig" %}
         </div>
