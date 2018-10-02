@@ -50,7 +50,16 @@ abstract class BaseContentForm extends Content {
     abstract protected function hasErrors();
 
     protected function prepareForm(){
-        $this->assign('form', $this->getForm());
+        $form = $this->getForm();
+        $this->assign('form', $form);
+        if( $this->info['canLock'] ){
+            foreach($form as $input){
+                if( $input->getFieldName() == 'is_locked' ){
+                    $this->assign('isLocked', $input->getValue());
+                    break;
+                }
+            }
+        }
     }
 
     protected function prepareLinks(){
@@ -80,6 +89,7 @@ abstract class BaseContentForm extends Content {
             $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
             $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
             $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
+            $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
 
             // has permission to create?
             $itemID = $this->getParam('itemID');
@@ -90,7 +100,7 @@ abstract class BaseContentForm extends Content {
                 // has permission to edit or see?
             }else if( $itemID > 0 ){
                 if( $this->item->exists() ){
-                    if( $canSee || $canEdit ){
+                    if( $canSee || $canEdit || $canLock ){
                         $hasPermission = true;
                     }
                     if( $canOwn ){
@@ -113,6 +123,7 @@ abstract class BaseContentForm extends Content {
             $this->assign('canCreate', $canCreate);
             $this->assign('canDelete', $canDelete);
             $this->assign('canOwn', $canOwn);
+            $this->assign('canLock', $canLock);
             $this->assign('canSendChanges', $this->user->hasPermission($contentID, Permissions::SEND_CHANGES));
         }
 
