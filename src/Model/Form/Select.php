@@ -2,7 +2,9 @@
 
 namespace Appacman\Model\Form;
 
+use Appacman\Model\ExtraUser;
 use Core\Model\Encryptor\TwoWay;
+use Core\Utils\Session;
 
 class Select extends FormInput {
 
@@ -77,6 +79,22 @@ class Select extends FormInput {
         $lateralTableLang = $lateralTable . '_lang';
 
         $params = array();
+        $where = '';
+        $session = Session::getInstance();
+        $profile = $session->get('profile_info');
+        if( $profile['profile'] == ExtraUser::OWNER ) {
+            $table = '';
+            if ($this->mysql->fieldExists($lateralTable, $profile['field'])) {
+                $table = $lateralTable;
+            } else if ($this->mysql->fieldExists($lateralTableLang, $profile['field'])) {
+                $table = $lateralTableLang;
+            }
+            if( $table ){
+                $where = 'WHERE ' . $table . '.' . $profile['field'] . ' = :id';
+                $params['id'] = array('value' => $profile['value'], 'type' => \PDO::PARAM_INT);
+            }
+        }
+
         $innerJoin = '';
         if( $this->mysql->tableExists($lateralTableLang) ){
             $innerJoin = 'INNER JOIN '.$lateralTableLang.' ON '.$lateralTableLang.'.id_'.$lateralTable.' = '.$lateralTable.'.id_'.$lateralTable.' AND '.$lateralTableLang.'.id_appacman_lang = :lang';
@@ -86,6 +104,7 @@ class Select extends FormInput {
             SELECT '.$lateralTable.'.id_'.$lateralTable.' AS id, name ' . $extraFields . '
             FROM '.$lateralTable.'
             '.$innerJoin.'
+            '.$where.'
             ORDER BY name ASC
         ';
         return $this->mysql->query($sql, $params);

@@ -6,6 +6,7 @@ use Appacman\Model\ExtraUser;
 use Appacman\Model\User;
 use Core\Model\Utils\DateUtils;
 use Core\Model\Utils\StringUtils;
+use Core\Utils\Session;
 
 class SelectDeepLink extends Select {
 
@@ -45,6 +46,17 @@ class SelectDeepLink extends Select {
         $secondaryOptionsHTML = array();
         $options = $this->getOptions('appacman_push_deeplink', ', table_name, format');
 
+        // remove basic deep links
+        $session = Session::getInstance();
+        $profile = $session->get('profile_info');
+        if( $profile['profile'] == ExtraUser::OWNER ){
+            $newOptions = array();
+            foreach($options as $option){
+                if( $option['table_name'] != '' ) $newOptions[] = $option;
+            }
+            $options = $newOptions;
+        }
+
         $mainHTML .= '<option value=""></option>';
         foreach($options as $mainOption){
             $format = str_replace('{id}', '', $mainOption['format']);
@@ -53,7 +65,7 @@ class SelectDeepLink extends Select {
             $mainHTML .= '<option value="' . $mainOption['id'] . '_' . $mainOption['format'] . '" '.$selectedMain.' data-id="' . $mainOption['id'] . '" >' . $mainOption['name'] . '</option>';
 
             if( $mainOption['table_name'] ){
-                $secondaryHTML = $this->getSelectOptions($mainOption['table_name'], $selectedMain, $mainOption['id']);
+                $secondaryHTML = '<div style="margin-top: 10px">' . $this->getSelectOptions($mainOption['table_name'], $selectedMain, $mainOption['id']) . '</div>';
                 $secondaryOptionsHTML[$mainOption['table_name']] = $secondaryHTML;
             }
         }
