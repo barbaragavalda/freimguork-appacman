@@ -16,7 +16,9 @@ class Forgot extends AppacmanController {
             $extraUser = 'Appacman\\Model\\ExtraUser';
             if( !$send && class_exists($extraUser) ){
                 $form = new $extraUser();
-                $form->remember();
+                if( method_exists($form, 'remember') ){
+                    $form->remember();
+                }
             }
 
             $send = $form->getSend();
