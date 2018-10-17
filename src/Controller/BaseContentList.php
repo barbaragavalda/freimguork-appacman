@@ -9,19 +9,22 @@ abstract class BaseContentList extends Content {
     protected function run(){
         parent::run();
 
+        $listType = $this->content->getListType();
+
         // headers
         $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
         $this->assign('list_headers', $headers);
 
-        // list items
-        $list = $this->content->get();
+        $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
+        $model = new $listClass($this->content);
+        $list = $model->get();
         $list = $this->extraFields( $list );
         $this->assign('list', $list);
 
         // order by
         $this->assign('list_order', $this->content->getOrderBy());
 
-        $this->template('List/' . $this->content->getListType() . '.twig');
+        $this->template('List/' . $listType . '.twig');
     }
 
     protected function hasPermission(){
