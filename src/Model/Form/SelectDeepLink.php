@@ -66,7 +66,7 @@ class SelectDeepLink extends Select {
 
             if( $mainOption['table_name'] ){
                 $secondaryHTML = '<div style="margin-top: 10px">' . $this->getSelectOptions($mainOption['table_name'], $selectedMain, $mainOption['id']) . '</div>';
-                $secondaryOptionsHTML[$mainOption['table_name']] = $secondaryHTML;
+                $secondaryOptionsHTML[] = $secondaryHTML;
             }
         }
 
