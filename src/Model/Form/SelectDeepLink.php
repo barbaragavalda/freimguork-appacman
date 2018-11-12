@@ -49,12 +49,14 @@ class SelectDeepLink extends Select {
         // remove basic deep links
         $session = Session::getInstance();
         $profile = $session->get('profile_info');
-        if( $profile['profile'] == ExtraUser::OWNER ){
-            $newOptions = array();
-            foreach($options as $option){
-                if( $option['table_name'] != '' ) $newOptions[] = $option;
+        if( class_exists('Appacman\\Model\\ExtraUser') ) {
+            if ($profile['profile'] == ExtraUser::OWNER) {
+                $newOptions = array();
+                foreach ($options as $option) {
+                    if ($option['table_name'] != '') $newOptions[] = $option;
+                }
+                $options = $newOptions;
             }
-            $options = $newOptions;
         }
 
         $mainHTML .= '<option value=""></option>';

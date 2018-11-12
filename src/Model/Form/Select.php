@@ -82,16 +82,19 @@ class Select extends FormInput {
         $where = '';
         $session = Session::getInstance();
         $profile = $session->get('profile_info');
-        if( $profile['profile'] == ExtraUser::OWNER ) {
-            $table = '';
-            if ($this->mysql->fieldExists($lateralTable, $profile['field'])) {
-                $table = $lateralTable;
-            } else if ($this->mysql->fieldExists($lateralTableLang, $profile['field'])) {
-                $table = $lateralTableLang;
-            }
-            if( $table ){
-                $where = 'WHERE ' . $table . '.' . $profile['field'] . ' = :id';
-                $params['id'] = array('value' => $profile['value'], 'type' => \PDO::PARAM_INT);
+
+        if( class_exists('Appacman\\Model\\ExtraUser') ) {
+            if ($profile['profile'] == ExtraUser::OWNER) {
+                $table = '';
+                if ($this->mysql->fieldExists($lateralTable, $profile['field'])) {
+                    $table = $lateralTable;
+                } else if ($this->mysql->fieldExists($lateralTableLang, $profile['field'])) {
+                    $table = $lateralTableLang;
+                }
+                if ($table) {
+                    $where = 'WHERE ' . $table . '.' . $profile['field'] . ' = :id';
+                    $params['id'] = array('value' => $profile['value'], 'type' => \PDO::PARAM_INT);
+                }
             }
         }
 
