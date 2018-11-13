@@ -161,6 +161,20 @@ form .alert h4{
     color: #dd4b39 !important;
 }
 
+/* form colopicker */
+.input-colorpicker{
+    width: 220px;
+}
+.input-colorpicker:before{
+    display: none !important;
+}
+.list-colorpicker{
+    display: block;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #dddddd;
+}
+
 /* map */
 .map{
     width: 100%;
