@@ -1,15 +1,23 @@
 <?php
-
+    
 namespace Appacman\Model\Form;
 
 class CheckSeeOnly extends SeeOnly {
-
-    protected function getInputHTML($langID = null){
-        $value = parent::getSeeValue($langID);
+    
+    public function getListValue(){
+        $value = parent::getSeeValue();
         if( $value ){
             return gettext('Sí');
         }
         return gettext('No');
+    }
+    
+    public function getSeeValue($langID = null){
+        return $this->getListValue();
+    }
+    
+    protected function getInputHTML($langID = null){
+        return $this->getListValue();
     }
 
 }
