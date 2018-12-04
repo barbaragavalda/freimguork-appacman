@@ -83,7 +83,7 @@ abstract class FormInput extends Model {
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
-        if( in_array($info['type'], array('dynamic', 'selectMulti')) ){
+        if( array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti')) ){
             $this->isRequired = false;
         }
         if( $this->mysql->fieldExists($this->table.'_lang', $this->fieldName) ){
