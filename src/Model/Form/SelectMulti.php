@@ -14,8 +14,13 @@ class SelectMulti extends Select {
      * @return string
      */
     protected function getInputHTML($langID = null){
+        $selectCheck = $this->fieldName . '_selectAll';
         return '
-            <select name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            <div class="select-all">
+                <input type="checkbox" class="custom-check select-all-checkbox" id="'.$selectCheck.'" name="'.$selectCheck.'" />
+                <label for="'.$selectCheck.'"> '.gettext('Seleccionar todos').'</label>
+            </div>
+            <select id="'.$this->fieldName.'" name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';

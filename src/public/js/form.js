@@ -38,6 +38,20 @@ var Namespace = Namespace || {};
                 minimumResultsForSearch: 10,
                 allowClear: true
             });
+            $('.select-all-checkbox').on('ifChanged', function(){
+                var id = $(this).attr('id').replace('_selectAll', ''),
+                    options = $('#' + id +' option');
+                if( $(this).is(':checked') ){
+                    for(var i=0; i<options.length; i++){
+                        if( $(options[i]).val() != "" && $(options[i]).val() > 0 ){
+                            $(options[i]).prop('selected', 'selected');
+                        }
+                    }
+                }else{
+                    $('#' + id).val(null);
+                }
+                $('#' + id).trigger('change');
+            });
         };
 
         this.check = function(){
