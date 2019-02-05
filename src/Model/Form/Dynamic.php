@@ -3,10 +3,14 @@
 namespace Appacman\Model\Form;
 
 use Appacman\Model\Item;
+use Appacman\Model\User;
+use Appacman\Model\Utils\Permissions;
 
 class Dynamic extends FormInput {
 
     private $forms = array();
+
+    private $canEdit = false;
 
     public function __construct($info, $id, $table = null){
         parent::__construct($info, $id, $table);
@@ -29,6 +33,20 @@ class Dynamic extends FormInput {
         }else{
             $this->forms[] = new Item(false, $this->fieldName);
         }
+
+        $sql = '
+            SELECT id_appacman_content
+            FROM appacman_content
+            WHERE table_name = :table
+        ';
+        $params = array(
+            'table' => array('value' => $table, 'type' => \PDO::PARAM_STR)
+        );
+        $tableInfo = $this->mysql->query($sql, $params);
+        if( count($tableInfo) ){
+            $user = User::getInstance();
+            $this->canEdit = $user->hasPermission($tableInfo[0]['id_appacman_content'], Permissions::EDIT);
+        }
     }
 
     /**
@@ -36,9 +54,13 @@ class Dynamic extends FormInput {
      * @return string
      */
     public function getName(){
-        return $this->name . '
+        $name = $this->name;
+        if( $this->canEdit ){
+            $name .= '
             <a href="#" data-field="' . $this->fieldName. '" data-id="' . $this->id. '" data-table="' . $this->table. '" class="add-dynamic-field btn btn-success btn-xs" title="' . gettext('Añadir') . '"><i class="fa fa-plus"></i></a>
         ';
+        }
+        return $name;
     }
 
     /**
@@ -63,10 +85,22 @@ class Dynamic extends FormInput {
 
         return '
             <div id="content-' . $this->fieldName. '" class="box-body">' . $html . '</div>
+            ' . $this->getName() . '
         ';
     }
 
-    public function getItemHTML($form = null){
+    public function getSeeValue($langID = null){
+        $html = '';
+        foreach($this->forms as $form){
+            $html .= $this->getItemHTML($form, false);
+        }
+
+        return '
+            <div id="content-' . $this->fieldName. '" class="box-body">' . $html . '</div>
+        ';
+    }
+
+    public function getItemHTML($form = null, $canEdit = true){
         if( $form == null ){
             $form = new Item(false, $this->fieldName);
             $this->forms[] = $form;
@@ -86,7 +120,10 @@ class Dynamic extends FormInput {
                     <div class="clearfix">
                         <label class="col-sm-2 control-label' . $required . '">' . $input->getName() . '</label>
                         <div class="col-sm-10">
-                            ' . $input->getFormHTML() . '
+                        ';
+                if( $canEdit )  $html .= $input->getFormHTML();
+                else            $html .= $input->getSeeValue();
+                $html .= '
                         </div>
                     </div>
                 ';
@@ -97,8 +134,10 @@ class Dynamic extends FormInput {
                 $html .= $input->getHTML();
             }
         }
+        if( $this->canEdit ){
+            $html .= '<a href="#" data-id="' . $form->getID() . '" data-field="' . $this->fieldName. '" class="delete-dynamic-field pull-right btn btn-danger btn-xs" title="' . gettext('Eliminar') . '" data-toggle="confirmation"><i class="fa fa-trash"></i></a>';
+        }
         $html .= '
-                    <a href="#" data-id="' . $form->getID() . '" data-field="' . $this->fieldName. '" class="delete-dynamic-field pull-right btn btn-danger btn-xs" title="' . gettext('Eliminar') . '" data-toggle="confirmation"><i class="fa fa-trash"></i></a>
                 </div>
             </div>
         ';
