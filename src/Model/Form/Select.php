@@ -46,12 +46,13 @@ class Select extends FormInput {
         $optionsHTML .= '<option></option>';
         foreach($options as $option){
             $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
+            $disabled = (array_key_exists('disabled', $option) && $option['disabled']) ? 'disabled' : '';
             $name = $option['name'];
             if( array_key_exists('created', $option) ){
                 $hash = $option['id'] . '_' . $option['created'] . '_name';
                 $name = TwoWay::decrypt($option['name'], $hash);
             }
-            $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.'>' . $name . '</option>';
+            $optionsHTML .= '<option value="' . $option['id'] . '" '.$selected.' '.$disabled.'>' . $name . '</option>';
         }
 
         return $optionsHTML;
