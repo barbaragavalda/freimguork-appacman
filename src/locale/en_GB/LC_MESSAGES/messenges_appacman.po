@@ -331,6 +331,9 @@ msgstr "The QR will be generated automatically when saving."
 msgid "No se ha podido generar el QR."
 msgstr "The QR could not be generated."
 
+msgid "No se pueden modificar los permisos de los administradores."
+msgstr "You can not modify the permissions of the administrators."
+
 # form validation
 msgid "Campo obligatorio."
 msgstr "Mandatory field."
