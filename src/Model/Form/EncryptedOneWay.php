@@ -20,6 +20,14 @@ class EncryptedOneWay extends Encrypted {
         return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="" />';
     }
 
+    public function canSave($langID = null){
+        $postValue = parent::getPostValue($langID);
+        if( $postValue ){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * encrypt value in order to save on database
      * @param null $langID
