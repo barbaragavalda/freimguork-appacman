@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.0.9\n"
+"X-Generator: Poedit 2.2.1\n"
 
 # url
 msgid "iniciar-sesion"
@@ -224,6 +224,12 @@ msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
 
 msgid "Mostrar _MENU_ items por página"
 msgstr "Show _MENU_ items per page"
+
+msgid "Mostrar"
+msgstr "Show"
+
+msgid "items por página"
+msgstr "items per page"
 
 msgid "Sin resultados"
 msgstr "Nothing found"
