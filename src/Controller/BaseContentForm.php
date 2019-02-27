@@ -12,6 +12,8 @@ use Core\Utils\Session;
 
 abstract class BaseContentForm extends Content {
 
+    protected $template = 'form.twig';
+
     /**
      * @var \Appacman\Model\Item $item
      */
@@ -75,7 +77,7 @@ abstract class BaseContentForm extends Content {
             $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
         }else{
             $this->prepareLinks();
-            $this->template('form.twig');
+            $this->template($this->template);
         }
     }
 

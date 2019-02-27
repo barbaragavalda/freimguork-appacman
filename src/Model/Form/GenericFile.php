@@ -115,9 +115,9 @@ class GenericFile extends FormInput {
      * @throws Exception
      */
     protected function getPostValue($langID = null){
+        // already uploaded
         if( $this->fileID ){
             $postName = $this->getInputName($langID, false);
-            //if( $postName == 'image' ) r('add empty files ' . $postName . ' ' . $this->isMultiple);
             if( $this->isMultiple !== false && $this->postID == -1 ){
                 // add empty files
                 if( array_key_exists($postName, $_FILES) ){
@@ -132,6 +132,8 @@ class GenericFile extends FormInput {
 
             return $this->fileID;
         }
+
+        // upload file
         $file = $this->getPostFile($langID);
         if( $file && !empty($file['tmp_name']) ){
             $image = new File();
@@ -147,6 +149,10 @@ class GenericFile extends FormInput {
             $this->fileID = $fileID;
             $this->postID = $fileID;
             $this->fileURL = $image->getAbsolutePath();
+
+            $postName = $this->getInputName($langID);
+            $this->value = $this->fileID;
+            $_POST[$postName] = $this->fileID;
             return $fileID;
         }
 
