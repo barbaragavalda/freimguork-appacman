@@ -125,6 +125,11 @@ var Namespace = Namespace || {};
                                 loader.hide();
                             }
                         });
+                    },
+                    onPaste: function (e) {
+                        var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                        e.preventDefault();
+                        document.execCommand('insertText', false, bufferText);
                     }
                 }
             });
@@ -136,7 +141,14 @@ var Namespace = Namespace || {};
                 height: 150,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'clear']]
-                ]
+                ],
+                callbacks: {
+                    onPaste: function (e) {
+                        var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                        e.preventDefault();
+                        document.execCommand('insertText', false, bufferText);
+                    }
+                }
             });
         };
 
