@@ -79,8 +79,10 @@ class Dynamic extends FormInput {
      */
     protected function getInputHTML($langID = null){
         $html = '';
+        $i = 0;
         foreach($this->forms as $form){
-            $html .= $this->getItemHTML($form);
+            $html .= $this->getItemHTML($form, true, $i);
+            $i++;
         }
 
         return '
@@ -91,8 +93,10 @@ class Dynamic extends FormInput {
 
     public function getSeeValue($langID = null){
         $html = '';
+        $i = 0;
         foreach($this->forms as $form){
-            $html .= $this->getItemHTML($form, false);
+            $html .= $this->getItemHTML($form, false, $i);
+            $i++;
         }
 
         return '
@@ -100,7 +104,7 @@ class Dynamic extends FormInput {
         ';
     }
 
-    public function getItemHTML($form = null, $canEdit = true){
+    public function getItemHTML($form = null, $canEdit = true, $multiplePosition = true){
         if( $form == null ){
             $form = new Item(false, $this->fieldName);
             $this->forms[] = $form;
@@ -112,7 +116,7 @@ class Dynamic extends FormInput {
         ';
         $inputs = $form->get($this->languages);
         foreach($inputs as $input){
-            $input->isMultiple();
+            $input->isMultiple($multiplePosition);
             if( $input->isVisible() ){
                 $required = '';
                 if( $input->isRequired() ) $required = ' required';

@@ -8,22 +8,54 @@ class SelectMulti extends Select {
 
     private $lateralTable = '';
 
+    public function __construct($info, $id, $table = null){
+        parent::__construct($info, $id, $table);
+
+        $this->initTables();
+    }
+
     /**
      * select multiple (more than one option)
      * @param int|null $langID
      * @return string
      */
     protected function getInputHTML($langID = null){
-        $selectCheck = $this->fieldName . '_selectAll';
-        return '
-            <div class="select-all">
-                <input type="checkbox" class="custom-check select-all-checkbox" id="'.$selectCheck.'" name="'.$selectCheck.'" />
-                <label for="'.$selectCheck.'"> '.gettext('Seleccionar todos').'</label>
-            </div>
-            <select id="'.$this->fieldName.'" name="'.$this->fieldName.'[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
+        $fieldName = $this->getInputName($langID);
+        $selectCheck = $this->getInputName($langID, false) . '_selectAll';
+
+        $field = '';
+        if( $this->isMultiple === false ){
+            $field = '
+                <div class="select-all">
+                    <input type="checkbox" class="custom-check select-all-checkbox" id="'.$selectCheck.'" name="'.$selectCheck.'" />
+                    <label for="'.$selectCheck.'"> '.gettext('Seleccionar todos').'</label>
+                </div>
+            ';
+        }
+        $field .= '
+            <select id="'.$fieldName.'" name="'.$fieldName.'"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';
+        return $field;
+    }
+
+    public function getInputName($langID = null, $withMultiple = true){
+        $fieldName = $this->fieldName;
+        if( $this->isMultiple !== false ) $fieldName .= $this->isMultiple;
+        $multiple = $withMultiple ? '[]' : '';
+        if( $langID == null ){
+            return $fieldName . $multiple;
+        }else{
+            return $fieldName . '_' .$langID . $multiple;
+        }
+    }
+
+    private function getLateralField(){
+        if( $this->currentTable == $this->lateralTable ){
+            return $this->lateralTable . '_related';
+        }
+        return $this->lateralTable;
     }
 
     /**
@@ -31,8 +63,7 @@ class SelectMulti extends Select {
      * @return array
      */
     protected function getOptions($table = null, $extraFields = ''){
-        $lateralTable = substr(strstr($this->fieldName, '_'), 1);
-        return $this->loadOptions($lateralTable);
+        return $this->loadOptions($this->lateralTable);
     }
 
     /**
@@ -43,7 +74,7 @@ class SelectMulti extends Select {
     protected function loadValues($langID){
         $this->initTables();
         $sql = '
-            SELECT id_'.$this->lateralTable.' AS id
+            SELECT id_'.$this->getLateralField().' AS id
             FROM '.$this->fieldName.'
             WHERE id_'.$this->currentTable.' = :id
         ';
@@ -58,6 +89,13 @@ class SelectMulti extends Select {
         $tables = explode('_', $this->fieldName);
         $this->currentTable = $tables[0];
         $this->lateralTable = substr(strstr($this->fieldName, '_'), 1);
+
+        if( !$this->mysql->tableExists($this->lateralTable) ){
+            $first = strpos($this->fieldName, '_');
+            $pos = strpos($this->fieldName, '_', $first+1);
+            $this->currentTable = substr($this->fieldName, 0, $pos);
+            $this->lateralTable = substr($this->fieldName, $pos+1);
+        }
     }
 
     /**
@@ -74,7 +112,7 @@ class SelectMulti extends Select {
     }
 
     public function save($itemID, $langID = null){
-        $postName = $this->getFieldName($langID);
+        $postName = $this->getInputName($langID, false);
         if( isset($_POST[$postName]) ){
             $this->initTables();
 
@@ -91,16 +129,24 @@ class SelectMulti extends Select {
             if( $this->mysql->getState() ){
                 // insert again
                 $values = array();
+                $_POST[$postName] = array_unique($_POST[$postName]);
                 foreach($_POST[$postName] as $index => $id){
-                    $values[] = '(:id, :lateral_id_'.$index.')';
-                    $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+                    if( $id ){
+                        $values[] = '(:id, :lateral_id_'.$index.')';
+                        $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+                    }
                 }
-                $sql = '
-                    INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->lateralTable.') 
-                    VALUES '.implode(',', $values).'
-                ';
-                $this->mysql->query($sql, $params);
-                if( $this->mysql->getState() ){
+
+                if( count($values) ){
+                    $sql = '
+                        INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->getLateralField().') 
+                        VALUES '.implode(',', $values).'
+                    ';
+                    $this->mysql->query($sql, $params);
+                    if( $this->mysql->getState() ){
+                        return false;
+                    }
+                }else{
                     return false;
                 }
             }

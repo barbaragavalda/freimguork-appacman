@@ -283,7 +283,7 @@ abstract class FormInput extends Model {
      */
     public function getInputName($langID = null, $withMultiple = true){
         $fieldName = $this->fieldName;
-        $multiple = $this->isMultiple && $withMultiple ? '[]' : '';
+        $multiple = $this->isMultiple !== false && $withMultiple ? '[]' : '';
         if( $langID == null ){
             return $fieldName . $multiple;
         }else{
