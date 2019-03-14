@@ -369,3 +369,16 @@ msgstr "Information"
 
 msgid "Licencia"
 msgstr "Licencia"
+
+# push
+msgid "Alcance"
+msgstr "Alcance"
+
+msgid "Estadísticas"
+msgstr "Estadísticas"
+
+msgid "dispositivos"
+msgstr "dispositivos"
+
+msgid "veces clickada"
+msgstr "veces clickada"

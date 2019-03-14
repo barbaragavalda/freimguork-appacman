@@ -1,0 +1,102 @@
+{% extends "form.twig" %}
+
+{% block extra_head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ static_domain }}public/static/css/appacman.css?v=1">
+{% endblock %}
+
+{% block extra_scripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            var button = $('button[name="save"]');
+            if( button.length ){
+                var platform = $('select[name="platform[]"]'),
+                    model = $('select[name="model[]"]'),
+                    os_version = $('select[name="os_version[]"]'),
+                    app_version = $('select[name="app_version[]"]'),
+                    last_connection = $('input[name="last_connection"]');
+
+                checkTarget();
+                $('input').focusout(function(){
+                    checkTarget();
+                });
+                $('select').change(function(){
+                    checkTarget();
+                });
+
+                function checkTarget(){
+                    var platformValue = checkInput(platform.val()),
+                        modelValue = checkInput(model.val()),
+                        osVersionValue = checkInput(os_version.val()),
+                        appVersionValue = checkInput(app_version.val());
+
+                    $.ajax({
+                        type:       'POST',
+                        url:        '{{ domain }}push-target/{{ contentID }}',
+                        data:       {
+                            'platform':         platformValue.join(),
+                            'model':            modelValue.join(),
+                            'os_version':       osVersionValue.join(),
+                            'app_version':      appVersionValue.join(),
+                            'last_connection':  last_connection.val()
+                        },
+                        dataType:	'json'
+                    })
+                        .done( function( result ){
+                            if( typeof(result['target']) != 'undefined' ){
+                                if( button.find('span').length == 0 ){
+                                    button.append('<span></span>');
+                                }
+                                button.find('span').html('(se enviará a ' + result['target'] + ' dispositivos)');
+                            }
+                        });
+                }
+
+                function checkInput(value){
+                    for(var i=0; i<value.length; i++){
+                        value[i] = value[i].replace(',', '.');
+                    }
+                    return value;
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+
+{% block extra_form %}
+    {% if statistics|length %}
+        </div>
+        <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-bar-chart"></i> {% trans %}Estadísticas{% endtrans %}</h3>
+        </div>
+        <div class="with-border">
+            <div class="box-header">
+                {% trans %}Alcance{% endtrans %}
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <div class="col-md-4 text-center statistic">
+                                <span class="skin-custom-color">{{ statistics.devices }}</span>
+                                <div>{% trans %}dispositivos{% endtrans %}</div>
+                            </div>
+                            <div class="col-md-4 text-center statistic">
+                                <span class="skin-custom-color">{{ statistics.clicks }}</span>
+                                <div>{% trans %}veces clickada{% endtrans %}</div>
+                            </div>
+                            <div class="col-md-4 text-center statistic">
+                                <span class="skin-custom-color">{{ statistics.conversion }}</span>
+                                <div>{% trans %}conversión promoción / descuento{% endtrans %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

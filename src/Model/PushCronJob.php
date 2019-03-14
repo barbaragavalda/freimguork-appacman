@@ -166,7 +166,7 @@ class PushCronJob extends Model {
     }
 
     private function addQuotes($e){
-        return '"' . $e . '"';
+        return '"' . str_replace('.', ',', $e) . '"';
     }
 
     private function delete($ids){
