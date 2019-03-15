@@ -16,32 +16,24 @@ class Statistic extends Model {
         $this->hasStatistics = $this->mysql->tableExists('appacman_push_statistic');
     }
 
-    public function update($counter = 1, $devices = null){
+    public function update($devices){
         if( $this->hasStatistics ){
-            $fields = '';
-            $params = array(
-                'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
-            );
-            if( $devices != null ){
-                $fields = ', devices = devices + :devices';
-                $params['devices'] = array('value' => $devices, 'type' => \PDO::PARAM_INT);
-            }
-
             $sql = '
                 INSERT INTO appacman_push_statistic
                 SET id_appacman_push = :id,
-                    counter = :counter
-                    ' . $fields . '
+                    devices = :devices
             ';
+            $params = array(
+                'id'        => array('value' => $this->id,  'type' => \PDO::PARAM_INT),
+                'devices'   => array('value' => $devices,   'type' => \PDO::PARAM_INT),
+            );
             if( $this->exists() ){
                 $sql = '
                     UPDATE appacman_push_statistic
-                    SET counter = counter + :counter' . $fields . '
+                    SET devices = :devices
                     WHERE id_appacman_push = :id
                 ';
             }
-            $params['counter'] = array('value' => $counter, 'type' => \PDO::PARAM_INT);
-
             $this->mysql->query($sql, $params);
         }
     }
@@ -71,7 +63,7 @@ class Statistic extends Model {
     public function get(){
         if( $this->hasStatistics ) {
             $sql = '
-            SELECT devices, counter AS clicks, counter_scan AS conversion
+            SELECT devices
             FROM appacman_push_statistic
             WHERE id_appacman_push = :id
         ';
@@ -85,9 +77,7 @@ class Statistic extends Model {
             }
 
             return array(
-                'devices' => '0',
-                'clicks' => '0',
-                'conversion' => '0',
+                'devices' => '0'
             );
         }
         return array();

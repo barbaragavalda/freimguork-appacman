@@ -28,6 +28,10 @@ class PushList extends ContentList  {
 
                 $notifier = new Notifier();
                 $item['target'] = $notifier->getTarget(null, $pushID);
+            }else{
+                $item['canDelete'] = false;
+                $item['canEdit'] = false;
+                $item['canSee'] = true;
             }
         }
 
