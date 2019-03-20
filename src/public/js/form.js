@@ -426,12 +426,21 @@ var Namespace = Namespace || {};
             _map = [],
             _marker = null,
             _latitude = null,
-            _longitude = null;
+            _longitude = null,
+            _hasCutomPosition = true,
+            _customLatitude = null,
+            _customLongitude = null;
 
         this.init = function(object){
             _id = object.attr('id').substring(4);
-            _latitude = $('input[name="latitude-' + _id + '"]');
-            _longitude = $('input[name="longitude-' + _id + '"]');
+            _latitude = $('input[name="latitude"]');
+            _longitude = $('input[name="longitude"]');
+            _hasCutomPosition = true;
+            if( _latitude.length == 0 || _longitude.length == 0 ){
+            	_hasCutomPosition = false;
+            	_latitude = $('input[name="latitude-' + _id + '"]');
+            	_longitude = $('input[name="longitude-' + _id + '"]');
+            }
 
             _map = new google.maps.Map(
                 document.getElementById('map-' + _id),
@@ -452,12 +461,25 @@ var Namespace = Namespace || {};
             var center = new google.maps.LatLng(41.38701, 2.16785),
                 latitude = _latitude.val(),
                 longitude = _longitude.val();
+                
             if( latitude && longitude && latitude > 0 && longitude > 0 ){
                 center = new google.maps.LatLng(latitude, longitude);
                 this.addMarker( center );
             }else{
                 _map.setZoom(13);
                 _map.setCenter( center );
+            }
+            
+            if( _hasCutomPosition ){
+				var that = this;
+				_customLatitude = $('input[name="latitude"]');
+				$('input[name="latitude"]').keyup(function(){
+					that.changeMarker();
+				});
+				_customLongitude = $('input[name="longitude"]');
+				$('input[name="longitude"]').keyup(function(){
+					that.changeMarker();
+				});
             }
         };
 
@@ -467,9 +489,12 @@ var Namespace = Namespace || {};
             autocomplete.bindTo('bounds', _map);
 
             var that = this;
-            if( $(searchInput).val() == "" ) that.removeMarker();
+            if( $(searchInput).val() == "" && !_hasCutomPosition ) {
+            	that.removeMarker();
+            }
             $(searchInput).keyup(function(){
                 if( $(this).val() == "" ){
+            		console.log('removeMarker 2');
                     that.removeMarker();
                 }
             });
@@ -493,17 +518,27 @@ var Namespace = Namespace || {};
                 position: latLang,
                 map: _map
             });
-
-            _latitude.val(latLang.lat());
-            _longitude.val(latLang.lng());
+            
+            if( !_hasCutomPosition ){
+            	_latitude.val(latLang.lat());
+            	_longitude.val(latLang.lng());
+            }
+        };
+        
+        this.changeMarker = function(){
+            var latitude = $('input[name="latitude"]'),
+            	longitude = $('input[name="longitude"]');
+            this.addMarker( new google.maps.LatLng(latitude.val(), longitude.val()) );
         };
 
         this.removeMarker = function(){
             if( _marker != null ){
                 _marker.setMap(null);
             }
-            _latitude.val('');
-            _longitude.val('');
+            if( !_hasCutomPosition ){
+            	_latitude.val('');
+            	_longitude.val('');
+            }
         };
 
         return this;
