@@ -4,7 +4,7 @@ namespace Appacman\Model\Form;
 
 class Number extends FormInput {
 
-    protected $type = \PDO::PARAM_INT;
+    protected $type = \PDO::PARAM_STR;
 
     /**
      * Post value must be a number
