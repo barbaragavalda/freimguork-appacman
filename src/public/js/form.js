@@ -506,6 +506,8 @@ var Namespace = Namespace || {};
                 }
 
                 that.addMarker( place.geometry.location );
+            	_latitude.val(place.geometry.location.lat());
+            	_longitude.val(place.geometry.location.lng());
             });
         };
 
