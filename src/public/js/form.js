@@ -140,7 +140,9 @@ var Namespace = Namespace || {};
             $('.wysiwyg-textarea-simple textarea').summernote({
                 height: 150,
                 toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']]
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['media', ['link']],
+                    ['extra', ['codeview', 'clear']]
                 ],
                 callbacks: {
                     onPaste: function (e) {
