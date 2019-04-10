@@ -27,13 +27,15 @@ class Add extends Ajax {
             $_POST['id'],
             $_POST['table']
         );
+        $position = null;
+        if( $_POST['position'] ) $position = $_POST['position'];
 
         $languagesModel = new Language();
         $languages = $languagesModel->get();
         $field->setLanguages($languages);
 
         $this->removeInfo();
-        $this->assign('html', $field->getItemHTML());
+        $this->assign('html', $field->getItemHTML(null, true, $position));
         $this->json();
     }
 

@@ -127,6 +127,14 @@ abstract class FormInput extends Model {
     }
 
     /**
+     * is field required?
+     * @param bool
+     */
+    public function setIsRequired($isRequired){
+        $this->isRequired = $isRequired;
+    }
+
+    /**
      * Field name (description useful for the user)
      * @return string
      */

@@ -166,11 +166,26 @@ var Namespace = Namespace || {};
             $('.add-dynamic-field').click(function(e){
                 var fieldName = $(this).attr('data-field'),
                     data = new FormData(),
-                    loader = new Namespace.Loader();
+                    loader = new Namespace.Loader(),
+                    content = $('#content-' + fieldName),
+                    position = null;
+
+                content.find('select.select2').each(function(){
+                    if( typeof($(this).attr('multiple')) !== 'undefined' ) {
+                        var id = $(this).attr('id').replace('[]', ''),
+                            name = $(this).attr('data-name');
+                        id = parseInt(id.replace(name, ''), 10);
+                        if (position === null || id > position) {
+                            position = id;
+                        }
+                    }
+                });
+                if( position != null ) position++;
 
                 data.append('field', fieldName);
                 data.append('id', $(this).attr('data-id'));
                 data.append('table', $(this).attr('data-table'));
+                data.append('position', position);
 
                 loader.show();
 
