@@ -39,8 +39,8 @@ class GenericFile extends FormInput {
         }
     }
 
-    public function initFile(){
-        $this->fileID = parent::getSeeValue();
+    public function initFile($lang = null){
+        $this->fileID = parent::getSeeValue($lang);
 
         $image = new File($this->fileID);
         $this->fileURL = $image->getAbsolutePath();
@@ -51,7 +51,6 @@ class GenericFile extends FormInput {
         $postName = $this->getInputName($langID, false);
         if( $this->postFile == -1 ){
             $this->postFile = null;
-            //$postName = $this->getInputName($langID, false);
             if( isset($_FILES[$postName]) ){
                 if( $this->isMultiple === false ){
                     $this->postFile = $_FILES[$postName];
@@ -89,6 +88,7 @@ class GenericFile extends FormInput {
      * @return string
      */
     protected function getInputHTML($langID = null){
+        $this->initFile($langID);
         if( $this->fileURL == null ){
             return $this->inputType('file', $langID);
         }else{
@@ -115,6 +115,9 @@ class GenericFile extends FormInput {
      * @throws Exception
      */
     protected function getPostValue($langID = null){
+        $this->fileID = false;
+        $this->postID = -1;
+        $this->postFile = -1;
         // already uploaded
         if( $this->fileID ){
             $postName = $this->getInputName($langID, false);
