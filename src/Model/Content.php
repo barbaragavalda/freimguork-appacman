@@ -88,32 +88,29 @@ class Content extends Page {
     /**
      * get the list of items for this content
      * @param string|null $order
+     * @param string|null $where
      * @return array
      */
-    public function get($order = null){
+    public function get($order = null, $where = null){
         // fields
         $fields = $this->fields->getFieldsForList();
-        return $this->getList($order, $fields);
+        return $this->getList($order, $fields, $where);
     }
 
     /**
      * prepare list
      * @param string|null $order
      * @param array $fields
+     * @param string|null $extraWhere
      * @return array
      */
-    private function getList($order, $fields){
+    private function getList($order, $fields, $extraWhere = null){
         $fieldsNames = array_column($fields, 'field_name');
         foreach($fieldsNames as &$field){
             $field = '`' . $field . '`';
         }
         $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
 
-        // order
-        $orderBy = '';
-        if( $order != null ){
-            $orderBy = ' ORDER BY '.$order;
-        }
 
         // table rows
         $table = $this->info['table_name'];
@@ -127,13 +124,27 @@ class Content extends Page {
             $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
             $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
         }
+
+        // where
+        $where = array();
         $session = Session::getInstance();
         $profileInfo = $session->get('profile_info');
         if( $profileInfo != null && $this->mysql->fieldExists($table, $profileInfo['field']) ){
-            $sql .= ' WHERE t.' . $profileInfo['field'] . ' = :profile_filter';
+            $where[] = 't.' . $profileInfo['field'] . ' = :profile_filter';
             $params['profile_filter'] = array('value'=> $profileInfo['value'], 'type' => \PDO::PARAM_STR);
         }
-        $sql .= $orderBy;
+        if( $extraWhere != null ){
+            $where[] = $extraWhere;
+        }
+        if( count($where) ){
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        // order
+        if( $order != null ){
+            $sql .= ' ORDER BY '.$order;
+        }
+
         $rows = $this->mysql->query($sql, $params);
 
         // prepare rows for form

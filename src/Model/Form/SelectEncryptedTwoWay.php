@@ -24,11 +24,7 @@ class SelectEncryptedTwoWay extends Select {
         return $this->getSeeValue($langID) . $this->inputType('hidden', $langID);
     }
 
-    /**
-     * from witch table has to load options?
-     * @return array
-     */
-    protected function getOptions(){
+    protected function getOptions($table = null, $extraFields = ''){
         $lateralTable = str_replace('id_', '', $this->fieldName);
         return $this->loadOptions($lateralTable, ', created');
     }

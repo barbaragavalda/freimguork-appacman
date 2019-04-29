@@ -37,9 +37,10 @@ class Menu extends Model {
 
     public function get(){
         $sql = '
-            SELECT ac.id_appacman_content, ac.icon, ac.id_appacman_block, ac.table_name, acl.name
+            SELECT ac.id_appacman_content, ac.icon, ac.id_appacman_block, ac.table_name, alt.name AS type, acl.name
             FROM appacman_content AS ac
             INNER JOIN appacman_content_lang AS acl ON ac.id_appacman_content = acl.id_appacman_content AND acl.id_appacman_lang = :lang
+            INNER JOIN appacman_list_type AS alt ON ac.id_appacman_list_type = alt.id_appacman_list_type
             ORDER BY ac.order ASC
         ';
         $params = array(
@@ -60,7 +61,7 @@ class Menu extends Model {
                             break;
                         }
                     }
-                    $content['counter'] = $this->getCounter($content['table_name'], $isOwn);
+                    $content['counter'] = $this->getCounter($content['id_appacman_content'], $content['type'], $isOwn);
                     $content['permissions'] = $permissions;
                     $aside['b'.$content['id_appacman_block']]['list'][] = $content;
                 }
@@ -95,20 +96,12 @@ class Menu extends Model {
         return $aside;
     }
 
-    private function getCounter($tableName, $isOwn = false){
-        $sql = '
-            SELECT COUNT(*) AS counter
-            FROM '.$tableName.' AS t
-        ';
-        if( $isOwn && $this->profileInfo != null ){
-            $sql .= 'WHERE t.' . $this->profileInfo['field'] . ' = ' . $this->profileInfo['value'];
-        }
-        $counter = $this->mysql->query($sql);
-
-        if( count($counter) ){
-            return $counter[0]['counter'];
-        }
-        return 0;
+    private function getCounter($id, $listType, $isOwn = false){
+        $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
+        $content = new Content($id);
+        $content->exists();
+        $model = new $listClass($content);
+        return count( $model->get() );
     }
 
     private function getConfig($name){
