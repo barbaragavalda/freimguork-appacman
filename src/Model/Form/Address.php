@@ -25,7 +25,7 @@ class Address extends FormInput {
     }
 
     protected function getInputHTML($langID = null){
-        return $this->inputType('text', $langID) . '
+        return $this->inputType('text', $langID, ' autocomplete="off"') . '
             <div id="map-' . $this->fieldName . '" class="map"></div>
             <input type="hidden" name="latitude-' . $this->fieldName . '" value="'.$this->latitude.'" />
             <input type="hidden" name="longitude-' . $this->fieldName . '" value="'.$this->longitude.'" />

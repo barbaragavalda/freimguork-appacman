@@ -176,11 +176,16 @@ class Dynamic extends FormInput {
 
             // num forms
             $lang = null;
+            $numForms = 0;
             $firstInput = $loopInputs[1];
             if( $firstInput->isOnLangTable() ){
                 $lang = $this->languages[0]['id'];
             }
-            $numForms = count( $_POST[$firstInput->getInputName($lang)] );
+            if( isset($_FILES[$firstInput->getInputName($lang)]) ){
+                $numForms = count( $_FILES[$firstInput->getInputName($lang)]['name'] );
+            }else{
+                $numForms = count( $_POST[$firstInput->getInputName($lang)] );
+            }
 
             for($i=0; $i<$numForms; $i++){
                 $form = new Item(false, $this->fieldName);

@@ -20,10 +20,6 @@ class SelectEncryptedTwoWay extends Select {
         return '-';
     }
 
-    public function getInputHTML($langID = null){
-        return $this->getSeeValue($langID) . $this->inputType('hidden', $langID);
-    }
-
     protected function getOptions($table = null, $extraFields = ''){
         $lateralTable = str_replace('id_', '', $this->fieldName);
         return $this->loadOptions($lateralTable, ', created');

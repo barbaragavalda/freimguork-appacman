@@ -469,11 +469,12 @@ abstract class FormInput extends Model {
      * Default input HTML
      * @param $type
      * @param null $langID
+     * @param string $extra
      * @return string
      */
-    protected function inputType($type = 'text', $langID = null){
+    protected function inputType($type = 'text', $langID = null, $extra = ''){
         $postName = $this->getInputName($langID);
-        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getInputValue($langID).'" />';
+        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$this->getInputValue($langID).'" ' . $extra . ' />';
     }
 
 }

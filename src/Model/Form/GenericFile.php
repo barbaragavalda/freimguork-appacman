@@ -49,7 +49,7 @@ class GenericFile extends FormInput {
 
     public function getPostFile($langID = null){
         $postName = $this->getInputName($langID, false);
-        if( $this->postFile == -1 ){
+        if( $this->postFile == -1 || $this->postFile == null ){
             $this->postFile = null;
             if( isset($_FILES[$postName]) ){
                 if( $this->isMultiple === false ){

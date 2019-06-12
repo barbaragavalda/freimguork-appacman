@@ -14,6 +14,22 @@ class SelectMulti extends Select {
         $this->initTables();
     }
 
+    public function getSeeValue($langID = null){
+        $options = $this->getOptions();
+        $values = $this->loadValues($langID);
+
+        if( count($values) ){
+            $value = array();
+            foreach( $options as $option ){
+                if( in_array($option['id'], $values) ){
+                    $value[] = $option['name'];
+                }
+            }
+            return implode(', ', $value);
+        }
+        return '-';
+    }
+
     /**
      * select multiple (more than one option)
      * @param int|null $langID
