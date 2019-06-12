@@ -209,23 +209,54 @@ class Item extends Page {
      */
     private function update($params, $langID = null){
         $fields = $this->getFields($params);
+        if( $fields ){
+            $tableName = $this->table;
+            $whereLang = '';
+            $paramsUpdate = $params;
+            if( $langID != null ){
+                $tableName = $this->table . '_lang';
+                $whereLang = 'AND id_appacman_lang = :lang_id';
+                $paramsUpdate['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
+            }
+
+            if( $this->existsRow($langID) ){
+                $sql = '
+                    UPDATE '.$tableName.'
+                    SET '.$fields.'    
+                    WHERE id_'.$this->table.' = :id '.$whereLang.'
+                ';
+                $paramsUpdate['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
+                $this->mysql->query($sql, $paramsUpdate);
+                return !$this->mysql->getState();
+
+            }else{
+                return $this->insert($params, $langID);
+            }
+        }
+        return false;
+    }
+
+    private function existsRow($langID = null){
         $tableName = $this->table;
         $whereLang = '';
+        $params = array(
+            'id' => array('value'=>$this->id, 'type'=>\PDO::PARAM_INT)
+        );
         if( $langID != null ){
             $tableName = $this->table . '_lang';
             $whereLang = 'AND id_appacman_lang = :lang_id';
             $params['lang_id'] = array('value'=>$langID, 'type'=>\PDO::PARAM_INT);
         }
-		
-		if( $fields ){
-        	$sql = '
-            	UPDATE '.$tableName.'
-            	SET '.$fields.'    
-            	WHERE id_'.$this->table.' = :id '.$whereLang.'
-        	';
-       		$params['id'] = array('value'=>$this->id, 'type'=>\PDO::PARAM_INT);
-        	$this->mysql->query($sql, $params);
-        	return !$this->mysql->getState();
+
+        $sql = '
+            SELECT *
+            FROM ' . $tableName . '
+            WHERE id_'.$this->table.' = :id '.$whereLang.'
+        ';
+        $exists = $this->mysql->query($sql, $params);
+
+        if( count($exists) ){
+            return true;
         }
         return false;
     }
