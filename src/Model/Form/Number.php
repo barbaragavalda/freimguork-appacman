@@ -13,6 +13,7 @@ class Number extends FormInput {
      */
     protected function getPostValue($langID = null){
         $post = parent::getPostValue($langID);
+        $post = str_replace(',', '.', $post);
         if( empty($post) ){
             return 0;
         }

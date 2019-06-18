@@ -114,7 +114,7 @@ class Dynamic extends FormInput {
             <div class="with-border">
                 <div class="box-body">
         ';
-        $inputs = $form->get($this->languages);
+        $inputs = $this->getInputs($form);
         foreach($inputs as $input){
             $input->setID( $this->id );
             $input->isMultiple($multiplePosition);
@@ -171,85 +171,89 @@ class Dynamic extends FormInput {
     public function save($itemID, $langID = null){
         $this->id = $itemID;
 
-        if( $this->delete() ){
-            $loopInputs = $this->forms[0]->get($this->languages);
+        $loopInputs = $this->forms[0]->get($this->languages);
 
-            // num forms
-            $lang = null;
-            $numForms = 0;
-            $firstInput = $loopInputs[1];
-            if( $firstInput->isOnLangTable() ){
-                $lang = $this->languages[0]['id'];
-            }
-            if( isset($_FILES[$firstInput->getInputName($lang)]) ){
-                $numForms = count( $_FILES[$firstInput->getInputName($lang)]['name'] );
-            }else{
-                $numForms = count( $_POST[$firstInput->getInputName($lang)] );
-            }
+        // num forms
+        $lang = null;
+        $numForms = 0;
+        $firstInput = $loopInputs[1];
+        if( $firstInput->isOnLangTable() ){
+            $lang = $this->languages[0]['id'];
+        }
+        if( isset($_FILES[$firstInput->getInputName($lang)]) ){
+            $numForms = count( $_FILES[$firstInput->getInputName($lang)]['name'] );
+        }else{
+            $numForms = count( $_POST[$firstInput->getInputName($lang)] );
+        }
 
-            for($i=0; $i<$numForms; $i++){
-                $form = new Item(false, $this->fieldName);
-                $inputs = $form->get($this->languages);
 
-                $empty = true;
-                foreach($inputs as &$input){
-                    $input->isMultiple($i);
-                    if( is_a($input, 'Appacman\Model\Form\GenericFile') ){
-                        $input->initFile();
-                    }
-                    if( $input->getFieldName() == 'id_' . $this->table ){
-                        $_POST[$input->getInputName(null, false)][$i] = $this->id;
-                    }else{
-                        // only save it if some field is not empty
-                        $value = $input->getSaveValue();
-                        if( $value ){
-                            if( $input->isOnLangTable() ){
-                                foreach($this->languages as $language){
-                                    $key = array_keys($value['lang_'.$language['id']])[0];
-                                    $value = $value['lang_'.$language['id']][$key]['value'];
-                                    if( $value ) $empty = false;
-                                }
-                            }else{
-                                $key = array_keys($value)[0];
-                                $value = $value[$key]['value'];
+
+        for($i=0; $i<$numForms; $i++){
+            $id = false;
+            if( isset($_POST['id_'.$this->fieldName][$i]) ) $id = $_POST['id_'.$this->fieldName][$i];
+            $form = new Item($id, $this->fieldName);
+            $inputs = $this->getInputs($form);
+
+            $empty = true;
+            foreach($inputs as &$input){
+                $input->isMultiple($i);
+                if( is_a($input, 'Appacman\Model\Form\GenericFile') ){
+                    $input->initFile();
+                }
+                if( $input->getFieldName() == 'id_' . $this->table ){
+                    $_POST[$input->getInputName(null, false)][$i] = $this->id;
+                }else{
+                    // only save it if some field is not empty
+                    $value = $input->getSaveValue();
+                    if( $value ){
+                        if( $input->isOnLangTable() ){
+                            foreach($this->languages as $language){
+                                $key = array_keys($value['lang_'.$language['id']])[0];
+                                $value = $value['lang_'.$language['id']][$key]['value'];
                                 if( $value ) $empty = false;
                             }
+                        }else{
+                            $key = array_keys($value)[0];
+                            $value = $value[$key]['value'];
+                            if( $value ) $empty = false;
                         }
                     }
                 }
-                if( !$empty ){
-                    $form->setForm($inputs);
-                    $form->preparePost();
-                    $success = $form->save();
-                    if( !$success ){
-                        return true;
-                    }
+            }
+            if( !$empty ){
+                $form->setForm($inputs);
+                $form->preparePost();
+                $success = $form->save();
+                if( !$success ){
+                    return true;
                 }
             }
-            return false;
         }
-        return true;
+        return false;
     }
 
     /**
-     * remove current rows on database
-     * @return bool     success
+     * @param $form \Appacman\Model\Item
+     * @return array
      */
-    private function delete(){
-        $sql = '
-            SELECT id_' . $this->fieldName . ' AS id
-            FROM ' . $this->fieldName . '
-            WHERE id_' . $this->table . ' = :id
-        ';
-        $params = array(
-            'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
-        );
-        $items = $this->mysql->query($sql, $params);
+    private function getInputs($form){
+        $inputs = $form->get($this->languages);
 
-        if( count($items) ){
-            return $this->deleteWithID($items);
-        }
-        return true;
+        $inputID = new Hidden(
+            array(
+                'field_name' => 'id_' . $this->fieldName,
+                'name' => 'ID',
+                'type' => 'hidden',
+                'value' => $form->getID(),
+                'required' => false
+            ),
+            $form->getID(),
+            $this->fieldName
+        );
+        $inputID->setOnLangTable( false );
+        $inputs[] = $inputID;
+
+        return $inputs;
     }
 
     /**

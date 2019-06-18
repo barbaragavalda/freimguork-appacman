@@ -105,9 +105,10 @@ abstract class FormInput extends Model {
 
     /**
      * is on lang table
+     * @param $onLangTable
      */
-    public function setOnLangTable(){
-        $this->onLangTable = true;
+    public function setOnLangTable($onLangTable = true){
+        $this->onLangTable = $onLangTable;
     }
 
     /**
