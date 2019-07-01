@@ -12,10 +12,14 @@
                 {% endif %}
             {% endfor %}
             <td>
+                {% set isLocked = false %}
+                {% if tr['is_locked'] == 'Sí'|trans %}
+                    {% set isLocked = true %}
+                {% endif %}
                 {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
                 {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
                 {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
-                {% include "Buttons/lock.twig" with {'itemID': tr['id'], 'small': true, isLocked: tr['is_locked']} %}
+                {% include "Buttons/lock.twig" with {'itemID': tr['id'], 'small': true, isLocked: isLocked} %}
                 {% include "Buttons/duplicate.twig" with {'itemID': tr['id']} %}
             </td>
         </tr>

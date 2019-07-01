@@ -2,18 +2,17 @@
 
 namespace Appacman\Model\Form;
 
-use Core\Model\Utils\StringUtils;
-
 class SeeOnly extends FormInput {
 
     protected function getInputHTML($langID = null){
         $this->selectSeeValue();
+        $this->multiSeeValue($langID);
 
         return $this->getSeeValue($langID);
     }
 
     private function selectSeeValue(){
-        if( StringUtils::startsWidth($this->fieldName, 'id_') ){
+        if( $this->fieldType == 'select' ){
             $table = str_replace('id_', '', $this->fieldName);
             if( $this->mysql->tableExists($table) ){
                 $tableName = '';
@@ -36,6 +35,23 @@ class SeeOnly extends FormInput {
                     $this->value = $value[0]['name'];
                 }
             }
+        }
+    }
+
+    private function multiSeeValue($langID){
+        if( $this->fieldType == 'selectMulti' ){
+            $multi = new SelectMulti(
+                array(
+                    'field_name'    => $this->fieldName,
+                    'name'          => $this->fieldName,
+                    'type'          => $this->fieldType,
+                    'required'      => true,
+                    'value'         => $this->value
+                ),
+                $this->id,
+                'product'
+            );
+            $this->value = $multi->getSeeValue($langID);
         }
     }
 

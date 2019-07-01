@@ -69,6 +69,11 @@ abstract class FormInput extends Model {
     protected $type = \PDO::PARAM_STR;
 
     /**
+     * @var string $type
+     */
+    protected $fieldType = '';
+
+    /**
      * validation error
      * @var false|string $error
      */
@@ -83,6 +88,7 @@ abstract class FormInput extends Model {
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
+        $this->fieldType = $info['type'];
         if( array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti')) ){
             $this->isRequired = false;
         }
@@ -161,6 +167,13 @@ abstract class FormInput extends Model {
      */
     public function getValue(){
         return $this->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(){
+        return $this->fieldType;
     }
 
     public function setValue($value){
