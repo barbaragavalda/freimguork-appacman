@@ -20,11 +20,14 @@ class Uri extends FormInput {
     /**
      * encode field name for url
      * @param int|null $langID
+     * @param bool $isHidden
      * @return string
      */
-    protected function getPostValue($langID = null){
+    protected function getPostValue($langID = null, $isHidden = true){
         $postValue = ($langID == null) ? $_POST['name'] : $_POST['name_'.$langID];
-
+        if( !$isHidden ){
+            $postValue = parent::getPostValue($langID);
+        }
         $noTags = strip_tags($postValue);
         $lowerCase = mb_strtolower($noTags);
         return urlencode( StringUtils::removeSpecialCharacters($lowerCase) );
