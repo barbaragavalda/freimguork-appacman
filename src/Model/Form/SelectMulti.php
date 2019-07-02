@@ -4,9 +4,9 @@ namespace Appacman\Model\Form;
 
 class SelectMulti extends Select {
 
-    private $currentTable = '';
+    protected $currentTable = '';
 
-    private $lateralTable = '';
+    protected $lateralTable = '';
 
     public function __construct($info, $id, $table = null){
         parent::__construct($info, $id, $table);
@@ -101,7 +101,7 @@ class SelectMulti extends Select {
         return array_column($values, 'id');
     }
 
-    private function initTables(){
+    protected function initTables(){
         $tables = explode('_', $this->fieldName);
         $this->currentTable = $tables[0];
         $this->lateralTable = substr(strstr($this->fieldName, '_'), 1);

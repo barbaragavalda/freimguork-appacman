@@ -115,9 +115,6 @@ class GenericFile extends FormInput {
      * @throws Exception
      */
     protected function getPostValue($langID = null){
-        $this->fileID = false;
-        $this->postID = -1;
-        $this->postFile = -1;
         // already uploaded
         if( $this->fileID ){
             $postName = $this->getInputName($langID, false);
