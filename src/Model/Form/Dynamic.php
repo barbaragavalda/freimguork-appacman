@@ -116,7 +116,9 @@ class Dynamic extends FormInput {
         ';
         $inputs = $this->getInputs($form);
         foreach($inputs as $input){
-            $input->setID( $this->id );
+            if( $input->getType() != 'selectMulti' ){
+                $input->setID( $this->id );
+            }
             $input->isMultiple($multiplePosition);
             if( $input->isVisible() ){
                 $required = '';
