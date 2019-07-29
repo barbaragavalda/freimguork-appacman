@@ -2,6 +2,8 @@
 
 namespace Appacman\Model\Form;
 
+use Core\Model\Utils\StringUtils;
+
 class SeeOnly extends FormInput {
 
     protected function getInputHTML($langID = null){
@@ -11,8 +13,17 @@ class SeeOnly extends FormInput {
         return $this->getSeeValue($langID);
     }
 
+    /**
+     * @param null $langID
+     * @return mixed|string
+     */
+    public function getSeeValue($langID = null){
+        $this->selectSeeValue();
+        return $this->value;
+    }
+
     private function selectSeeValue(){
-        if( $this->fieldType == 'select' ){
+        if( StringUtils::startsWidth($this->fieldName, 'id_') ){
             $table = str_replace('id_', '', $this->fieldName);
             if( $this->mysql->tableExists($table) ){
                 $tableName = '';
