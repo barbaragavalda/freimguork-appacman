@@ -87,7 +87,13 @@ class Field extends Model {
         foreach($this->fields as &$field){
             $fieldDescription = $this->mysql->fieldDescription($this->contentTable, $field['field_name']);
             $field['length'] = 0;
-            $field['required'] = $fieldDescription['required'];
+
+            $required = false;
+            if( !empty($fieldDescription) ){
+                $required = $fieldDescription['required'];
+            }
+            $field['required'] = $required;
+
             // field type
             if( !$field['type'] ){
                 $typeInfo = $fieldDescription['type'];
