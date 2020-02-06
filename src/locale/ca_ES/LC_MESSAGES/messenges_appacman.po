@@ -1,0 +1,387 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: <project name>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Bàrbara Gavaldà <bgavalda@appaqui.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"X-Generator: Poedit 2.2.3\n"
+
+# url
+msgid "iniciar-sesion"
+msgstr "iniciar-sessio"
+
+msgid "he-olvidado-mi-contrasena"
+msgstr "he-oblidat-la-meva-contrasenya"
+
+msgid "cambiar-contrasena"
+msgstr "canviar-contrasenya"
+
+msgid "cerrar-sesion"
+msgstr "tancar-sessio"
+
+msgid "listado"
+msgstr "llistat"
+
+msgid "formulario"
+msgstr "formualri"
+
+msgid "eliminar"
+msgstr "eliminar"
+
+msgid "eliminar-archivo"
+msgstr "eliminar-arxiu"
+
+msgid "eliminar-item"
+msgstr "eliminar-item"
+
+msgid "subir-archivo"
+msgstr "pujar-arxiu"
+
+msgid "exportar"
+msgstr "exportar"
+
+msgid "bloquear"
+msgstr "bloquejar"
+
+msgid "informacion"
+msgstr "información"
+
+msgid "duplicar"
+msgstr "duplicar"
+
+# generic
+msgid "Volver"
+msgstr "Tornar"
+
+msgid "Cerrar"
+msgstr "Tancar"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Se ha producido un error en el servidor. Por favor, inténtalo más tarde."
+msgstr "S'ha produït un error al servidor. Si us plau, torna-ho a provar més tard."
+
+msgid "¡Hecho!"
+msgstr "Fet!"
+
+msgid "Inicio"
+msgstr "Inici"
+
+msgid "Cerrar sesión"
+msgstr "Tancar sessió"
+
+msgid "Debes llenar todos los campos obligatorios."
+msgstr "Has d'omplir tots els camps obligatoris."
+
+msgid "Comprueba el formato del email."
+msgstr "Comprova el format de l'email."
+
+msgid "No existe ningún usuario con este email."
+msgstr "No hi ha cap usuari amb aquest email."
+
+msgid "Contraseña incorrecta."
+msgstr "Contrasenya incorrecta."
+
+msgid "año"
+msgstr "any"
+
+msgid "años"
+msgstr "anys"
+
+msgid "mes"
+msgstr "mes"
+
+msgid "meses"
+msgstr "mesos"
+
+msgid "día"
+msgstr "dia"
+
+msgid "días"
+msgstr "dies"
+
+msgid "hora"
+msgstr "hora"
+
+msgid "horas"
+msgstr "hores"
+
+msgid "minuto"
+msgstr "minut"
+
+msgid "minutos"
+msgstr "minuts"
+
+msgid "segundo"
+msgstr "segon"
+
+msgid "segundos"
+msgstr "segons"
+
+# signin
+msgid "Iniciar sesión"
+msgstr "Iniciar sessió"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Contraseña"
+msgstr "Contrasenya"
+
+msgid "Acceder"
+msgstr "Accedir"
+
+msgid "He olvidado mi contraseña"
+msgstr "He oblidat la contrasenya"
+
+# forgot
+msgid "Recordar contraseña"
+msgstr "Recordar contrasenya"
+
+msgid "Introduce una dirección de correo electrónico y te enviaremos las instrucciones para cambiar la contraseña."
+msgstr "Introdueix una adreça de correu electrònic i t'enviarem les instruccions per canviar la contrasenya."
+
+msgid "Recordar"
+msgstr "Recordar"
+
+msgid "Se ha producido un error al enviar el email. Por favor, inténtalo más tarde."
+msgstr "S'ha produït un error a l'enviar el correu electrònic. Si us plau, torna-ho a provar més tard."
+
+msgid "Haz click para cambiar tu contraseña"
+msgstr "Fes click per canviar la teva contrasenya"
+
+msgid "Comprueva tu correo para poder cambiar la contraseña."
+msgstr "Comprova el teu correu per poder canviar la contrasenya."
+
+msgid "Cambiar contraseña"
+msgstr "Canviar contrasenya"
+
+msgid "Repite la contraseña"
+msgstr "Repeteix la contrasenya"
+
+msgid "Tu contraseña se ha cambiado correctamente."
+msgstr "La teva contrasenya s'ha canviat correctament."
+
+msgid "Puedes iniciar sessión aquí."
+msgstr "Pots iniciar sessió aquí."
+
+msgid "Link incorrecto."
+msgstr "Link incorrecte."
+
+msgid "Puedes obtener otro aquí."
+msgstr "Pots obtenir un altre aquí."
+
+msgid "Las contraseñas no coinciden."
+msgstr "Les contrasenyes no coincideixen."
+
+# footer
+msgid "Soporte técnico"
+msgstr "Suport tècnic"
+
+msgid "Versión"
+msgstr "Versió"
+
+# home
+msgid "Ver listado"
+msgstr "Veure llistat"
+
+# list
+msgid "Listado"
+msgstr "Llistat"
+
+msgid "Acciones"
+msgstr "Accions"
+
+msgid "Editar"
+msgstr "Editar"
+
+msgid "Eliminar"
+msgstr "Eliminar"
+
+msgid "Bloquear"
+msgstr "Bloquejar"
+
+msgid "Desbloquear"
+msgstr "Desbloquejar"
+
+msgid "Duplicar"
+msgstr "Duplicar"
+
+msgid "Crear nuevo item"
+msgstr "Crear nou item"
+
+msgid "Exportar"
+msgstr "Exportar"
+
+msgid "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+msgstr "Mostrant _START_ a _END_ de _TOTAL_ entrades"
+
+msgid "Mostrar _MENU_ items por página"
+msgstr "Mostrar _MENU_ items per pàgina"
+
+msgid "Mostrar"
+msgstr "Mostrar"
+
+msgid "items por página"
+msgstr "items per pàgina"
+
+msgid "Sin resultados"
+msgstr "Sense resultats"
+
+msgid "No hay registros disponibles"
+msgstr "No hi ha registres disponibles"
+
+msgid "(filtrado de _MAX_ entradas totales)"
+msgstr "(filtrat de _MAX_ entrades totals)"
+
+msgid "Buscar"
+msgstr "Buscar"
+
+msgid "Anterior"
+msgstr "Anterior"
+
+msgid "Siguiente"
+msgstr "Següent"
+
+msgid "Primero"
+msgstr "Primer"
+
+msgid "Último"
+msgstr "Últim"
+
+msgid "No se ha podido eliminar el item. Por favor, inténtalo más tarde."
+msgstr "No s'ha pogut eliminar l'item. Si us plau, torna-ho a provar més tard."
+
+# form
+msgid "Formulario"
+msgstr "Formulari"
+
+msgid "Guardar"
+msgstr "Guardar"
+
+msgid "Enviar"
+msgstr "Enviar"
+
+msgid "Cancelar"
+msgstr "Cancel·lar"
+
+msgid "Selecciona"
+msgstr "Selecciona"
+
+msgid "Valor oculto"
+msgstr "Valor ocult"
+
+msgid "Sí"
+msgstr "Sí"
+
+msgid "No"
+msgstr "No"
+
+msgid "Este proceso es irreversible"
+msgstr "Aquest procés és irreversible"
+
+msgid "No se ha podido eliminar la imagen porqué no existe."
+msgstr "No s'ha pogut eliminar la imatge perquè no existeix."
+
+msgid "No se ha podido eliminar el archivo. Por favor, inténtalo más tarde."
+msgstr "No s'ha pogut suprimir el fitxer. Si us plau, torna-ho a provar més tard."
+
+msgid "Ha habido un error al guardar los datos. Por favor, inténtalo de nuevo más tarde."
+msgstr "Hi ha hagut un error a l'desar les dades. Si us plau, torna-ho a provar més tard."
+
+msgid "Datos guardados correctamente."
+msgstr "Dades guardades correctament."
+
+msgid "¿Seguro que quieres bloquear este item?"
+msgstr "Segur que vols bloquejar aquest item?"
+
+msgid "¿Seguro que quieres desbloquear este item?"
+msgstr "Segur que vols desbloquejar aquest item?"
+
+msgid "No se ha podido bloquear el item. Por favor, inténtalo más tarde."
+msgstr "No s'ha pogut bloquejar l'item. Si us plau, torna-ho a provar més tard."
+
+msgid "Descarregar"
+msgstr "Download"
+
+msgid "Cambios en %s"
+msgstr "Canvis a %s"
+
+msgid "Este es un email automático para informarte que se han producido cambios en %s a través del gestor."
+msgstr "Aquest és un email automàtic per informar-te que s'han produït canvis a %s a través del gestor."
+
+msgid "Fecha cambio"
+msgstr "Data canvi"
+
+msgid "Guardar y enviar cambios por email"
+msgstr "Desar i enviar canvis per email"
+
+msgid "Añadir"
+msgstr "Afegeix"
+
+msgid "anadir-campo"
+msgstr "afegir-camp"
+
+msgid "eliminar-campo"
+msgstr "eliminar-camp"
+
+msgid "El QR se generará automáticamente al guardar."
+msgstr "El QR es generarà automàticament al desar."
+
+msgid "No se ha podido generar el QR."
+msgstr "No s'ha pogut generar el QR."
+
+msgid "No se pueden modificar los permisos de los administradores."
+msgstr "No es poden modificar els permisos dels administradors."
+
+# form validation
+msgid "Campo obligatorio."
+msgstr "Camp obligatori."
+
+msgid "Comprueba que sea una fecha correcta con el formato %format%."
+msgstr "Comprova que sigui una data correcta amb el format %format%."
+
+msgid "La imagen debe ser de tipo %types%"
+msgstr "La imatge ha de ser de tipus %types%"
+
+msgid "Comprueba el formato del link: que empieze por http:// o https://."
+msgstr "Comprova el format de l'enllaç: que comenci per http:// o https://."
+
+msgid "Asegúrate de haber creado un marcador en el mapa con la dirección correcta."
+msgstr "Assegura't d'haver creat un marcador al mapa amb la direcció correcta."
+
+msgid "Esta URL ya existe, prueba con otra."
+msgstr "Aquest URL ja existeix, prova amb una altra."
+
+# 404
+msgid "Página no encontrada"
+msgstr "Pàgina no trobada"
+
+msgid "No hemos encontrado la página que estás buscando."
+msgstr "No hem trobat la pàgina que estàs buscant."
+
+# Information
+msgid "Información"
+msgstr "Informació"
+
+msgid "Licencia"
+msgstr "Llicència"
+
+# push
+msgid "Alcance"
+msgstr "Abast"
+
+msgid "Estadísticas"
+msgstr "Estadístiques"
+
+msgid "dispositivos"
+msgstr "dispositius"
+
+msgid "veces clickada"
+msgstr "vegades clickada"

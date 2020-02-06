@@ -15,7 +15,6 @@ class Timestamp extends FormInput {
     }
 
     /**
-     * TODO: timepicker
      * @param int|null $langID
      * @return string
      */
