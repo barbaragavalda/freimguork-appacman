@@ -95,7 +95,7 @@ class Field extends Model {
             $field['required'] = $required;
 
             // field type
-            if( !$field['type'] ){
+            if( array_key_exists('type', $field) && !$field['type'] ){
                 $typeInfo = $fieldDescription['type'];
                 $type = $typeInfo;
                 if( strpos($typeInfo, '(') !== false ){

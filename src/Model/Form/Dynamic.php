@@ -8,9 +8,9 @@ use Appacman\Model\Utils\Permissions;
 
 class Dynamic extends FormInput {
 
-    private $forms = array();
+    protected $forms = array();
 
-    private $canEdit = false;
+    protected $canEdit = false;
 
     public function __construct($info, $id, $table = null){
         parent::__construct($info, $id, $table);
@@ -235,7 +235,7 @@ class Dynamic extends FormInput {
      * @param $form \Appacman\Model\Item
      * @return array
      */
-    private function getInputs($form){
+    protected function getInputs($form){
         $inputs = $form->get($this->languages);
 
         $inputID = new Hidden(
