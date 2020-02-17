@@ -18,7 +18,7 @@
                 
                 $extraUser = 'Appacman\\Model\\ExtraUser';
                 if( class_exists($extraUser) ){
-                    $form = new $extraUser();
+                    $form = new $extraUser($formInfo, $error);
                     if( $send ){
                         if( method_exists($form, 'extraSignin') ){
                             $form->extraSignin();
@@ -26,9 +26,9 @@
                     }else{
                         if( method_exists($form, 'signin') ){
                             $form->signin();
-                            $send = $form->getSend();
                         }
                     }
+                    $send = $form->getSend();
                     
                     if( $form->getError() ){
                         $formInfo = $form->getForm();
@@ -39,7 +39,7 @@
                 $this->assign('form', $formInfo);
                 $this->assign('form_error', $error);
             }
-            
+
             if( $send ){
                 $this->redirect($this->domain);
             }else{

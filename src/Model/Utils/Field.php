@@ -96,14 +96,16 @@ class Field extends Model {
 
             // field type
             if( array_key_exists('type', $field) && !$field['type'] ){
-                $typeInfo = $fieldDescription['type'];
-                $type = $typeInfo;
-                if( strpos($typeInfo, '(') !== false ){
-                    $typeArray = explode('(', $typeInfo);
-                    $type = $typeArray[0];
-                    $field['length'] = intval( str_replace(')', '', $typeArray[1]) );
+                if( $fieldDescription ){
+                    $typeInfo = $fieldDescription['type'];
+                    $type = $typeInfo;
+                    if( strpos($typeInfo, '(') !== false ){
+                        $typeArray = explode('(', $typeInfo);
+                        $type = $typeArray[0];
+                        $field['length'] = intval( str_replace(')', '', $typeArray[1]) );
+                    }
+                    $field['type'] = $type;
                 }
-                $field['type'] = $type;
             }
         }
     }
