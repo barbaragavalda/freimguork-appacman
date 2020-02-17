@@ -124,6 +124,63 @@ msgstr "segon"
 msgid "segundos"
 msgstr "segons"
 
+msgid "L"
+msgstr "Dl"
+
+msgid "M"
+msgstr "Dm"
+
+msgid "Mx"
+msgstr "Dx"
+
+msgid "J"
+msgstr "Dj"
+
+msgid "V"
+msgstr "Dv"
+
+msgid "S"
+msgstr "Ds"
+
+msgid "D"
+msgstr "Dg"
+
+msgid "Enero"
+msgstr "Gener"
+
+msgid "Febrero"
+msgstr "Febrer"
+
+msgid "Marzo"
+msgstr "Març"
+
+msgid "Abril"
+msgstr "Abril"
+
+msgid "Mayo"
+msgstr "Maig"
+
+msgid "Junio"
+msgstr "Juny"
+
+msgid "Julio"
+msgstr "Juliol"
+
+msgid "Agosto"
+msgstr "Agost"
+
+msgid "Setiembre"
+msgstr "Setembre"
+
+msgid "Octubre"
+msgstr "Ooctubre"
+
+msgid "Noviembre"
+msgstr "Novembre"
+
+msgid "Diciembre"
+msgstr "Desembre"
+
 # signin
 msgid "Iniciar sesión"
 msgstr "Iniciar sessió"

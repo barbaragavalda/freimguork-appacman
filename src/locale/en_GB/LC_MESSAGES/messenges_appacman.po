@@ -124,6 +124,63 @@ msgstr "second"
 msgid "segundos"
 msgstr "seconds"
 
+msgid "L"
+msgstr "Mo"
+
+msgid "M"
+msgstr "Tu"
+
+msgid "Mx"
+msgstr "We"
+
+msgid "J"
+msgstr "Th"
+
+msgid "V"
+msgstr "Fr"
+
+msgid "S"
+msgstr "Sa"
+
+msgid "D"
+msgstr "Su"
+
+msgid "Enero"
+msgstr "January"
+
+msgid "Febrero"
+msgstr "February"
+
+msgid "Marzo"
+msgstr "March"
+
+msgid "Abril"
+msgstr "April"
+
+msgid "Mayo"
+msgstr "May"
+
+msgid "Junio"
+msgstr "June"
+
+msgid "Julio"
+msgstr "July"
+
+msgid "Agosto"
+msgstr "August"
+
+msgid "Setiembre"
+msgstr "September"
+
+msgid "Octubre"
+msgstr "October"
+
+msgid "Noviembre"
+msgstr "November"
+
+msgid "Diciembre"
+msgstr "December"
+
 # signin
 msgid "Iniciar sesión"
 msgstr "Sign in to start your session"
