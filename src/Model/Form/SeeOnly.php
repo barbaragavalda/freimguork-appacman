@@ -19,7 +19,7 @@ class SeeOnly extends FormInput {
      */
     public function getSeeValue($langID = null){
         $this->selectSeeValue();
-        return $this->value;
+        return $this->getInputValue($langID);
     }
 
     private function selectSeeValue(){
