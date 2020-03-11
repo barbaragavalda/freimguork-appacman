@@ -28,8 +28,8 @@ abstract class AppacmanController extends Controller {
         $this->loggedOutPages = array(gettext('iniciar-sesion'), gettext('he-olvidado-mi-contrasena'), gettext('cambiar-contrasena'));
 
         // domain admin css
-        $this->assign('admin_domain', APPACMAN_DIR . 'public/');
-        $this->assign('vendor_domain', $this->rootDomain . 'vendor/almasaeed2010/adminlte/');
+        $this->assign('adminDomain', $this->rootDomain . 'vendor/appaqui/freimguork-appacman/src/public/');
+        $this->assign('vendorDomain', $this->rootDomain . 'vendor/almasaeed2010/adminlte/');
 
         //business info
         $business = new Business();

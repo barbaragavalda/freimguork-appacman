@@ -6,18 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="shortcut icon" href="{{ admin_domain }}img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ adminDomain }}img/favicon.ico" type="image/x-icon">
 
     <title>{% block title %}{{ title }}{% endblock %}</title>
 
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="{{ vendor_domain }}bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ vendorDomain }}bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ vendor_domain }}bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ vendorDomain }}bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{{ vendor_domain }}bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{ vendorDomain }}bower_components/Ionicons/css/ionicons.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="{{ vendor_domain }}plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="{{ vendorDomain }}plugins/iCheck/square/blue.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,12 +32,12 @@
     {% block extra_head %}{% endblock %}
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ vendor_domain }}dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="{{ vendorDomain }}dist/css/AdminLTE.min.css">
     <!-- Custom css -->
-    <link rel="stylesheet" href="{{ admin_domain }}css/admin.css?v=2">
-    <link rel="stylesheet" href="{{ admin_domain }}css/skin-custom.css">
+    <link rel="stylesheet" href="{{ adminDomain }}css/admin.css?v=2">
+    <link rel="stylesheet" href="{{ adminDomain }}css/skin-custom.css">
     <!-- jQuery 3 -->
-    <script src="{{ vendor_domain }}bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="{{ vendorDomain }}bower_components/jquery/dist/jquery.min.js"></script>
 </head>
 <body class="hold-transition {% block body_class %}{% endblock %}">
 
@@ -46,7 +46,7 @@
     </div>
 
     <!-- AdminLTE App -->
-    <script src="{{ vendor_domain }}dist/js/adminlte.min.js"></script>
+    <script src="{{ vendorDomain }}dist/js/adminlte.min.js"></script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
