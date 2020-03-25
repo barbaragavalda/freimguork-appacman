@@ -28,8 +28,10 @@ $config = array(
         gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',
 
         // push notifications
-        gettext('notificaciones-push').'/{contentID}'               => 'PushNotifications',
-        gettext('notificaciones-push').'/{contentID}/{itemID}'      => 'PushNotifications',
+        gettext('notificaciones-push').'/{contentID}'           => 'Push\\PushList',
+        gettext('notificacion-push').'/{contentID}'             => 'Push\\Form',
+        gettext('notificacion-push').'/{contentID}/{itemID}'    => 'Push\\Form',
+        'push-target/{contentID}'                               => 'Push\\Target',
 
         // others
         gettext('informacion')              => 'Info',

@@ -16,8 +16,27 @@ class Content extends AppacmanController {
      */
     protected $item = null;
 
+    /**
+     * @var string  list link
+     */
+    protected $listLink = null;
+
+    /**
+     * @var string  form link
+     */
+    protected $formLink = null;
+
+    public function __construct(){
+        parent::__construct();
+
+        $this->listLink = _('listado');
+        $this->formLink = _('formulario');
+    }
+
     protected function run(){
         $this->assign('contentID', $this->content->getID());
+        $this->assign('formLink', $this->formLink);
+        $this->assign('listLink', $this->listLink);
     }
 
     protected function hasPermission(){

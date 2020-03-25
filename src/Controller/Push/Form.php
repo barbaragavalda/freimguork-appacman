@@ -7,7 +7,15 @@ use Appacman\Model\Push\Statistic;
 
 class Form extends BaseContentForm {
 
+    public function __construct(){
+        parent::__construct();
+
+        $this->listLink = _('notificaciones-push');
+        $this->formLink = _('notificacion-push');
+    }
+
     protected function run(){
+        $this->template = 'Push/form.twig';
         parent::run();
 
         if( $this->item->getID() ){
@@ -24,13 +32,13 @@ class Form extends BaseContentForm {
                 }
             }
         }
-
-        $this->template('Push/form.twig');
     }
 
-    protected function hasPermission() {
-        $this->params['contentID'] = $this->parts[1];
-        return parent::hasPermission();
+    protected function getBreadcrumb(){
+        return array(
+            array('name' => $this->content->getName(), 'link' => $this->domain . gettext('notificaciones-push') . '/' . $this->content->getID() ),
+            array('name' => $this->item->getName(), 'link' => null)
+        );
     }
 
     protected function hasErrors(){

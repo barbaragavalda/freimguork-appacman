@@ -48,7 +48,7 @@
                         <!-- link -->
                         {% set link = domain ~ 'listado'|trans ~ '/' ~ block['list'][i]['id_appacman_content'] %}
                         {% set target = '_self' %}
-                        {% if not block['list'][i]['id_appacman_content'] %}
+                        {% if not block['list'][i]['id_appacman_content'] or block['list'][i]['link'] %}
                             {% set link = block['list'][i]['link'] %}
                             {% if block['list'][i]['target'] is defined %}{% set target = block['list'][i]['target'] %}{% endif %}
                         {% endif %}

@@ -93,10 +93,10 @@ class PushCronJob extends Model {
             $wheres[] = 'apd.model IN (' . $this->getWhereIn($info['model']) . ')';
         }
         if( array_key_exists('os_version', $info) && $info['os_version'] ){
-            $wheres[] = 'apd.os_version IN (' . $this->getWhereIn($info['os_version']) . ')';
+            $wheres[] = 'apd.os_version IN (' . $this->getWhereIn($info['os_version'], 'addQuotes') . ')';
         }
         if( array_key_exists('app_version', $info) && $info['app_version'] ){
-            $wheres[] = 'apd.app_version IN (' . $this->getWhereIn($info['app_version']) . ')';
+            $wheres[] = 'apd.app_version IN (' . $this->getWhereIn($info['app_version'], 'addQuotes') . ')';
         }
         if( array_key_exists('last_connection', $info) && $info['last_connection'] ){
             $wheres[] = 'apd.last_connection <= "' . $info['last_connection'] . ' 23:59:59"';
@@ -159,13 +159,17 @@ class PushCronJob extends Model {
         return $this->mysql->query($sql, $params);
     }
 
-    private function getWhereIn($list){
+    private function getWhereIn($list, $function = 'addQuotesReplace'){
         $array = explode(',', $list);
-        $array = array_map(array($this, 'addQuotes'), $array);
+        $array = array_map(array($this, $function), $array);
         return implode(',', $array);
     }
 
     private function addQuotes($e){
+        return '"' . $e . '"';
+    }
+
+    private function addQuotesReplace($e){
         return '"' . str_replace('.', ',', $e) . '"';
     }
 

@@ -1,9 +1,4 @@
-{% extends "form.twig" %}
-
-{% block extra_head %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ staticDomain }}css/appacman.css?v=1">
-{% endblock %}
+{% extends 'form.twig' %}
 
 {% block extra_scripts %}
     {{ parent() }}
@@ -29,8 +24,22 @@
                     var platformValue = checkInput(platform.val()),
                         modelValue = checkInput(model.val()),
                         osVersionValue = checkInput(os_version.val()),
-                        appVersionValue = checkInput(app_version.val());
+                        appVersionValue = checkInput(app_version.val()),
+                        lastConnectionValue = last_connection.val();
+                    if( lastConnectionValue !== '' ){
+                        lastConnectionValue = lastConnectionValue.split('/');
+                        lastConnectionValue = lastConnectionValue[2] + '/' + lastConnectionValue[1] + '/' + lastConnectionValue[0];
+                    }
 
+
+                    console.log('{{ domain }}push-target/{{ contentID }}');
+                    console.log({
+                        'platform':         platformValue.join(),
+                        'model':            modelValue.join(),
+                        'os_version':       osVersionValue.join(),
+                        'app_version':      appVersionValue.join(),
+                        'last_connection':  lastConnectionValue
+                    });
                     $.ajax({
                         type:       'POST',
                         url:        '{{ domain }}push-target/{{ contentID }}',
@@ -39,7 +48,7 @@
                             'model':            modelValue.join(),
                             'os_version':       osVersionValue.join(),
                             'app_version':      appVersionValue.join(),
-                            'last_connection':  last_connection.val()
+                            'last_connection':  lastConnectionValue
                         },
                         dataType:	'json'
                     })
@@ -63,7 +72,6 @@
         });
     </script>
 {% endblock %}
-
 
 {% block extra_form %}
     {% if statistics|length %}

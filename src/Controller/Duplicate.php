@@ -39,7 +39,7 @@ class Duplicate extends Content {
             }
         }
         echo '
-            <form id="duplicate" action="' . $this->domain . gettext('formulario') . '/' . $this->content->getID() . '" method="POST">
+            <form id="duplicate" action="' . $this->domain . $this->formLink . '/' . $this->content->getID() . '" method="POST">
                 ' . $inputsHTML . '
                 <input type="hidden" name="send" value="1" />
             </form>

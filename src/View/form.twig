@@ -81,7 +81,7 @@
             '{% trans %}No{% endtrans %}',
             '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
             function () {
-                window.location = '{{ domain }}{% trans %}listado{% endtrans %}/{{ contentID }}';
+                window.location = '{{ domain }}{{ listLink }}/{{ contentID }}';
             }
         );
 

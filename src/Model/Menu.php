@@ -3,6 +3,7 @@ namespace Appacman\Model;
 
 use Appacman\Model\Utils\Permissions;
 use Core\Model\Model;
+use Core\Utils\Config;
 use Core\Utils\Session;
 
 class Menu extends Model {
@@ -50,6 +51,7 @@ class Menu extends Model {
 
         $aside = $this->blocks;
         $user = User::getInstance();
+        $config = Config::getInstance();
         if( count($contents) ){
             foreach($contents as $content){
                 $permissions = $user->getContentPermissions($content['id_appacman_content']);
@@ -63,6 +65,11 @@ class Menu extends Model {
                     }
                     $content['counter'] = $this->getCounter($content['id_appacman_content'], $content['type'], $isOwn);
                     $content['permissions'] = $permissions;
+
+                    if( $content['table_name'] == 'appacman_push' ){
+                        $content['link'] = $config->getDomain() . _('notificaciones-push') . '/' . $content['id_appacman_content'];
+                    }
+                    
                     $aside['b'.$content['id_appacman_block']]['list'][] = $content;
                 }
             }

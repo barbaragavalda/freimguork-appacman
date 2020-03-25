@@ -74,7 +74,7 @@ abstract class BaseContentForm extends Content {
         if( $success ){
             $session = Session::getInstance();
             $session->set('pendingMessage', gettext('Datos guardados correctamente.'));
-            $this->redirect($this->domain . gettext('formulario') . '/' . $this->content->getID() . '/' . $this->item->getID());
+            $this->redirect($this->domain . $this->formLink . '/' . $this->content->getID() . '/' . $this->item->getID());
         }else{
             $this->prepareLinks();
             $this->template($this->template);
@@ -138,7 +138,7 @@ abstract class BaseContentForm extends Content {
 
     protected function getBreadcrumb(){
         return array(
-            array('name' => $this->content->getName(), 'link' => $this->domain . gettext('listado') . '/' . $this->content->getID() ),
+            array('name' => $this->content->getName(), 'link' => $this->domain . $this->listLink . '/' . $this->content->getID() ),
             array('name' => $this->item->getName(), 'link' => null)
         );
     }

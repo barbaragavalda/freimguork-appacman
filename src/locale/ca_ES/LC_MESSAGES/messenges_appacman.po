@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
 # url
 msgid "iniciar-sesion"
@@ -53,6 +53,12 @@ msgstr "información"
 
 msgid "duplicar"
 msgstr "duplicar"
+
+msgid "notificaciones-push"
+msgstr "notificacions-push"
+
+msgid "notificacion-push"
+msgstr "notificacio-push"
 
 # generic
 msgid "Volver"

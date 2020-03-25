@@ -91,7 +91,7 @@
                             <li{{ active|raw }}>
                                 {% set link = domain ~ 'listado'|trans ~ '/' ~ li['id_appacman_content'] %}
                                 {% set target = '_self' %}
-                                {% if not li['id_appacman_content'] %}
+                                {% if not li['id_appacman_content'] or li['link'] %}
                                     {% set link = li['link'] %}
                                     {% if li['target'] is defined %}{% set target = li['target'] %}{% endif %}
                                 {% endif %}

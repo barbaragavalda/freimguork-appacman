@@ -7,7 +7,7 @@
         $('#list tr').click(function(e){
             var id = $(this).attr('id');
             if( $(e.target).is('td') && typeof(id) != 'undefined' && id ){
-                window.location = '{{ domain ~ 'formulario'|trans ~ '/' ~ contentID ~ '/' }}' + id;
+                window.location = '{{ domain ~ formLink ~ '/' ~ contentID ~ '/' }}' + id;
             }
         });
     </script>
