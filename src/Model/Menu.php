@@ -100,7 +100,12 @@ class Menu extends Model {
             }
         }
 
-        return $aside;
+        // remove empty blocks
+        $finalAside = array();
+        foreach($aside as $block){
+            if( count($block['list']) ) $finalAside[] = $block;
+        }
+        return $finalAside;
     }
 
     private function getCounter($id, $listType, $isOwn = false){

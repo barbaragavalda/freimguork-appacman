@@ -65,20 +65,26 @@ abstract class AppacmanController extends Controller {
                 $this->info['business']['logo'] = $profileInfo['logo'];
             }
             if( $this->hasPermission() ){
-                // execute currect page
-                if( $isLoggedIn ){
-                    $this->assign('username', $this->user->getName());
-                }
-
-                // page title
-                $this->assign('title', $this->getTitle());
-
-                // menu info
                 $menu = new Menu($this->user->getProfileInfo());
-                $this->assign('menu', $menu->get());
-                $this->assign('breadcrumb', $this->getBreadcrumb());
+                $menuItems = $menu->get();
 
-                $this->run();
+                if( count($menuItems) ){
+                    // execute currect page
+                    if( $isLoggedIn ){
+                        $this->assign('username', $this->user->getName());
+                    }
+
+                    // page title
+                    $this->assign('title', $this->getTitle());
+
+                    // menu info
+                    $this->assign('menu', $menuItems);
+                    $this->assign('breadcrumb', $this->getBreadcrumb());
+
+                    $this->run();
+                }else{
+                    $this->redirect($this->domain . gettext('iniciar-sesion'), 401);
+                }
             }else{
                 // redirect logedin users to home page
                 $this->redirect($this->domain);
