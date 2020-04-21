@@ -9,12 +9,13 @@ class Table extends Model {
     /**
      * @var \Appacman\Model\Content $content
      */
-    private $content = null;
+    protected $content = null;
 
-    public function __construct($content){
+    public function __construct($content, $forMenu = false){
         parent::__construct();
 
         $this->content = $content;
+        $this->content->forMenu($forMenu);
     }
 
     public function get(){

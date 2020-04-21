@@ -69,7 +69,7 @@ class Menu extends Model {
                     if( $content['table_name'] == 'appacman_push' ){
                         $content['link'] = $config->getDomain() . _('notificaciones-push') . '/' . $content['id_appacman_content'];
                     }
-                    
+
                     $aside['b'.$content['id_appacman_block']]['list'][] = $content;
                 }
             }
@@ -112,7 +112,7 @@ class Menu extends Model {
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
         $content = new Content($id);
         $content->exists();
-        $model = new $listClass($content);
+        $model = new $listClass($content, true);
         return count( $model->get() );
     }
 

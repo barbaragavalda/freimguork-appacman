@@ -6,6 +6,15 @@ use Core\Utils\Session;
 
 class Content extends Page {
 
+    /**
+     * @var bool
+     */
+    protected $forMenu = false;
+
+    public function forMenu($forMenu){
+        $this->forMenu = $forMenu;
+    }
+
     public function getName(){
         return $this->info['name'];
     }
@@ -147,8 +156,8 @@ class Content extends Page {
 
         $rows = $this->mysql->query($sql, $params);
 
-        // prepare rows for form
-        if( $order != null ){
+        // do not process
+        if( $this->forMenu || $order != null ){
             return $rows;
         }
 
