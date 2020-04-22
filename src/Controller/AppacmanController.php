@@ -68,7 +68,7 @@ abstract class AppacmanController extends Controller {
                 $menu = new Menu($this->user->getProfileInfo());
                 $menuItems = $menu->get();
 
-                if( count($menuItems) ){
+                if( ($isLoggedIn && count($menuItems)) || !$isLoggedIn ){
                     // execute currect page
                     if( $isLoggedIn ){
                         $this->assign('username', $this->user->getName());
