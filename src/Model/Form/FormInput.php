@@ -13,6 +13,12 @@ abstract class FormInput extends Model {
     protected $name = '';
 
     /**
+     * field hint
+     * @var string
+     */
+    protected $hint = '';
+
+    /**
      * field name on database
      * @var string
      */
@@ -85,6 +91,7 @@ abstract class FormInput extends Model {
         $this->table = $table;
 
         $this->name = $info['name'];
+        $this->hint = $info['hint'];
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
@@ -449,16 +456,18 @@ abstract class FormInput extends Model {
      * @return string
      */
     private function getFromRow($input, $language = null){
-        $name = '';
-        $span = '';
+        $name = $span = '';
         $extraClass = '';
         if( $language != null ){
             $name = $language['name'];
             $extraClass = ($language['id'] == null) ? '' : 'lang_'.$language['id'];
         }
+        if( !empty($this->hint) ){
+            $span .= '<span class="help-block">'.$this->hint.'</span>';
+        }
         if( $this->error ){
             $extraClass = ' has-error';
-            $span = '<span class="help-block"><i class="fa fa-times-circle-o"></i> '.$this->error.'</span>';
+            $span .= '<span class="help-block"><i class="fa fa-times-circle-o"></i> '.$this->error.'</span>';
         }
 
         return '
