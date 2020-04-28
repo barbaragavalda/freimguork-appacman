@@ -91,11 +91,13 @@ abstract class FormInput extends Model {
         $this->table = $table;
 
         $this->name = $info['name'];
-        $this->hint = $info['hint'];
         $this->fieldName = $info['field_name'];
         $this->value = $info['value'];
         $this->isRequired = $info['required'];
         $this->fieldType = $info['type'];
+        if( array_key_exists('hint', $info) ){
+            $this->hint = $info['hint'];
+        }
         if( array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti')) ){
             $this->isRequired = false;
         }
