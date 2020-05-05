@@ -1,28 +1,26 @@
-{% extends "List/table-structure.twig" %}
+{% extends 'List/basic.twig' %}
 
-{% block table_content %}
+{% block list %}
 
-    {% for tr in list %}
-        {% set trID = '' %}
-        {% if canSee or canEdit or canOwn %}{% set trID = 'id="' ~ tr['id'] ~ '" class="canGo"' %}{% endif %}
-        <tr {{ trID|raw }}>
+    {% set ths %}
+        <tr>
             {% for th in list_headers %}
-                {% if th['field_name'] != 'is_locked' %}
-                    <td>{{ tr[th['field_name']]|raw }}</td>
-                {% endif %}
+                <th>{{ th['name']|raw }}</th>
             {% endfor %}
-            <td>
-                {% set isLocked = false %}
-                {% if tr['is_locked'] == 'Sí'|trans %}
-                    {% set isLocked = true %}
-                {% endif %}
-                {% include "Buttons/see.twig" with {'itemID': tr['id']} %}
-                {% include "Buttons/edit.twig" with {'itemID': tr['id'], 'small': true} %}
-                {% include "Buttons/delete.twig" with {'itemID': tr['id'], 'small': true} %}
-                {% include "Buttons/lock.twig" with {'itemID': tr['id'], 'small': true, isLocked: isLocked} %}
-                {% include "Buttons/duplicate.twig" with {'itemID': tr['id']} %}
-            </td>
+            <th>{% trans %}Acciones{% endtrans %}</th>
         </tr>
-    {% endfor %}
+    {% endset %}
+
+    <div class="table-responsive">
+        <table id="list" class="table table-bordered table-hover">
+            <thead>
+            {{ ths }}
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+            {{ ths }}
+            </tfoot>
+        </table>
+    </div>
 
 {% endblock %}

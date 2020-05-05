@@ -1,4 +1,4 @@
-{% extends "basic-loggedin.twig" %}
+{% extends 'basic-loggedin.twig' %}
 
 {% block extra_head %}
     <!-- DataTables -->
@@ -15,38 +15,87 @@
     <script src="{{ adminDomain }}js/common.js"></script>
     <script>
         // tables
-        var columns = [];
+        var orderColumns = [];
         {% for th in list_headers %}
-            {% if th['field_name'] != 'is_locked' %}
-                columns.push({ "orderable": true });
+            {% if th['field_name'] == 'is_locked' %}
+                orderColumns.push({ orderable: false });
+            {% else %}
+                orderColumns.push({ orderable: true });
             {% endif %}
         {% endfor %}
-        columns.push({ "orderable": false });
+        orderColumns.push({ orderable: false });
+        console.log(orderColumns);
         $(function () {
             $('#list').DataTable({
-                'paging': true,
-                'pageLength': 25,
-                'stateSave': true,
-                'lengthChange': true,
-                'searching': true,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false,
-                'columns': columns,
-                'order': {{ list_order|json_encode|raw }},
-                'language': {
-                    'lengthMenu': "{% trans %}Mostrar _MENU_ items por página{% endtrans %}",
-                    'zeroRecords': "{% trans %}Sin resultados{% endtrans %}",
-                    'info': "{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}",
-                    'infoEmpty': "{% trans %}No hay registros disponibles{% endtrans %}",
-                    'search': "{% trans %}Buscar{% endtrans %}: ",
-                    'infoFiltered': "{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}",
-                    'paginate': {
-                        'first': "{% trans %}Primero{% endtrans %}",
-                        'last': "{% trans %}Último{% endtrans %}",
-                        'previous': "{% trans %}Anterior{% endtrans %}",
-                        'next': "{% trans %}Siguiente{% endtrans %}"
+                processing:     true,
+                serverSide:     true,
+                ajax:           '{{ domain }}table/{{ contentID }}',
+                columnDefs: [
+                    {
+                        targets: '_all',
+                        visible: true,
+                        render: function(data, type, row, meta){
+                            var keys = Object.keys(row),
+                                key = keys[meta['col']+1],
+                                value = row[key];
+
+                            {% set id = '%itemID%' %}
+                            var actions = '';
+                            if( key === 'actions' ){
+                                actions += '{{ include('Buttons/see.twig', {'itemID': id})|forJS|raw }}';
+                                actions += '{{ include('Buttons/edit.twig', {'itemID': id, 'small': true})|forJS|raw }}';
+                                actions += '{{ include('Buttons/delete.twig', {'itemID': id, 'small': true})|forJS|raw }}';
+                                actions += '{{ include('Buttons/duplicate.twig', {'itemID': id})|forJS|raw }}';
+                            }
+                            if( key === 'is_locked' ){
+                                if( row['is_locked'] === '1' ){
+                                    actions += '{{ include('Buttons/lock.twig', {'itemID': id, 'small': true, isLocked: true})|forJS|raw }}';
+                                }else{
+                                    actions += '{{ include('Buttons/lock.twig', {'itemID': id, 'small': true, isLocked: false})|forJS|raw }}';
+                                }
+                            }
+                            if( actions !== '' ){
+                                return actions.replace('%itemID%', row['id']);
+                            }
+                            return value;
+                        }
                     }
+                ],
+                paging:         true,
+                pageLength:     25,
+                stateSave:      true,
+                lengthChange:   true,
+                searching:      true,
+                ordering:       true,
+                info:           true,
+                autoWidth:      false,
+                columns:        orderColumns,
+                order:          {{ list_order|json_encode|raw }},
+                language: {
+                    lengthMenu:     '{% trans %}Mostrar _MENU_ items por página{% endtrans %}',
+                    zeroRecords:    '{% trans %}Sin resultados{% endtrans %}',
+                    info:           '{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}',
+                    infoEmpty:      '{% trans %}No hay registros disponibles{% endtrans %}',
+                    search:         '{% trans %}Buscar{% endtrans %}: ',
+                    infoFiltered:   '{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}',
+                    processing:     '{% trans %}Cargando{% endtrans %}...',
+                    paginate: {
+                        first:      '{% trans %}Primero{% endtrans %}',
+                        last:       '{% trans %}Último{% endtrans %}',
+                        previous:   '{% trans %}Anterior{% endtrans %}',
+                        next:       '{% trans %}Siguiente{% endtrans %}'
+                    }
+                },
+                createdRow: function(row, data) {
+                    $(row).attr('id', data['id']);
+                },
+                drawCallback: function() {
+                    $('#list tr').unbind('click').bind('click', function(e){
+                        var id = $(this).attr('id');
+                        if( $(e.target).is('td') && typeof(id) !== 'undefined' && id ){
+                            window.location = '{{ domain ~ formLink ~ '/' ~ contentID ~ '/' }}' + id;
+                        }
+                    });
                 }
             });
 
@@ -88,8 +137,8 @@
     {% set createButton %}
         <div class="clearfix">
             {% block extra_buttons %}{% endblock %}
-            {% include "Buttons/create.twig" %}
-            {% include "Buttons/export.twig" %}
+            {% include 'Buttons/create.twig' %}
+            {% include 'Buttons/export.twig' %}
         </div>
     {% endset %}
     <div class="row">

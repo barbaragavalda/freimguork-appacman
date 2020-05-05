@@ -303,6 +303,9 @@ msgstr "No hi ha registres disponibles"
 msgid "(filtrado de _MAX_ entradas totales)"
 msgstr "(filtrat de _MAX_ entrades totals)"
 
+msgid "Cargando"
+msgstr "Carregant"
+
 msgid "Buscar"
 msgstr "Buscar"
 

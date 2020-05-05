@@ -1,4 +1,4 @@
-{% extends "basic-loggedin.twig" %}
+{% extends 'basic-loggedin.twig' %}
 
 {% block extra_head %}
     <!-- summernote - text editor -->
@@ -132,7 +132,7 @@
     {% endif %}
 
     {% set formButtons %}
-        {% include "Buttons/form-btn-group.twig" with {'itemID': itemID} %}
+        {% include 'Buttons/form-btn-group.twig' with {'itemID': itemID} %}
     {% endset %}
     <div class="box">
         <form class="form-horizontal" method="POST" enctype="multipart/form-data">

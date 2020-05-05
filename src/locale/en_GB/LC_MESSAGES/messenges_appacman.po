@@ -303,6 +303,9 @@ msgstr "No records available"
 msgid "(filtrado de _MAX_ entradas totales)"
 msgstr "(filtered from _MAX_ total entries)"
 
+msgid "Cargando"
+msgstr "Loading"
+
 msgid "Buscar"
 msgstr "Search"
 

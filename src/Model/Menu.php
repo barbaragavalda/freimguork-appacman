@@ -112,8 +112,8 @@ class Menu extends Model {
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
         $content = new Content($id);
         $content->exists();
-        $model = new $listClass($content, true);
-        return count( $model->get() );
+        $model = new $listClass($content, 1, PHP_INT_MAX, true);
+        return count( $model->getAll() );
     }
 
     private function getConfig($name){

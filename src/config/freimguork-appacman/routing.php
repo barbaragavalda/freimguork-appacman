@@ -13,6 +13,7 @@ $config = array(
         //list
         gettext('listado').'/{contentID}'   => 'ContentList',
         gettext('exportar').'/{contentID}'  => 'Export',
+        'table/{contentID}'                 => 'Ajax\\ContentList',
 
         //form
         gettext('formulario').'/{contentID}'                    => 'ContentForm',

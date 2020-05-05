@@ -6,15 +6,6 @@ use Core\Utils\Session;
 
 class Content extends Page {
 
-    /**
-     * @var bool
-     */
-    protected $forMenu = false;
-
-    public function forMenu($forMenu){
-        $this->forMenu = $forMenu;
-    }
-
     public function getName(){
         return $this->info['name'];
     }
@@ -79,7 +70,8 @@ class Content extends Page {
 
         $previous = null;
         $next = null;
-        $rows = $this->get($order);
+        $info = $this->get($order);
+        $rows = $info['rows'];
         for($i=0; $i<count($rows); $i++){
             if( $rows[$i]['id'] == $itemID ){
                 if( $i > 0 )                $previous = $rows[$i-1]['id'];
@@ -103,7 +95,10 @@ class Content extends Page {
     public function get($order = null, $where = null){
         // fields
         $fields = $this->fields->getFieldsForList();
-        return $this->getList($order, $fields, $where);
+        return array(
+            'fields' => $fields,
+            'rows' => $this->getList($order, $fields, $where)
+        );
     }
 
     /**
@@ -156,18 +151,6 @@ class Content extends Page {
 
         $rows = $this->mysql->query($sql, $params);
 
-        // do not process
-        if( $this->forMenu || $order != null ){
-            return $rows;
-        }
-
-        // prepare rows for list
-        foreach($rows as &$row){
-            foreach($fields as $field){
-                $input = $this->getInputClass($field, $row);
-                $row[ $input->getFieldName() ] = $input->getListValue();
-            }
-        }
         return $rows;
     }
 

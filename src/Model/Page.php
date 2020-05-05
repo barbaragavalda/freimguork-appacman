@@ -41,7 +41,7 @@ abstract class Page extends Model {
         $this->fields = new Field($tableName, $contentID);
     }
 
-    protected function getInputClass(&$field, $info = null){
+    public function getInputClass(&$field, $info = null){
         $info = ($info == null) ? $this->info : $info;
         // field value
         $fieldName = $field['field_name'];

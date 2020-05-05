@@ -15,12 +15,6 @@ abstract class BaseContentList extends Content {
         $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
         $this->assign('list_headers', $headers);
 
-        $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
-        $model = new $listClass($this->content);
-        $list = $model->get();
-        $list = $this->extraFields( $list );
-        $this->assign('list', $list);
-
         // order by
         $this->assign('list_order', $this->content->getOrderBy());
 
@@ -73,12 +67,5 @@ abstract class BaseContentList extends Content {
      * @return array    array of extra fields array( array('name' => '<display_name>', 'field_name' => '<field>') )
      */
     abstract protected function extraHeaders();
-
-    /**
-     * append extra fields to items (if necessary)
-     * @param $list     array of current list
-     * @return array    modified list
-     */
-    abstract protected function extraFields($list);
 
 }
