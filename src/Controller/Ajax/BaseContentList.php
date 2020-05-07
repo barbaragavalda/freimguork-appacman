@@ -15,9 +15,8 @@ abstract class BaseContentList extends Ajax {
     protected function run(){
         $this->removeInfo();
 
-        $_GET = json_decode('{"draw":1,"columns":[{"data":0,"name":"","searchable":true,"orderable":true,"search":{"value":"","regex":false}},{"data":1,"name":"","searchable":true,"orderable":true,"search":{"value":"","regex":false}},{"data":2,"name":"","searchable":true,"orderable":true,"search":{"value":"","regex":false}},{"data":3,"name":"","searchable":true,"orderable":false,"search":{"value":"","regex":false}}],"order":[],"start":0,"length":25,"search":{"value":"","regex":false}}', true);
         $itemsPerPage = $_GET['length'];
-        $page = $_GET['start'] / $itemsPerPage;
+        $page = ($_GET['start'] / $itemsPerPage) + 1;
 
         $listType = $this->content->getListType();
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
@@ -30,7 +29,7 @@ abstract class BaseContentList extends Ajax {
         }
 
         $allItems = $model->getAll();
-        $this->assign('draw', $page);
+        $this->assign('draw', $_GET['draw'] + 1);
         $this->assign('recordsTotal', count($allItems));
         $this->assign('recordsFiltered', count($allItems));
         $this->assign('data', $list);
