@@ -9,16 +9,40 @@ abstract class BaseContentList extends Content {
     protected function run(){
         parent::run();
 
+        $contentID = $this->content->getID();
+        $currentContent = null;
+        foreach($this->info['menu'] as $block){
+            foreach($block['list'] as $content){
+                if( $content['id_appacman_content'] == $contentID ){
+                    $currentContent = $content;
+                    break;
+                }
+            }
+        }
+
+        $template = true;
         $listType = $this->content->getListType();
+        if( $currentContent && $currentContent['counter'] == 1 ){
+            // only one item
+            $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
+            $model = new $listClass($this->content, 1, 1);
+            $list = $model->getItemsPage();
+            if( count($list) ){
+                $template = false;
+                $this->redirect($this->domain . _('formulario') . '/' . $contentID  . '/' . $list[0]['id']);
+            }
+        }
 
-        // headers
-        $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
-        $this->assign('list_headers', $headers);
+        if( $template ){
+            // headers
+            $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
+            $this->assign('list_headers', $headers);
 
-        // order by
-        $this->assign('list_order', $this->content->getOrderBy());
+            // order by
+            $this->assign('list_order', $this->content->getOrderBy());
 
-        $this->template('List/' . $listType . '.twig');
+            $this->template('List/' . $listType . '.twig');
+        }
     }
 
     protected function hasPermission(){

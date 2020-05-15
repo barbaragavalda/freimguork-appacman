@@ -1,4 +1,4 @@
-{% if itemID %}
+{% if itemID and (prevNext['previous'] or prevNext['next']) %}
     <div class="btn-group pull-left">
         {% set enabled = ' disabled' %}
         {% if prevNext['previous'] %}{% set enabled = '' %}{% endif %}
