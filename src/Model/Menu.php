@@ -113,7 +113,9 @@ class Menu extends Model {
         $content = new Content($id);
         $content->exists();
         $model = new $listClass($content, 1, PHP_INT_MAX, true);
-        return count( $model->getAll() );
+        $all = $model->getAll();
+        if( $all == null ) return 0;
+        return count( $all );
     }
 
     private function getConfig($name){
