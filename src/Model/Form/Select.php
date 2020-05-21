@@ -84,7 +84,7 @@ class Select extends FormInput {
         $session = Session::getInstance();
         $profile = $session->get('profile_info');
 
-        if( class_exists('Appacman\\Model\\ExtraUser') ) {
+        if( $profile != null && class_exists('Appacman\\Model\\ExtraUser') ) {
             if ($profile['profile'] == ExtraUser::OWNER) {
                 $table = '';
                 if ($this->mysql->fieldExists($lateralTable, $profile['field'])) {
