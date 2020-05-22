@@ -18,10 +18,12 @@ abstract class BaseContentList extends Ajax {
         $itemsPerPage = $_GET['length'];
         $page = ($_GET['start'] / $itemsPerPage) + 1;
 
+        $order = isset($_GET['order']) ? $_GET['order'] : array();
+
         $listType = $this->content->getListType();
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
         $model = new $listClass($this->content, $page, $itemsPerPage);
-        $model->filter($_GET['search']['value'], $_GET['order']);
+        $model->filter($_GET['search']['value'], $order);
         $list = $model->getItemsPage();
         $list = $this->extraFields($list);
         foreach($list as $key => &$item){
