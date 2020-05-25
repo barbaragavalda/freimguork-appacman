@@ -90,7 +90,7 @@ class GenericFile extends FormInput {
     protected function getInputHTML($langID = null){
         $this->initFile($langID);
         if( $this->fileURL == null ){
-            return $this->inputType('file', $langID);
+            return $this->inputType('hidden', $langID) . $this->inputType('file', $langID);
         }else{
             $fieldName = parent::getInputName($langID);
             return '
@@ -103,6 +103,7 @@ class GenericFile extends FormInput {
                         <i class="fa fa-download"></i>
                     </a>
                     ' . $this->inputType('hidden', $langID) . '
+                    <div style="display: none">' . $this->inputType('file', $langID) . '</div>
                 </div>
             ';
         }
@@ -117,16 +118,7 @@ class GenericFile extends FormInput {
     protected function getPostValue($langID = null){
         // already uploaded
         if( $this->fileID ){
-            $postName = $this->getInputName($langID, false);
             if( $this->isMultiple !== false && $this->postID == -1 ){
-                // add empty files
-                if( array_key_exists($postName, $_FILES) ){
-                    $files = $_FILES[$postName];
-                    foreach($files as $key => $value){
-                        array_splice($files[$key], $this->isMultiple, 0, '');
-                    }
-                    $_FILES[$postName] = $files;
-                }
                 $this->postID = $this->fileID;
             }
 

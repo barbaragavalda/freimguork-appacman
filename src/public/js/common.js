@@ -154,7 +154,10 @@ var Namespace = Namespace || {};
                     })
                     .done( function( result ){
                         if( !result['error'] ){
-                            that.parent().parent().html('<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />');
+                            var input = '';
+                            input+= '<input type="file" class="form-control" id="' + name + '" name="' + name + '" value="" />';
+                            input+= '<div style="display: none"><input type="hidden" class="form-control" id="' + name + '" name="' + name + '" value=""></div>';
+                            that.parent().parent().html(input);
                         }else{
                             error();
                         }
