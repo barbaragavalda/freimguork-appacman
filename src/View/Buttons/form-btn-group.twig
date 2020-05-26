@@ -10,6 +10,7 @@
     </div>
 {% endif %}
 <div class="btn-group pull-right">
+    {% include 'Buttons/create.twig' with {'itemID': itemID} %}
     {% include 'Buttons/edit.twig' with {'itemID': itemID} %}
     {% include 'Buttons/send.twig' with {'itemID': itemID} %}
     {% include 'Buttons/delete.twig' with {'itemID': itemID} %}
