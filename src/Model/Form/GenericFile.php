@@ -90,7 +90,7 @@ class GenericFile extends FormInput {
     protected function getInputHTML($langID = null){
         $this->initFile($langID);
         if( $this->fileURL == null ){
-            return $this->inputType('hidden', $langID) . $this->inputType('file', $langID);
+            return $this->inputType('file', $langID) . $this->inputType('hidden', $langID);
         }else{
             $fieldName = parent::getInputName($langID);
             return '
