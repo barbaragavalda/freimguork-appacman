@@ -24,22 +24,23 @@ $(function () {
 var Namespace = Namespace || {};
 (function (win, doc, ns) {
 
-    ns.Form = function () {
+    ns.Form = function (form) {
 
-        this.init = function(){
-            this.select();
-            this.check();
-            this.events();
+        this.init = function(form){
+            this.select(form);
+            this.check(form);
+            this.events(form);
         };
 
-        this.select = function(){
+        this.select = function(form){
             // select without search field
-            $('.select2').select2({
+            var selects = this.get(form, '.select2');
+            selects.select2({
                 minimumResultsForSearch: 10,
                 allowClear: true
             });
 
-            var multiSelects = $('.select2-multi');
+            var multiSelects = this.get(form, '.select2-multi');
             multiSelects.select2({
                 multiple: true,
                 minimumResultsForSearch: 10,
@@ -48,38 +49,43 @@ var Namespace = Namespace || {};
             multiSelects.each(function(){
                 $(this).find('option')[0].remove();
             });
-            $('.select-all-checkbox').on('ifChanged', function(){
+
+            var multiSelectsChecks = this.get(form, '.select-all-checkbox');
+            multiSelectsChecks.on('ifChanged', function(){
                 var id = $(this).attr('id').replace('_selectAll', ''),
                     select = $('select[name="' + id + '"]');
                 if( select.length === 0 ) select = $('select[name="' + id + '[]"]');
 
                 var addProp = $(this).is(':checked'),
                     options = select.find('option');
-                for(var i=0; i<options.length; i++){
-                    if( addProp ){
-                        $(options[i]).prop('selected', 'selected');
-                    }else{
-                        $(options[i]).removeAttr('selected');
-                    }
-                }
-                if( !addProp ){
+                if( addProp ) {
+                    options.prop('selected', 'selected');
+                }else{
+                    options.removeAttr('selected');
                     select.val(null);
                 }
                 select.trigger('change');
             });
         };
 
-        this.check = function(){
-            // check
-            $('input[type="checkbox"].custom-check, input[type="radio"].custom-radio').iCheck({
+        this.check = function(form){
+            var checkboxs = this.get(form, 'input[type="checkbox"].custom-check'),
+                radios = this.get(form, 'input[type="radio"].custom-radio');
+
+            checkboxs.iCheck({
+                checkboxClass:  'icheckbox_flat-green',
+                radioClass:     'iradio_flat-green'
+            });
+            radios.iCheck({
                 checkboxClass:  'icheckbox_flat-green',
                 radioClass:     'iradio_flat-green'
             });
         };
 
-        this.events = function(){
+        this.events = function(form){
             //prevent submission
-            $('form').find('input,textarea').keypress(function(e){
+            var inputs = this.get(form, 'input,textarea');
+            inputs.keypress(function(e){
                 if( e.which === 13 ){
                     $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
                     return false;
@@ -87,7 +93,14 @@ var Namespace = Namespace || {};
             });
         };
 
-        this.init();
+        this.get = function(form, selector){
+            if( typeof(form) === 'undefined' ){
+                return $(selector);
+            }
+            return form.find(selector);
+        };
+
+        this.init(form);
 
         return this;
     };
@@ -213,14 +226,14 @@ var Namespace = Namespace || {};
                     processData: false,
                     contentType: false,
                     success: function(result) {
-                        $('#content-' + fieldName).append( result['html'] );
+                        var form = $('#content-' + fieldName);
+                        form.append( result['html'] );
                         loader.hide();
 
-                        new Namespace.Form();
-                        that.delete('');
+                        new Namespace.Form(form);
+                        that.delete();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR, textStatus, errorThrown);
                         // Handle errors here
                         loader.hide();
                     }
@@ -237,7 +250,7 @@ var Namespace = Namespace || {};
                 var id = $(this).attr('data-id'),
                     button = this;
 
-                if( id == '' ){
+                if( id === '' ){
                     that.removeForm( $(button) );
                 }else{
                     $(this).confirmation({

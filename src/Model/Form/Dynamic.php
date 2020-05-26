@@ -209,8 +209,8 @@ class Dynamic extends FormInput {
                         if( $input->isOnLangTable() ){
                             foreach($this->languages as $language){
                                 $key = array_keys($value['lang_'.$language['id']])[0];
-                                $value = $value['lang_'.$language['id']][$key]['value'];
-                                if( $value ) $empty = false;
+                                $checkValue = $value['lang_'.$language['id']][$key]['value'];
+                                if( $checkValue ) $empty = false;
                             }
                         }else{
                             $key = array_keys($value)[0];

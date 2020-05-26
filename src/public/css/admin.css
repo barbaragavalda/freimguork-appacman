@@ -175,6 +175,12 @@ form .alert h4{
     border: 1px solid #dddddd;
 }
 
+/* form select */
+.select2-selection__rendered{
+    max-height: 150px;
+    overflow-y: auto !important;
+}
+
 /* map */
 .map{
     width: 100%;
