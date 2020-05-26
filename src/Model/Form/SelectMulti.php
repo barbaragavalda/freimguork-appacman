@@ -49,7 +49,7 @@ class SelectMulti extends Select {
             ';
         }
         $field .= '
-            <select id="'.$fieldName.'" name="'.$fieldName.'"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true" data-name="'.$this->fieldName.'">
+            <select id="'.$fieldName.'" name="'.$fieldName.'"  class="form-control select2-multi select2-hidden-accessible" multiple="" data-placeholder="'.gettext('Selecciona').' '.$this->getPlaceholder().'" style="width: 100%;" tabindex="-1" aria-hidden="true" data-name="'.$this->fieldName.'">
                 ' . $this->getOptionsHTML($langID) . '
             </select>
         ';

@@ -33,24 +33,39 @@ var Namespace = Namespace || {};
         };
 
         this.select = function(){
-            // multiselect without search field
+            // select without search field
             $('.select2').select2({
                 minimumResultsForSearch: 10,
                 allowClear: true
             });
+
+            var multiSelects = $('.select2-multi');
+            multiSelects.select2({
+                multiple: true,
+                minimumResultsForSearch: 10,
+                allowClear: true
+            });
+            multiSelects.each(function(){
+                $(this).find('option')[0].remove();
+            });
             $('.select-all-checkbox').on('ifChanged', function(){
                 var id = $(this).attr('id').replace('_selectAll', ''),
-                    options = $('#' + id +' option');
-                if( $(this).is(':checked') ){
-                    for(var i=0; i<options.length; i++){
-                        if( $(options[i]).val() != "" && $(options[i]).val() > 0 ){
-                            $(options[i]).prop('selected', 'selected');
-                        }
+                    select = $('select[name="' + id + '"]');
+                if( select.length === 0 ) select = $('select[name="' + id + '[]"]');
+
+                var addProp = $(this).is(':checked'),
+                    options = select.find('option');
+                for(var i=0; i<options.length; i++){
+                    if( addProp ){
+                        $(options[i]).prop('selected', 'selected');
+                    }else{
+                        $(options[i]).removeAttr('selected');
                     }
-                }else{
-                    $('#' + id).val(null);
                 }
-                $('#' + id).trigger('change');
+                if( !addProp ){
+                    select.val(null);
+                }
+                select.trigger('change');
             });
         };
 
@@ -65,7 +80,7 @@ var Namespace = Namespace || {};
         this.events = function(){
             //prevent submission
             $('form').find('input,textarea').keypress(function(e){
-                if( e.which == 13 ){
+                if( e.which === 13 ){
                     $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
                     return false;
                 }
