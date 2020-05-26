@@ -15,15 +15,15 @@ abstract class BaseContentList extends Ajax {
     protected function run(){
         $this->removeInfo();
 
-        $itemsPerPage = $_GET['length'];
-        $page = ($_GET['start'] / $itemsPerPage) + 1;
+        $itemsPerPage = $_REQUEST['length'];
+        $page = ($_REQUEST['start'] / $itemsPerPage) + 1;
 
-        $order = isset($_GET['order']) ? $_GET['order'] : array();
+        $order = isset($_REQUEST['order']) ? $_REQUEST['order'] : array();
 
         $listType = $this->content->getListType();
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
         $model = new $listClass($this->content, $page, $itemsPerPage);
-        $model->filter($_GET['search']['value'], $order);
+        $model->filter($_REQUEST['search']['value'], $order);
         $list = $model->getItemsPage();
         $list = $this->extraFields($list);
         foreach($list as $key => &$item){
@@ -31,7 +31,7 @@ abstract class BaseContentList extends Ajax {
         }
 
         $allItems = $model->getAll();
-        $this->assign('draw', $_GET['draw'] + 1);
+        $this->assign('draw', $_REQUEST['draw'] + 1);
         $this->assign('recordsTotal', count($allItems));
         $this->assign('recordsFiltered', count($allItems));
         $this->assign('data', $list);

@@ -28,7 +28,13 @@
             $('#list').DataTable({
                 processing:     true,
                 serverSide:     true,
-                ajax:           '{{ domain }}table/{{ contentID }}',
+                ajax: {
+                    url: '{{ domain }}table/{{ contentID }}',
+                    type: 'POST',
+                    data: function(params){
+                        return $.extend(params, {{ tableData|json_encode|raw }});
+                    }
+                },
                 columnDefs: [
                     {
                         targets: '_all',
@@ -136,8 +142,10 @@
     {% set createButton %}
         <div class="clearfix">
             {% block extra_buttons %}{% endblock %}
-            {% include 'Buttons/create.twig' %}
-            {% include 'Buttons/export.twig' %}
+            <div class="btn-group margin pull-right">
+                {% include 'Buttons/create.twig' %}
+                {% include 'Buttons/export.twig' %}
+            </div>
         </div>
     {% endset %}
     <div class="row">
