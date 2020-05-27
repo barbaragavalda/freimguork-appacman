@@ -60,7 +60,7 @@
                                 }
                             }
                             if( actions !== '' ){
-                                return actions.replace('%itemID%', row['id']);
+                                return actions.replace(/%itemID%/g, row['id']);
                             }
                             return value;
                         }
@@ -101,36 +101,36 @@
                             window.location = '{{ domain ~ formLink ~ '/' ~ contentID ~ '/' }}' + id;
                         }
                     });
+
+                    // delete item
+                    var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+                    deleteModel.item(
+                        'left',
+                        '{% trans %}Este proceso es irreversible{% endtrans %}',
+                        '{% trans %}Sí{% endtrans %}',
+                        '{% trans %}No{% endtrans %}',
+                        '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
+                        function () {
+                            window.location.reload();
+                        }
+                    );
+
+                    // block item
+                    var blockModel = new Namespace.Block('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}', '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
+                    blockModel.block(
+                        '{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}',
+                        '{% trans %}Sí{% endtrans %}',
+                        '{% trans %}No{% endtrans %}',
+                        '{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+                    );
+                    blockModel.unblock(
+                        '{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}',
+                        '{% trans %}Sí{% endtrans %}',
+                        '{% trans %}No{% endtrans %}',
+                        '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+                    );
                 }
             });
-
-            // delete item
-            var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
-            deleteModel.item(
-                'left',
-                '{% trans %}Este proceso es irreversible{% endtrans %}',
-                '{% trans %}Sí{% endtrans %}',
-                '{% trans %}No{% endtrans %}',
-                '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
-                function () {
-                    window.location.reload();
-                }
-            );
-
-            // block item
-            var blockModel = new Namespace.Block('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}', '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
-            blockModel.block(
-                '{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}',
-                '{% trans %}Sí{% endtrans %}',
-                '{% trans %}No{% endtrans %}',
-                '{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
-            );
-            blockModel.unblock(
-                '{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}',
-                '{% trans %}Sí{% endtrans %}',
-                '{% trans %}No{% endtrans %}',
-                '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
-            );
 
         });
     </script>
