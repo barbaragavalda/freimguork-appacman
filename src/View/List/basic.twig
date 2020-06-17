@@ -9,7 +9,7 @@
 {% block extra_scripts %}
     {{ parent() }}
     <!-- DataTables -->
-    <script src="{{ vendorDomain }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{ vendorDomain }}bower_components/datatables.net/js/jquery.dataTables.js"></script>
     <script src="{{ vendorDomain }}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <!-- Custom js -->
     <script src="{{ adminDomain }}js/common.js?v=2"></script>
@@ -25,14 +25,19 @@
         {% endfor %}
         orderColumns.push({ orderable: false });
         $(function () {
-            $('#list').DataTable({
+            var table = $('#list').DataTable({
                 processing:     true,
                 serverSide:     true,
                 ajax: {
                     url: '{{ domain }}table/{{ contentID }}',
                     type: 'POST',
                     data: function(params){
-                        return $.extend(params, {{ tableData|json_encode|raw }});
+                        var finalParams = $.extend(params, {{ tableData|json_encode|raw }});
+                        if( getFilter() === 'true' || getFilter() === true ){
+                            finalParams['start'] = 0;
+                            setFilter(false);
+                        }
+                        return finalParams;
                     }
                 },
                 columnDefs: [
@@ -130,6 +135,18 @@
                         '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
                     );
                 }
+            });
+
+            function setFilter(value){
+                window.localStorage.setItem('filterClicked', value);
+            }
+
+            function getFilter(){
+                return window.localStorage.getItem('filterClicked');
+            }
+
+            $('button[name="filter"]').click(function(e){
+                setFilter(true);
             });
 
         });
