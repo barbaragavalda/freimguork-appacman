@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 
 # url
 msgid "iniciar-sesion"
@@ -281,6 +281,12 @@ msgstr "Create new item"
 
 msgid "Exportar"
 msgstr "Export"
+
+msgid "Filtrar"
+msgstr "Filter"
+
+msgid "Previsualizar"
+msgstr "Preview"
 
 msgid "Mostrando _START_ a _END_ de _TOTAL_ entradas"
 msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
