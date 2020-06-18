@@ -18,7 +18,7 @@ abstract class BaseContentList extends Ajax {
         $itemsPerPage = $_REQUEST['length'];
         $page = ($_REQUEST['start'] / $itemsPerPage) + 1;
 
-        $order = isset($_REQUEST['order']) ? $_REQUEST['order'] : array();
+        $order = isset($_REQUEST['list_order']) ? $_REQUEST['list_order'] : array();
 
         $listType = $this->content->getListType();
         $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));

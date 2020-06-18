@@ -9,7 +9,7 @@
 {% block extra_scripts %}
     {{ parent() }}
     <!-- DataTables -->
-    <script src="{{ vendorDomain }}bower_components/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="{{ vendorDomain }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{ vendorDomain }}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <!-- Custom js -->
     <script src="{{ adminDomain }}js/common.js?v=2"></script>
@@ -24,6 +24,7 @@
             {% endif %}
         {% endfor %}
         orderColumns.push({ orderable: false });
+
         $(function () {
             var table = $('#list').DataTable({
                 processing:     true,
@@ -37,6 +38,8 @@
                             finalParams['start'] = 0;
                             setFilter(false);
                         }
+                        finalParams['list_order'] = finalParams['order'];
+                        delete finalParams['order'];
                         return finalParams;
                     }
                 },
