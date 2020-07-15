@@ -74,11 +74,7 @@ class Table extends Paginated {
         $this->prepared = false;
         if( count($this->items) && !empty($query) ){
             $this->query = StringUtils::removeAccents(mb_strtolower($query));
-
-            if( count($this->items) < 500 ){
-                $this->prepared = true;
-                $this->items = $this->prepare($this->items);
-            }
+            $this->prepareItems();
 
             $items = array();
             foreach($this->items as $item){
@@ -90,12 +86,24 @@ class Table extends Paginated {
         }
 
         if( count($this->items) && !empty($orders) ) {
-            $keys = array_keys($this->items[0]);
+            $this->prepareItems();
+            $keys = array_keys(array_shift($this->items));
             foreach ($orders as $order) {
-                $this->orderField = $keys[$order['column'] + 1];
+                $this->initOrderField($order, $keys);
                 $this->orderDirection = $order['dir'];
                 usort($this->items, array($this, 'order'));
             }
+        }
+    }
+
+    protected function initOrderField($order, $keys){
+        $this->orderField = $keys[$order['column'] + 1];
+    }
+
+    private function prepareItems(){
+        if( count($this->items) < 500 ){
+            $this->prepared = true;
+            $this->items = $this->prepare($this->items);
         }
     }
 
@@ -104,13 +112,32 @@ class Table extends Paginated {
     }
 
     public function order($a, $b) {
-        if( $this->orderDirection == 'asc' ){
-            return strcmp($a[$this->orderField], $b[$this->orderField]);
+        $valueA = $a[$this->orderField];
+        $valueB = $b[$this->orderField];
+        if( is_array($this->orderField) ){
+            $valueA = $a;
+            $valueB = $b;
+            foreach ($this->orderField as $order){
+                $valueA = $valueA[$order];
+                $valueB = $valueB[$order];
+            }
         }
-        return strcmp($b[$this->orderField], $a[$this->orderField]);
+
+        if( is_numeric($valueA) && is_numeric($valueB) ){
+            if( $valueA == $valueB ) return 0;
+            if( $this->orderDirection == 'asc' ) {
+                return $valueA < $valueB ? -1 : 1;
+            }
+            return $valueB < $valueA ? -1 : 1;
+        }else{
+            if( $this->orderDirection == 'asc' ){
+                return strcmp($valueA, $valueB);
+            }
+            return strcmp($valueB, $valueA);
+        }
     }
 
-    private function prepare($items){
+    protected function prepare($items){
         foreach( $items as &$row ){
             foreach( $this->fields as $field ){
                 $input = $this->content->getInputClass($field, $row);
