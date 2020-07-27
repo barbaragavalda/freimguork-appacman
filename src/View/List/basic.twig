@@ -152,6 +152,11 @@
                 setFilter(true);
             });
 
+            var post = {{ tableData|json_encode|raw }};
+            if (typeof(post['delete']) !== 'undefined') {
+                table.search('').draw();
+            }
+
         });
     </script>
 {% endblock %}
