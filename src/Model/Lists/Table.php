@@ -87,7 +87,8 @@ class Table extends Paginated {
 
         if( count($this->items) && !empty($orders) ) {
             $this->prepareItems();
-            $keys = array_keys(array_shift($this->items));
+            $auxItems = $this->items;
+            $keys = array_keys(array_shift($auxItems));
             foreach ($orders as $order) {
                 $this->initOrderField($order, $keys);
                 $this->orderDirection = $order['dir'];
