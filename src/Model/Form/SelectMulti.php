@@ -130,46 +130,48 @@ class SelectMulti extends Select {
     public function save($itemID, $langID = null){
         $postName = $this->getInputName($langID, false);
         if( isset($_POST[$postName]) ){
-            $this->initTables();
+            return $this->insert($itemID, $_POST[$postName]);
+        }
+        return false;
+    }
 
-            // delete all
-            $sql = '
+    protected function insert($itemID, $ids = array()){
+        $this->initTables();
+
+        // delete all
+        $sql = '
                 DELETE FROM '.$this->fieldName.'
                 WHERE id_'.$this->currentTable.' = :id
             ';
-            $params = array(
-                'id' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
-            );
-            $this->mysql->query($sql, $params);
+        $params = array(
+            'id' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
+        );
+        $this->mysql->query($sql, $params);
 
-            if( $this->mysql->getState() ){
-                // insert again
-                $values = array();
-                $_POST[$postName] = array_unique($_POST[$postName]);
-                foreach($_POST[$postName] as $index => $id){
-                    if( $id ){
-                        $values[] = '(:id, :lateral_id_'.$index.')';
-                        $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
-                    }
+        if( $this->mysql->getState() ){
+            // insert again
+            $values = array();
+            $ids = array_unique($ids);
+            foreach($ids as $index => $id){
+                if( $id ){
+                    $values[] = '(:id, :lateral_id_'.$index.')';
+                    $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
                 }
+            }
 
-                if( count($values) ){
-                    $sql = '
+            if( count($values) ){
+                $sql = '
                         INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->getLateralField().') 
                         VALUES '.implode(',', $values).'
                     ';
-                    $this->mysql->query($sql, $params);
-                    if( $this->mysql->getState() ){
-                        return false;
-                    }
-                }else{
+                $this->mysql->query($sql, $params);
+                if( $this->mysql->getState() ){
                     return false;
                 }
+            }else{
+                return false;
             }
-        }else{
-            return false;
         }
-        return true;
     }
 
 }
