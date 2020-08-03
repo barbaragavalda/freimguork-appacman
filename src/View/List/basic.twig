@@ -59,6 +59,7 @@
                                 actions += '{{ include('Buttons/edit.twig', {'itemID': id, 'small': true})|forJS|raw }}';
                                 actions += '{{ include('Buttons/delete.twig', {'itemID': id, 'small': true})|forJS|raw }}';
                                 actions += '{{ include('Buttons/duplicate.twig', {'itemID': id})|forJS|raw }}';
+                                actions += '{{ include('Buttons/log-out.twig', {'itemID': id})|forJS|raw }}';
                             }
                             if( key === 'is_locked' ){
                                 if( row['is_locked'] === '1' ){

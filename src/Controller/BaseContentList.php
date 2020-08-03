@@ -61,9 +61,10 @@ abstract class BaseContentList extends Content {
             $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
             $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
             $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
+            $canLogOut = $this->user->hasPermission($contentID, Permissions::LOG_OUT);
 
             // has permissions to see list?
-            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate ){
+            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate || $canDuplicate ){
                 $this->assign('canSee', $canSee);
                 $this->assign('canEdit', $canEdit);
                 $this->assign('canCreate', $canCreate);
@@ -72,6 +73,7 @@ abstract class BaseContentList extends Content {
                 $this->assign('canLock', $canLock);
                 $this->assign('canOwn', $canOwn);
                 $this->assign('canDuplicate', $canDuplicate);
+                $this->assign('canLogOut', $canLogOut);
             }else{
                 $hasPermission = false;
             }

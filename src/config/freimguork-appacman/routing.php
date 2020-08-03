@@ -27,6 +27,7 @@ $config = array(
         gettext('anadir-campo') .'/{contentID}/{itemID}'        => 'Ajax\\Dynamic\\Add',
         gettext('eliminar-campo') .'/{contentID}/{itemID}'      => 'Ajax\\Dynamic\\Delete',
         gettext('duplicar').'/{contentID}/{itemID}'             => 'Duplicate',
+        'log-out/{contentID}/{itemID}'                          => 'ForceLogOut',
 
         // push notifications
         gettext('notificaciones-push').'/{contentID}'           => 'Push\\PushList',
