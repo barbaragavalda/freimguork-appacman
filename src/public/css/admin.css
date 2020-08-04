@@ -203,3 +203,7 @@ form .alert h4{
 .text-muted{
     display: inline;
 }
+
+.table-hover > tbody >  tr:hover {
+    background-color: #dfdfdf;
+}

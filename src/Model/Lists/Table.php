@@ -72,6 +72,7 @@ class Table extends Paginated {
 
     public function filter($query, $orders){
         $this->prepared = false;
+
         if( count($this->items) && !empty($query) ){
             $this->query = StringUtils::removeAccents(mb_strtolower($query));
             $this->prepareItems();
@@ -109,6 +110,9 @@ class Table extends Paginated {
     }
 
     public function search($value){
+        if( is_array($value) ){
+            return count(array_filter($value, array($this, 'search')));
+        }
         return strpos(StringUtils::removeAccents(mb_strtolower($value)), $this->query) !== false;
     }
 
