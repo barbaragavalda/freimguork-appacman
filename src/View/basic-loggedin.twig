@@ -58,7 +58,9 @@
                     {% endif %}
                     <li class="dropdown user user-menu">
                         <a href="#">
-                            <img src="{{ business['logo'] }}" class="user-image" alt="{{ business['name'] }}" title="{{ business['name'] }}">
+                            {% if business['logo'] %}
+                                <img src="{{ business['logo'] }}" class="user-image" alt="{{ business['name'] }}" title="{{ business['name'] }}">
+                            {% endif %}
                             <span class="hidden-xs">{{ username }}</span>
                         </a>
                     </li>
