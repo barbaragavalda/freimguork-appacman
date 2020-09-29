@@ -63,7 +63,7 @@ class Table extends Paginated {
         $items = parent::getItemsPage();
 
         // prepare rows for list
-        if( !$this->prepared && !$this->forMenu ) {
+        if( !$this->forMenu ) {
             $items = $this->prepare($items);
         }
 
@@ -104,8 +104,8 @@ class Table extends Paginated {
 
     private function prepareItems(){
         if( count($this->items) < 500 ){
-            $this->prepared = true;
             $this->items = $this->prepare($this->items);
+            $this->prepared = true;
         }
     }
 
@@ -143,15 +143,17 @@ class Table extends Paginated {
     }
 
     protected function prepare($items){
-        foreach( $items as &$row ){
-            foreach( $this->fields as $field ){
-                $input = $this->content->getInputClass($field, $row);
-                $row[ $input->getFieldName() ] = $input->getListValue();
-            }
-            if( array_key_exists('is_locked', $row) ){
-                $isLocked = $row['is_locked'];
-                unset($row['is_locked']);
-                $row['is_locked'] = $isLocked;
+        if( !$this->prepared ) {
+            foreach ($items as &$row) {
+                foreach ($this->fields as $field) {
+                    $input                         = $this->content->getInputClass($field, $row);
+                    $row[ $input->getFieldName() ] = $input->getListValue();
+                }
+                if (array_key_exists('is_locked', $row)) {
+                    $isLocked = $row['is_locked'];
+                    unset($row['is_locked']);
+                    $row['is_locked'] = $isLocked;
+                }
             }
         }
         return $items;
