@@ -141,12 +141,16 @@ class UserForm extends Form {
         $userEmail = TwoWay::decrypt($this->user['email'], $this->key.'_email');
 
         $mail = new Mail();
+        $name = '<h1>' . $businessInfo['name'] . '</h1>';
+        if( $businessInfo['logo'] ){
+        	$name = '<img src="' . $businessInfo['logo'] . '" alt="' . $businessInfo['name'] . '" title="' . $businessInfo['name'] . '" style="max-width: 200px" />';
+        }
         return $mail->send(
             array('email'=>$mailConfig['username'], 'name'=>$mailConfig['name']),
             array(array('email'=>$userEmail, 'name'=>$userName)),
             $businessInfo['name'] . ' - ' . gettext('Recordar contraseña'),
             '
-                <img src="' . $businessInfo['logo'] . '" alt="' . $businessInfo['name'] . '" title="' . $businessInfo['name'] . '" style="max-width: 200px" />   
+                ' . $name . '
                 <div>
                     <a href="'. $domain . gettext('cambiar-contrasena') .'/' . $hash . '" style="display:inline-block; text-decoration:none; text-transform: uppercase; text-size: 16px; padding:6px 30px; background:#39CCCC; color:#ffffff; border: 1px solid #36a8a9;">' . gettext('Haz click para cambiar tu contraseña') . '</a>
                 </div>
