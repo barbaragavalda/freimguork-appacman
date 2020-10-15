@@ -1,12 +1,12 @@
 $(function () {
 
-    new Namespace.Form();
-
     // language
     var language = new Namespace.Language();
     if( language.hasLanguage() ){
         language.setUpForm();
     }
+
+    new Namespace.Form();
 
     // push notifications
     var push = new Namespace.Push();
@@ -168,7 +168,7 @@ var Namespace = Namespace || {};
             $('.wysiwyg-textarea-simple textarea').summernote({
                 height: 150,
                 toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'color']],
+                    ['style', ['bold', 'italic', 'underline']],
                     ['media', ['link']],
                     ['extra', ['codeview', 'clear']]
                 ],
@@ -228,6 +228,7 @@ var Namespace = Namespace || {};
                     success: function(result) {
                         var form = $('#content-' + fieldName);
                         form.append( result['html'] );
+                        checkLanguage();
                         loader.hide();
 
                         new Namespace.Form(form);
@@ -243,6 +244,15 @@ var Namespace = Namespace || {};
                 return false;
             });
         };
+
+        function checkLanguage(){
+            $('.box-languages').find('button').each(function(){
+                if( $(this).hasClass('btn-default') ){
+                    var langID = $(this).val();
+                    $('.lang_' + langID).hide();
+                }
+            });
+        }
 
         this.delete = function(path, errorText, content, btnOkLabel, btnCancelLabel){
             var that = this;
@@ -421,6 +431,10 @@ var Namespace = Namespace || {};
             $('.lang_' + langID).hide();
             _cookies.set('lang_' + langID, 'true', -1);
         }
+
+        this.checkForm = function(){
+            console.log('checkForm');
+        };
 
         return this;
     };
