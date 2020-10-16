@@ -39,8 +39,10 @@
     <script src="{{ vendorDomain }}bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
     <!-- Custom js -->
     <script src="{{ adminDomain }}js/common.js?v=2"></script>
-    <script src="{{ adminDomain }}js/form.js?v=3"></script>
+    <script src="{{ adminDomain }}js/form.js?v=4"></script>
     <script>
+        var uploadPath = '{{ domain }}{% trans %}subir-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}';
+
         // datepicker
         $('.datepicker').datepicker({
             autoclose: true,
@@ -55,11 +57,6 @@
         });
         // colorpicker
         $('.input-colorpicker').colorpicker();
-
-        // textarea
-        var textarea = new Namespace.Textarea();
-        textarea.completeTextarea('{{ domain }}{% trans %}subir-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}');
-        textarea.simpleTextarea();
 
         // dynamic fiels
         var dynamic = new Namespace.Dynamic('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');

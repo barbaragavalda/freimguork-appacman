@@ -1,12 +1,12 @@
 $(function () {
 
+    new Namespace.Form();
+
     // language
     var language = new Namespace.Language();
     if( language.hasLanguage() ){
         language.setUpForm();
     }
-
-    new Namespace.Form();
 
     // push notifications
     var push = new Namespace.Push();
@@ -29,18 +29,19 @@ var Namespace = Namespace || {};
         this.init = function(form){
             this.select(form);
             this.check(form);
+            this.textarea(form);
             this.events(form);
         };
 
         this.select = function(form){
             // select without search field
-            var selects = this.get(form, '.select2');
+            var selects = getObject(form, '.select2');
             selects.select2({
                 minimumResultsForSearch: 10,
                 allowClear: true
             });
 
-            var multiSelects = this.get(form, '.select2-multi');
+            var multiSelects = getObject(form, '.select2-multi');
             multiSelects.select2({
                 multiple: true,
                 minimumResultsForSearch: 10,
@@ -50,7 +51,7 @@ var Namespace = Namespace || {};
                 $(this).find('option')[0].remove();
             });
 
-            var multiSelectsChecks = this.get(form, '.select-all-checkbox');
+            var multiSelectsChecks = getObject(form, '.select-all-checkbox');
             multiSelectsChecks.on('ifChanged', function(){
                 var id = $(this).attr('id').replace('_selectAll', ''),
                     select = $('select[name="' + id + '"]');
@@ -69,8 +70,8 @@ var Namespace = Namespace || {};
         };
 
         this.check = function(form){
-            var checkboxs = this.get(form, 'input[type="checkbox"].custom-check'),
-                radios = this.get(form, 'input[type="radio"].custom-radio');
+            var checkboxs = getObject(form, 'input[type="checkbox"].custom-check'),
+                radios = getObject(form, 'input[type="radio"].custom-radio');
 
             checkboxs.iCheck({
                 checkboxClass:  'icheckbox_flat-green',
@@ -89,9 +90,15 @@ var Namespace = Namespace || {};
             });
         };
 
+        this.textarea = function(form){
+            var textarea = new Namespace.Textarea(form);
+            textarea.completeTextarea(uploadPath);
+            textarea.simpleTextarea();
+        };
+
         this.events = function(form){
             //prevent submission
-            var inputs = this.get(form, 'input,textarea');
+            var inputs = getObject(form, 'input,textarea');
             inputs.keypress(function(e){
                 if( e.which === 13 ){
                     $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
@@ -100,23 +107,18 @@ var Namespace = Namespace || {};
             });
         };
 
-        this.get = function(form, selector){
-            if( typeof(form) === 'undefined' ){
-                return $(selector);
-            }
-            return form.find(selector);
-        };
-
         this.init(form);
 
         return this;
     };
 
-    ns.Textarea = function(){
+    ns.Textarea = function(form){
 
         this.completeTextarea = function(uploadDomain){
             // summernote WYSIWYG - text editor
-            $('.wysiwyg-textarea textarea').summernote({
+            var textareas = getObject(form, '.wysiwyg-textarea textarea');
+            console.log(form);
+            textareas.summernote({
                 height: 250,
                 toolbar: [
                     ['style', ['style', 'bold', 'italic', 'underline', 'strikethrough', 'clear']],
@@ -172,7 +174,8 @@ var Namespace = Namespace || {};
 
         this.simpleTextarea = function(){
             // summernote WYSIWYG - simple text editor
-            $('.wysiwyg-textarea-simple textarea').summernote({
+            var textareas = getObject(form, '.wysiwyg-textarea-simple textarea');
+            textareas.summernote({
                 height: 150,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline']],
@@ -233,12 +236,12 @@ var Namespace = Namespace || {};
                     processData: false,
                     contentType: false,
                     success: function(result) {
-                        var form = $('#content-' + fieldName);
-                        form.append( result['html'] );
-                        checkLanguage();
+                        var form = $('#content-' + fieldName),
+                            input = $(result['html']);
+                        form.append( input );
                         loader.hide();
 
-                        new Namespace.Form(form);
+                        new Namespace.Form(input);
                         that.delete();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -439,10 +442,6 @@ var Namespace = Namespace || {};
             _cookies.set('lang_' + langID, 'true', -1);
         }
 
-        this.checkForm = function(){
-            console.log('checkForm');
-        };
-
         return this;
     };
 
@@ -611,5 +610,12 @@ var Namespace = Namespace || {};
 
         return this;
     };
+
+    function getObject(form, selector){
+        if( typeof(form) === 'undefined' ){
+            return $(selector);
+        }
+        return form.find(selector);
+    }
 
 }(window, document, Namespace));
