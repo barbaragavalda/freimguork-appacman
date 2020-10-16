@@ -26,8 +26,14 @@ class Check extends FormInput {
      */
     protected function getInputHTML($langID = null){
         $postName = $this->getInputName($langID);
-        $checked = parent::getInputValue($langID) ? 'checked' : '';
+
+        $disabled = $checked = '';
+        if( parent::getInputValue($langID) ){
+            $disabled = 'disabled';
+            $checked = 'checked';
+        }
         return '
+            <input type="hidden" id="'.$postName.'" name="'.$postName.'" value="0" '.$disabled.' />
             <input type="checkbox" class="custom-check" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" '.$checked.' value="1">
         ';
     }

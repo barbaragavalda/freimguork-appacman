@@ -75,6 +75,13 @@ var Namespace = Namespace || {};
             checkboxs.iCheck({
                 checkboxClass:  'icheckbox_flat-green',
                 radioClass:     'iradio_flat-green'
+            }).on('ifChanged', function(event){
+                var hidden = $(this).parent().parent().find('input[type="hidden"]');
+                if(event.target.checked){
+                    hidden.prop('disabled', true);
+                }else{
+                    hidden.prop('disabled', false);
+                }
             });
             radios.iCheck({
                 checkboxClass:  'icheckbox_flat-green',
