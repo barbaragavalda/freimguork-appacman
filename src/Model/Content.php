@@ -108,13 +108,12 @@ class Content extends Page {
      * @param string|null $extraWhere
      * @return array
      */
-    private function getList($order, $fields, $extraWhere = null){
+    public function getList($order, $fields, $extraWhere = null){
         $fieldsNames = array_column($fields, 'field_name');
         foreach($fieldsNames as &$field){
             $field = '`' . $field . '`';
         }
         $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
-
 
         // table rows
         $table = $this->info['table_name'];
@@ -149,9 +148,11 @@ class Content extends Page {
             $sql .= ' ORDER BY '.$order;
         }
 
-        $rows = $this->mysql->query($sql, $params);
+        return $this->mysql->query($sql, $params);
+    }
 
-        return $rows;
+    public function getFieldsForExport(){
+        return $this->fields->getFieldsForExport();
     }
 
     /**
@@ -159,7 +160,7 @@ class Content extends Page {
      * @return array
      */
     public function getExportList(){
-        $fields = $this->fields->getFieldsForExport();
+        $fields = $this->getFieldsForExport();
         $titles = array();
         foreach($fields as $field){
             $titles[] = $field['name'];
