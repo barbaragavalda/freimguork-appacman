@@ -137,41 +137,75 @@ class SelectMulti extends Select {
 
     protected function insert($itemID, $ids = array()){
         $this->initTables();
+        $field = $this->getLateralField();
 
-        // delete all
-        $sql = '
-                DELETE FROM '.$this->fieldName.'
-                WHERE id_'.$this->currentTable.' = :id
-            ';
+        $old = $this->exists($field, $itemID);
+
+        // insert again
+        $values = array();
         $params = array(
             'id' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
         );
-        $this->mysql->query($sql, $params);
-
-        if( $this->mysql->getState() ){
-            // insert again
-            $values = array();
-            $ids = array_unique($ids);
-            foreach($ids as $index => $id){
-                if( $id ){
-                    $values[] = '(:id, :lateral_id_'.$index.')';
-                    $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
-                }
-            }
-
-            if( count($values) ){
-                $sql = '
-                        INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$this->getLateralField().') 
-                        VALUES '.implode(',', $values).'
-                    ';
-                $this->mysql->query($sql, $params);
-                if( $this->mysql->getState() ){
-                    return false;
-                }
-            }else{
-                return false;
+        $ids = array_unique($ids);
+        foreach($ids as $index => $id){
+            $exists = count($this->exists($field, $itemID, $id));
+            if( $id && !$exists ){
+                $values[] = '(:id, :lateral_id_'.$index.')';
+                $params['lateral_id_'.$index] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
             }
         }
+
+        $delete = array_diff($old, $ids);
+        if( count($delete) ){
+            $sql = '
+                DELETE FROM '.$this->fieldName.'
+                WHERE id_'.$this->currentTable.' = :item AND id_'.$field.' IN('.implode(', ', $delete).')
+            ';
+            $params = array(
+                'item' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
+            );
+            $this->mysql->query($sql, $params);
+        }
+
+        if( count($values) ){
+            $sql = '
+                INSERT INTO '.$this->fieldName.' (id_'.$this->currentTable.', id_'.$field.') 
+                VALUES '.implode(',', $values).'
+            ';
+            $this->mysql->query($sql, $params);
+            if( $this->mysql->getState() ){
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    private function exists($field, $itemID, $id = null){
+        $where = '';
+        $params = array(
+            'item' => array('value'=> $itemID, 'type' => \PDO::PARAM_INT)
+        );
+        if( $id != null ){
+            $where = ' AND id_'.$field.' = :id';
+            $params['id'] = array('value'=> $id, 'type' => \PDO::PARAM_INT);
+        }
+
+        $sql = '
+            SELECT id_'.$field.' AS id
+            FROM '.$this->fieldName.'
+            WHERE id_'.$this->currentTable.' = :item '.$where.'
+        ';
+        $ids = $this->mysql->query($sql, $params);
+
+        if( count($ids) ){
+            if( $id == null ){
+                return array_column($ids, 'id');
+            }else{
+                return $ids[0];
+            }
+        }
+        return array();
     }
 
 }
