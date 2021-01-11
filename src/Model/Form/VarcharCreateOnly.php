@@ -11,7 +11,7 @@ class VarcharCreateOnly extends Varchar {
      */
     protected function getInputHTML($langID = null){
         if( $this->id ){
-            return $this->getInputValue($langID);
+            return $this->getInputValue($langID) . $this->inputType('hidden', $langID);
         }else{
             return $this->inputType('text', $langID);
         }
