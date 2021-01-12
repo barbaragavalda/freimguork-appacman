@@ -41,22 +41,8 @@
     <script src="{{ adminDomain }}js/common.js?v=2"></script>
     <script src="{{ adminDomain }}js/form.js?v=4"></script>
     <script>
-        var uploadPath = '{{ domain }}{% trans %}subir-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}';
-
-        // datepicker
-        $('.datepicker').datepicker({
-            autoclose: true,
-            language: '{{ lang }}'
-        });
-        // datetimepicker
-        $('.datetimepicker').each(function(){
-            $(this).datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ss',
-                defaultDate: $(this).val()
-            });
-        });
-        // colorpicker
-        $('.input-colorpicker').colorpicker();
+        var uploadPath = '{{ domain }}{% trans %}subir-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}',
+            lang = '{{ lang }}';
 
         // dynamic fiels
         var dynamic = new Namespace.Dynamic('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');

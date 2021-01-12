@@ -30,6 +30,8 @@ var Namespace = Namespace || {};
             this.select(form);
             this.check(form);
             this.textarea(form);
+            this.date(form);
+            this.colorpicker(form);
             this.events(form);
         };
 
@@ -94,6 +96,29 @@ var Namespace = Namespace || {};
             var textarea = new Namespace.Textarea(form);
             textarea.completeTextarea(uploadPath);
             textarea.simpleTextarea();
+        };
+
+        this.date = function(form) {
+            var datepickers = getObject(form, '.datepicker'),
+                datetimepickers = getObject(form, '.datetimepicker');
+
+            // datepicker
+            datepickers.datepicker({
+                autoclose: true,
+                language: lang
+            });
+            // datetimepicker
+            datetimepickers.each(function () {
+                $(this).datetimepicker({
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    defaultDate: $(this).val()
+                });
+            });
+        };
+
+        this.colorpicker = function(form){
+            var colorpickers = getObject(form, '.datetimepicker');
+            colorpickers.colorpicker();
         };
 
         this.events = function(form){
