@@ -165,9 +165,21 @@ class Content extends Page {
         foreach($fields as $field){
             $titles[] = $field['name'];
         }
+
+        $list = $this->getList(null, $fields);
+        foreach ($fields as $field) {
+            if( $field['type'] == 'encryptedTwoWay' ){
+                foreach ($list as &$item){
+                    $fieldName = $field['field_name'];
+                    $key = $item['id'] . '_' . $item['created'] . '_' . $fieldName;
+                    $item[$fieldName] = TwoWay::decrypt($item[$fieldName], $key);
+                }
+            }
+        }
+
         return array(
             'titles' => $titles,
-            'list' => $this->getList(null, $fields)
+            'list' => $list
         );
     }
 
