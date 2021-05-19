@@ -24,8 +24,12 @@
             {% endif %}
         {% endfor %}
         orderColumns.push({ orderable: false });
-
         $(function () {
+            var hasSearch = false;
+            {%  if has_search %}
+                hasSearch = true;
+            {% endif %}
+
             var table = $('#list').DataTable({
                 processing:     true,
                 serverSide:     true,
@@ -79,7 +83,7 @@
                 pageLength:     25,
                 stateSave:      true,
                 lengthChange:   true,
-                searching:      true,
+                searching:      hasSearch,
                 ordering:       true,
                 info:           true,
                 autoWidth:      false,

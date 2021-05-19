@@ -8,6 +8,8 @@ abstract class BaseContentList extends Content {
 
     protected $redirectToForm = true;
 
+    protected $hasSearch = true;
+
     protected function run(){
         parent::run();
 
@@ -41,6 +43,7 @@ abstract class BaseContentList extends Content {
         if( $template ){
             // list configuration
             $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
+            $this->assign('has_search', $this->hasSearch);
             $this->assign('list_headers', $headers);
             $this->assign('list_order', $this->content->getOrderBy());
             $this->assign('tableData', $_POST);
