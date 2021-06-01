@@ -58,7 +58,7 @@
 
                             {% set id = '%itemID%' %}
                             var actions = '';
-                            if( key === 'actions' ){
+                            if( key === 'actions' && value === '[APPACMAN_ACCIONS]' ){
                                 actions += '{{ include('Buttons/see.twig', {'itemID': id})|forJS|raw }}';
                                 actions += '{{ include('Buttons/edit.twig', {'itemID': id, 'small': true})|forJS|raw }}';
                                 actions += '{{ include('Buttons/delete.twig', {'itemID': id, 'small': true})|forJS|raw }}';

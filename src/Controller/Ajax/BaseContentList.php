@@ -28,7 +28,11 @@ abstract class BaseContentList extends Ajax {
         $list = $model->getItemsPage();
         $list = $this->extraFields($list);
         foreach($list as $key => &$item){
-            $item['actions'] = '[APPACMAN_ACCIONS]';
+            if( empty($item['id']) ){
+                $item['actions'] = '';
+            }else{
+                $item['actions'] = '[APPACMAN_ACCIONS]';
+            }
         }
 
         $allItems = $model->getAll();

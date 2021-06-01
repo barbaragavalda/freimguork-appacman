@@ -113,14 +113,17 @@ class Content extends Page {
         foreach($fieldsNames as &$field){
             $field = '`' . $field . '`';
         }
-        $extraFields = count($fieldsNames) ? ', '.implode(', ', $fieldsNames) : '';
+        $extraFields = count($fieldsNames) ? implode(', ', $fieldsNames) : '';
 
         // table rows
         $table = $this->info['table_name'];
         $tableLang = $table . '_lang';
         $params = array();
+        if( $this->mysql->fieldExists($table, 'id_'.$table) ){
+            $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
+        }
         $sql = '
-            SELECT t.id_'.$table.' AS id '.$extraFields.'
+            SELECT '.$extraFields.'
             FROM '.$table.' AS t
         ';
         if( $this->mysql->tableExists($tableLang) ){

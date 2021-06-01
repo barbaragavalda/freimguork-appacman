@@ -56,7 +56,7 @@ abstract class Page extends Model {
         if( count($info) ){
             if( is_a($this, 'Appacman\\Model\\Item') ){
                 $id = $info['id_'.$this->table];
-            }else{
+            }else if(array_key_exists('id', $info) ){
                 $id = $info['id'];
             }
         }
