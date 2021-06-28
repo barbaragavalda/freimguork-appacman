@@ -120,7 +120,11 @@ class Content extends Page {
         $tableLang = $table . '_lang';
         $params = array();
         if( $this->mysql->fieldExists($table, 'id_'.$table) ){
-            $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
+            if( $extraFields == '' ) {
+                $extraFields = 't.id_'.$table.' AS id';
+            }else{
+                $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
+            }
         }
         $sql = '
             SELECT '.$extraFields.'
