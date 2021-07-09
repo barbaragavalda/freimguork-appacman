@@ -34,7 +34,7 @@
                 processing:     true,
                 serverSide:     true,
                 ajax: {
-                    url: '{{ domain }}table/{{ contentID }}',
+                    url: '{{ list_url }}',
                     type: 'POST',
                     data: function(params){
                         var finalParams = $.extend(params, {{ tableData|json_encode|raw }});

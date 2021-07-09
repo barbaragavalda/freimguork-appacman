@@ -10,6 +10,10 @@
 .main-header .user-image{
     background-color: #ffffff;
 }
+.navbar-nav>.user-menu .user-image{
+    min-width: auto !important;
+    min-height: auto !important;
+}
 .error-page>.error-content{
     padding-top: 27px;
     text-align: center;

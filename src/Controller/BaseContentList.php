@@ -10,14 +10,16 @@ abstract class BaseContentList extends Content {
 
     protected $hasSearch = true;
 
+    protected $listURL = null;
+
     protected function run(){
         parent::run();
 
         $template = true;
         $listType = $this->content->getListType();
 
+        $contentID = $this->content->getID();
         if( $this->redirectToForm ){
-            $contentID = $this->content->getID();
             $currentContent = null;
             foreach($this->info['menu'] as $block){
                 foreach($block['list'] as $content){
@@ -41,9 +43,14 @@ abstract class BaseContentList extends Content {
         }
 
         if( $template ){
+            if( $this->listURL == null ){
+                $this->listURL = $this->domain . 'table/' . $contentID;
+            }
+            
             // list configuration
             $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
             $this->assign('has_search', $this->hasSearch);
+            $this->assign('list_url', $this->listURL);
             $this->assign('list_headers', $headers);
             $this->assign('list_order', $this->content->getOrderBy());
             $this->assign('tableData', $_POST);
