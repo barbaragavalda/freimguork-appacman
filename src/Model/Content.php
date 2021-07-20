@@ -22,6 +22,10 @@ class Content extends Page {
         return $this->info['list_type'];
     }
 
+    public function setListType($type){
+        $this->info['list_type'] = $type;
+    }
+
     public function getOrderBy(){
         // order by on data base
         $orders = explode(', ', $this->info['order_by']);
@@ -120,11 +124,7 @@ class Content extends Page {
         $tableLang = $table . '_lang';
         $params = array();
         if( $this->mysql->fieldExists($table, 'id_'.$table) ){
-            if( $extraFields == '' ) {
-                $extraFields = 't.id_'.$table.' AS id';
-            }else{
-                $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
-            }
+            $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
         }
         $sql = '
             SELECT '.$extraFields.'

@@ -46,7 +46,7 @@ abstract class BaseContentList extends Content {
             if( $this->listURL == null ){
                 $this->listURL = $this->domain . 'table/' . $contentID;
             }
-            
+
             // list configuration
             $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
             $this->assign('has_search', $this->hasSearch);

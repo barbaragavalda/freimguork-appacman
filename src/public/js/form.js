@@ -117,7 +117,7 @@ var Namespace = Namespace || {};
         };
 
         this.colorpicker = function(form){
-            var colorpickers = getObject(form, '.datetimepicker');
+            var colorpickers = getObject(form, '.input-colorpicker');
             colorpickers.colorpicker();
         };
 

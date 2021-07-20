@@ -23,7 +23,7 @@ class Notifier extends PushCronJob {
                 $message = $notification['name'][ $device['user_language'] ];
                 if( $message ){
                     $push = new Push();
-                    $push->send(array($device), $message, $notification['deeplink'], $notification['id']);
+                    $push->send(array($device), $message, $notification, $notification['id']);
                 }
             }
         }
