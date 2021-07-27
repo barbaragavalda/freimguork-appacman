@@ -141,7 +141,7 @@ class PushCronJob extends Model
                     SELECT apd.token, apd.platform, IFNULL(apd.language,"es") AS language
                     FROM appacman_push_device AS apd
                     ' . $innerJoin . '
-                    WHERE apd.id_user IS NULL ' . $whereNoUser . '
+                    WHERE (apd.id_user IS NULL OR apd.id_user <= 0) ' . $whereNoUser . '
                 )
             ';
         }
