@@ -189,6 +189,10 @@ abstract class FormInput extends Model {
         $this->value = $value;
     }
 
+    public function getHint(){
+        return $this->hint;
+    }
+
     /**
      * Get validation error
      * @return string
