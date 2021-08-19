@@ -51,15 +51,15 @@ class PushCronJob extends Model
     {
         $notifications = $this->getPending();
 
-        $delete                  = array();
+        $deleteIDs                  = array();
         $translatedNotifications = $this->getTranslation($notifications);
         foreach ($translatedNotifications as $notification) {
             $deleteIDs[] = $notification;
         }
 
-//        if (count($delete)) {
-//            $this->delete($delete);
-//        }
+        if (count($deleteIDs)) {
+            $this->delete($deleteIDs);
+        }
 
         foreach ($translatedNotifications as $notification) {
             $devices = $this->getDevices($notification, $this->systemType);

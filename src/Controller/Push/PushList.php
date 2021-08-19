@@ -3,7 +3,6 @@
 namespace Appacman\Controller\Push;
 
 use Appacman\Controller\ContentList;
-use Appacman\Model\Push\Notifier;
 
 class PushList extends ContentList  {
 
@@ -14,6 +13,12 @@ class PushList extends ContentList  {
         $this->formLink = _('notificacion-push');
     }
 
+    protected function hasPermission(){
+        $hasPermission = parent::hasPermission();
+        $this->listURL = $this->domain . 'push-table/' . $this->content->getID();
+        return $hasPermission;
+    }
+
     public function extraHeaders(){
         return array(
             array(
@@ -21,23 +26,6 @@ class PushList extends ContentList  {
                 'field_name'    => 'target'
             )
         );
-    }
-
-    public function extraFields($list, $assign = true){
-        foreach($list as &$item){
-            if( strtolower($item['is_sent']) == 'no' or !$item['is_sent'] ){
-                $pushID = $item['id'];
-
-                $notifier = new Notifier();
-                $item['target'] = $notifier->getTarget(null, $pushID);
-            }else{
-                $item['canDelete'] = false;
-                $item['canEdit'] = false;
-                $item['canSee'] = true;
-            }
-        }
-
-        return $list;
     }
 
 }
