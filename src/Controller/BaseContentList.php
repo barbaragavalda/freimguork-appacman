@@ -37,7 +37,12 @@ abstract class BaseContentList extends Content {
                 $list = $model->getItemsPage();
                 if( count($list) ){
                     $template = false;
-                    $this->redirect($this->domain . _('formulario') . '/' . $contentID  . '/' . $list[0]['id']);
+
+                    $link = _('formulario');
+                    if( $this->content->getTable() == 'appacman_push' ){
+                        $link = _('notificacion-push');
+                    }
+                    $this->redirect($this->domain . $link . '/' . $contentID  . '/' . $list[0]['id']);
                 }
             }
         }

@@ -51,14 +51,18 @@ class PushCronJob extends Model
     {
         $notifications = $this->getPending();
 
-        $deleteIDs                  = array();
+        $deleteIDs               = array();
         $translatedNotifications = $this->getTranslation($notifications);
         foreach ($translatedNotifications as $notification) {
             $deleteIDs[] = $notification;
         }
 
         if (count($deleteIDs)) {
-            $this->delete($deleteIDs);
+            if (array_key_exists('is_sent', $deleteIDs[0])) {
+                $this->markAsSent($deleteIDs);
+            } else {
+                $this->delete($deleteIDs);
+            }
         }
 
         foreach ($translatedNotifications as $notification) {
@@ -147,9 +151,8 @@ class PushCronJob extends Model
         }
         if ($this->mysql->tableExists('user')) {
             $fieldLang = '"es" AS language';
-            if( $this->mysql->fieldExists('user', 'language') ){
+            if ($this->mysql->fieldExists('user', 'language')) {
                 $fieldLang = 'u.language';
-
             }
             $union[] = '
                 (
@@ -210,14 +213,17 @@ class PushCronJob extends Model
         }
     }
 
-    protected function markAsSent($ids)
+    protected function markAsSent($notifications)
     {
-        $sql = '
-            UPDATE appacman_push
-            SET is_sent = 1
-            WHERE id_appacman_push IN (' . implode(',', $ids) . ')
-        ';
-        $this->mysql->query($sql);
+        if (count($notifications)) {
+            $ids = array_column($notifications, 'id');
+            $sql = '
+                UPDATE appacman_push
+                SET is_sent = 1
+                WHERE id_appacman_push IN (' . implode(',', $ids) . ')
+            ';
+            $this->mysql->query($sql);
+        }
     }
 
 }

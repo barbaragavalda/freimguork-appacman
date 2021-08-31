@@ -382,7 +382,7 @@ class Item extends Page {
         $this->mysql->query($sql, $params);
 
         // delete multi language
-        if( $this->mysql->rowCount() == 1 ){
+        if( $this->mysql->getState() ){
             $tableLang = $this->table . '_lang';
             if( $this->mysql->tableExists($tableLang) ){
                 $sql = '
@@ -390,7 +390,7 @@ class Item extends Page {
                     WHERE id_'.$this->table.' = :id
                 ';
                 $this->mysql->query($sql, $params);
-                if( $this->mysql->rowCount() >= 1 ){
+                if( $this->mysql->getState() ){
                     $success = true;
                 }
             }else{

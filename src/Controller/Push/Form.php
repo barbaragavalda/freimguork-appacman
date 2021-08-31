@@ -17,10 +17,15 @@ class Form extends BaseContentForm {
     protected function run(){
         $this->template = 'Push/form.twig';
         parent::run();
+    }
+
+    protected function prepareForm()
+    {
+        parent::prepareForm();
 
         if( $this->item->getID() ){
             foreach($this->info['form'] as $input){
-                if( $input->getFieldName() == 'is_sent' && $input->getValue() ){
+                if( $input->getFieldName() == 'is_sent' && filter_var($input->getValue(), FILTER_VALIDATE_BOOL) ){
                     // if is sent: cannot edit or delete
                     $this->assign('canEdit', false);
                     $this->assign('canDelete', false);

@@ -75,6 +75,10 @@
                             if( actions !== '' ){
                                 return actions.replace(/%itemID%/g, row['id']);
                             }
+
+                            if( typeof(value) === 'boolean' && !value ){
+                                value = '-';
+                            }
                             return value;
                         }
                     }

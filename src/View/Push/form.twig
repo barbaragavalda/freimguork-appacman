@@ -31,15 +31,6 @@
                         lastConnectionValue = lastConnectionValue[2] + '/' + lastConnectionValue[1] + '/' + lastConnectionValue[0];
                     }
 
-
-                    console.log('{{ domain }}push-target/{{ contentID }}');
-                    console.log({
-                        'platform':         platformValue.join(),
-                        'model':            modelValue.join(),
-                        'os_version':       osVersionValue.join(),
-                        'app_version':      appVersionValue.join(),
-                        'last_connection':  lastConnectionValue
-                    });
                     $.ajax({
                         type:       'POST',
                         url:        '{{ domain }}push-target/{{ contentID }}',
