@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 3.0\n"
 
 # url
 msgid "iniciar-sesion"
@@ -457,3 +457,6 @@ msgstr "dispositius"
 
 msgid "veces clickada"
 msgstr "vegades clickada"
+
+msgid "Una vez generado el archivo, se enviará por email a %s. Este proceso puede alargarse en el tiempo en función del volumen de datos que se desea exportar."
+msgstr "Quan s'hagi generat l'arxiu, s'enviarà per email a %s. Aquest procés pot allargar-se en el temps en funció del volum de dades que es vol exportar."

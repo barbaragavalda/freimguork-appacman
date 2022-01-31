@@ -9,9 +9,11 @@
 namespace Appacman\Model;
 
 use Appacman\Model\Utils\Permissions;
+use Core\Model\Encryptor\TwoWay;
+use Core\Model\Model;
 use Core\Utils\Session;
 
-class User {
+class User extends Model {
 
     /**
      * @var \Appacman\Model\User $instance. Instance of the singleton
@@ -37,10 +39,12 @@ class User {
      * load user info from session
      */
     private function __construct(){
+        parent::__construct();
+
         $this->session = Session::getInstance();
         $this->id = $this->session->get('user_id');
         $this->profileInfo = $this->session->get('profile_info');
-
+        
         $this->loadPermissions();
     }
 
@@ -68,6 +72,26 @@ class User {
 
     public function getProfileInfo(){
         return $this->profileInfo;
+    }
+
+    public function getEmail(){
+        $sql = '
+            SELECT id_appacman_user, email, created
+            FROM appacman_user
+            WHERE id_appacman_user = :id
+        ';
+        $params = array(
+            'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+        );
+        $user = $this->mysql->query($sql, $params);
+        if( count($user) ){
+            $user = $user[0];
+            $this->id = $user['id_appacman_user'];
+            $this->created = $user['created'];
+            $this->setKey();
+            return TwoWay::decrypt($user['email'], $this->key.'email');
+        }
+        return '';
     }
 
     /**
