@@ -12,10 +12,11 @@ class Number extends FormInput {
      * @return bool
      */
     protected function getPostValue($langID = null){
-        $post = parent::getPostValue($langID);
-        $post = str_replace(',', '.', $post);
-        if( empty($post) ){
-            return 0;
+        $postName = $this->getInputName($langID, false);
+        $post = $this->getPost($postName);
+
+        if( $post === '' ){
+            return null;
         }
         return $post;
     }

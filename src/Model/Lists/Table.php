@@ -117,8 +117,8 @@ class Table extends Paginated {
     }
 
     public function order($a, $b) {
-        $valueA = $a[$this->orderField];
-        $valueB = $b[$this->orderField];
+        $valueA = StringUtils::removeAccents($a[$this->orderField]);
+        $valueB = StringUtils::removeAccents($b[$this->orderField]);
         if( is_array($this->orderField) ){
             $valueA = $a;
             $valueB = $b;

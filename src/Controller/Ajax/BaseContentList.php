@@ -18,7 +18,7 @@ abstract class BaseContentList extends Ajax {
         $itemsPerPage = $_REQUEST['length'];
         $page = ($_REQUEST['start'] / $itemsPerPage) + 1;
 
-        $order = isset($_REQUEST['order']) ? $_REQUEST['order'] : array();
+        $order = isset($_REQUEST['list_order']) ? $_REQUEST['list_order'] : array();
         $search = isset($_REQUEST['search']) && isset($_REQUEST['search']['value']) ? $_REQUEST['search']['value'] : '';
 
         $listType = $this->content->getListType();
