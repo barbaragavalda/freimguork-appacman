@@ -17,7 +17,7 @@
         // tables
         var orderColumns = [];
         {% for th in list_headers %}
-            {% if th['field_name'] == 'is_locked' %}
+            {% if th['field_name'] == 'is_locked' or th['type'] == '' %}
                 orderColumns.push({ orderable: false });
             {% else %}
                 orderColumns.push({ orderable: true });

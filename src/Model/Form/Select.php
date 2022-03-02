@@ -67,6 +67,7 @@ class Select extends FormInput {
     protected function getOptions($table = null, $extraFields = ''){
         $lateralTable = $table;
         if( $lateralTable == null ) $lateralTable = str_replace('id_', '', $this->fieldName);
+        if( !$this->mysql->tableExists($lateralTable) ) $lateralTable = str_replace('_related', '', $lateralTable);
         return $this->loadOptions($lateralTable, $extraFields);
     }
 
