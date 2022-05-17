@@ -39,6 +39,8 @@ abstract class AppacmanController extends Controller {
         $session = Session::getInstance();
         $this->assign('pendingMessage', $session->get('pendingMessage'));
         $session->delete('pendingMessage');
+        $this->assign('pendingError', $session->get('pendingError'));
+        $session->delete('pendingError');
 
         if( class_exists('Appacman\Model\Notification') ){
             $notifications = new Notification();

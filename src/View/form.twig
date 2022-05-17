@@ -138,6 +138,11 @@
                     <h4><i class="icon fa fa-check"></i> {{ pendingMessage }}</h4>
                 </div>
             {% endif %}
+            {% if pendingError %}
+                <div class="margin alert alert-danger">
+                    <h4><i class="icon fa fa-ban"></i> {{ pendingError }}</h4>
+                </div>
+            {% endif %}
 
             <div class="box-header with-border">{{ formButtons }}</div>
             {% for input in form %}
