@@ -51,6 +51,12 @@ abstract class Page extends Model {
         }
 
         // input view class
+        if( strpos($field['type'], ' ') !== false ){
+        	$explode = explode(' ', $field['type']);
+        	if( count($explode) > 0 ){
+        		$field['type'] = $explode[0];
+        	}
+        }
         $inputClass = 'Appacman\\Model\\Form\\' . ucfirst( $field['type'] );
         $id = null;
         if( count($info) ){
