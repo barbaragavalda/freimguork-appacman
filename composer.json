@@ -1,6 +1,6 @@
 {
     "name": "appaqui/freimguork-appacman",
-    "description": "CMS module for Freimg√ºork projects",
+    "description": "CMS module for FreimgÅork projects",
     "authors": [
         {
         	"name": "Barbara Gavalda", 
@@ -14,7 +14,7 @@
 	"repositories": [
 		{
 			"type": "vcs",
-			"url":  "https://bgavalda@bitbucket.org/appaqui/freimguork-core.git"
+			"url":  "git@bitbucket.org:appaqui/freimguork-core.git"
 		}
 	],
     "require": {
