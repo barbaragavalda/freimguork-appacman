@@ -203,7 +203,7 @@ var Namespace = Namespace || {};
             textareas.summernote({
                 height: 150,
                 toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
+                    ['style', ['bold', 'italic', 'underline', 'color']],
                     ['media', ['link']],
                     ['extra', ['codeview', 'clear']]
                 ],
