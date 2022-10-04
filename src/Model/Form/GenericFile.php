@@ -129,15 +129,11 @@ class GenericFile extends FormInput {
         $file = $this->getPostFile($langID);
         if( $file && !empty($file['tmp_name']) ){
             $image = new File();
-            $fileID = $image->save( $file );
-            $resize = $this->getResize();
-            if( $resize ){
-                $image->resize($resize);
-            }
-
+            $fileID = $image->save( $file, $this->fieldID );
             if( $fileID === false ){
                 throw new Exception('Unable to save image <pre>' . print_r($file, true) . '</pre>');
             }
+            
             $this->fileID = $fileID;
             $this->postID = $fileID;
             $this->fileURL = $image->getAbsolutePath();
@@ -154,27 +150,6 @@ class GenericFile extends FormInput {
 
         //no value
         return null;
-    }
-
-    /**
-     * Resize description of han image
-     * @return false|array
-     */
-    private function getResize(){
-        $sql = '
-            SELECT afr.width, afr.height, afr.suffix
-            FROM appacman_file_resize AS afr
-            WHERE afr.id_appacman_field = :field_id
-        ';
-        $params = array(
-            'field_id' => array('value' => $this->fieldID, 'type' => \PDO::PARAM_STR)
-        );
-        $resize = $this->mysql->query($sql, $params);
-
-        if( count($resize) ){
-            return $resize;
-        }
-        return false;
     }
 
     /**
