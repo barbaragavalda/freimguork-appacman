@@ -18,6 +18,7 @@ class Number extends FormInput {
         if( $post === '' ){
             return null;
         }
+        $post = str_replace(',', '.', $post);
         return $post;
     }
 

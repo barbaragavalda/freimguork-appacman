@@ -137,6 +137,9 @@ form .alert h4{
 .pdf-file span::before{
     font-size: 4em;
 }
+.form-horizontal .col-sm-10 .clearfix{
+    margin-bottom: 12px;
+}
 /* form textarea */
 [class^="wysiwyg-textarea"]{
     padding: 10px;
