@@ -2,6 +2,7 @@
 
 namespace Appacman\Model;
 
+use Core\Model\Utils\StringUtils;
 use Core\Utils\Session;
 
 class Content extends Page {
@@ -28,7 +29,10 @@ class Content extends Page {
 
     public function getOrderBy(){
         // order by on data base
-        $orders = explode(', ', $this->info['order_by']);
+        $orders = array();
+        if( $this->info['order_by'] != null ){
+            $orders = explode(', ', $this->info['order_by']);
+        }
         $orderBy = array();
         foreach($orders as $order){
             $array = explode(' ', $order);
