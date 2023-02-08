@@ -113,10 +113,14 @@ class Content extends Page {
      * @return array
      */
     public function getList($order, $fields, $extraWhere = null){
-        $fieldsNames = array_column($fields, 'field_name');
-        foreach($fieldsNames as &$field){
-            $field = '`' . $field . '`';
+        foreach ($fields as &$field){
+            if( StringUtils::startsWidth($field['type'], 'select') && strlen($field['type']) > strlen('select')){
+                $field['field_name'] = '"-" AS ' . $field['field_name'];
+            }else{
+                $field['field_name'] = '`' . $field['field_name'] . '`';
+            }
         }
+        $fieldsNames = array_column($fields, 'field_name');
         $extraFields = count($fieldsNames) ? implode(', ', $fieldsNames) : '';
 
         // table rows
