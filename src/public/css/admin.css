@@ -34,7 +34,7 @@
     box-shadow: 0 0px 3px rgba(0,0,0,.3);
     background: rgba(0,0,0,0.1);
 }
-.media-object img{
+.media-object img, .media-object video{
     max-width: 250px;
     height: auto;
 }

@@ -19,6 +19,7 @@ class GenericFile extends FormInput {
      * @var string $fileURL. Image Path
      */
     protected $fileURL = null;
+    protected $filePath = null;
 
     private $fieldID = null;
 
@@ -44,6 +45,7 @@ class GenericFile extends FormInput {
 
         $image = new File($this->fileID);
         $this->fileURL = $image->getAbsolutePath();
+        $this->filePath = $image->getRelativePath();
         if( !$this->fileURL ) $this->fileID = null;
     }
 
