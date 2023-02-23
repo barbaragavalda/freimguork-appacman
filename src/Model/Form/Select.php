@@ -77,7 +77,7 @@ class Select extends FormInput {
      * @param string $extraFields
      * @return array
      */
-    protected function loadOptions($lateralTable, $extraFields = ''){
+    protected function loadOptions($lateralTable, $extraFields = '', $orderBy = 'name'){
         $lateralTableLang = $lateralTable . '_lang';
 
         $params = array();
@@ -110,7 +110,7 @@ class Select extends FormInput {
             FROM '.$lateralTable.'
             '.$innerJoin.'
             '.$where.'
-            ORDER BY name ASC
+            ORDER BY '.$orderBy.' ASC
         ';
         return $this->mysql->query($sql, $params);
     }
