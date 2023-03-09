@@ -156,6 +156,13 @@ form .alert h4{
     border: 1px solid #dddddd;
     padding: 0px;
 }
+.raw-textarea textarea{
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border: 1px solid #dddddd;
+    white-space: pre-wrap;
+}
 /* form validation */
 .has-error .form-control{
     border-color: #dd4b39 !important;

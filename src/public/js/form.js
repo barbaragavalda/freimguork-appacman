@@ -32,7 +32,6 @@ var Namespace = Namespace || {};
             this.textarea(form);
             this.date(form);
             this.colorpicker(form);
-            this.events(form);
         };
 
         this.select = function(form){
@@ -119,17 +118,6 @@ var Namespace = Namespace || {};
         this.colorpicker = function(form){
             var colorpickers = getObject(form, '.input-colorpicker');
             colorpickers.colorpicker();
-        };
-
-        this.events = function(form){
-            //prevent submission
-            var inputs = getObject(form, 'input,textarea');
-            inputs.keypress(function(e){
-                if( e.which === 13 ){
-                    $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
-                    return false;
-                }
-            });
         };
 
         this.init(form);
