@@ -389,7 +389,7 @@ abstract class FormInput extends Model {
         return null;
     }
 
-    protected function getPost($postName){
+    protected function getPost($postName, $default = ''){
         if( isset($_POST[$postName]) ){
             if( $this->isMultiple === false ){
                 return $_POST[$postName];
