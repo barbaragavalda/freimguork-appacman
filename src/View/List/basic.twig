@@ -66,7 +66,7 @@
                                 actions += '{{ include('Buttons/log-out.twig', {'itemID': id})|forJS|raw }}';
                             }
                             if( key === 'is_locked' ){
-                                if( row['is_locked'] === '1' ){
+                                if( row['is_locked'] === '1' || row['is_locked'] === 1 ){
                                     actions += '{{ include('Buttons/lock.twig', {'itemID': id, 'small': true, isLocked: true})|forJS|raw }}';
                                 }else{
                                     actions += '{{ include('Buttons/lock.twig', {'itemID': id, 'small': true, isLocked: false})|forJS|raw }}';

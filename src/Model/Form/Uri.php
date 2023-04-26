@@ -29,8 +29,7 @@ class Uri extends FormInput {
             $postValue = parent::getPostValue($langID);
         }
         $noTags = strip_tags($postValue);
-        $lowerCase = mb_strtolower($noTags);
-        return urlencode( StringUtils::removeSpecialCharacters($lowerCase) );
+        return urlencode( StringUtils::removeSpecialCharacters($noTags, true, false) );
     }
 
     public function hasError($langID = null){
