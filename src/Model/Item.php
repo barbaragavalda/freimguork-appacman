@@ -57,7 +57,7 @@ class Item extends Page {
             $this->form[] = $input;
 
             // page title
-            if( $field['show_on_breadcrumb'] && $this->name == '' ){
+            if( $field['show_on_breadcrumb'] && empty($this->name) ){
                 $this->name = strip_tags( $input->getSeeValue($this->langID) );
             }
             unset($field['show_on_breadcrumb']);
