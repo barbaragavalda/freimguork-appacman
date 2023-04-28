@@ -118,7 +118,7 @@ class Content extends Page {
      */
     public function getList($order, $fields, $extraWhere = null){
         foreach ($fields as &$field){
-            if( StringUtils::startsWidth($field['type'], 'select') && strlen($field['type']) > strlen('select')){
+            if( !StringUtils::startsWidth($field['field_name'], 'id') && StringUtils::startsWidth($field['type'], 'select') && strlen($field['type']) > strlen('select')){
                 $field['field_name'] = '"-" AS ' . $field['field_name'];
             }else{
                 $field['field_name'] = '`' . $field['field_name'] . '`';
