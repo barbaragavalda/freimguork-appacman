@@ -2,6 +2,7 @@
 
 namespace Appacman\Model;
 
+use Core\Model\Encryptor\TwoWay;
 use Core\Model\Utils\StringUtils;
 use Core\Utils\Session;
 
@@ -188,6 +189,15 @@ class Content extends Page {
                     $fieldName = $field['field_name'];
                     $key = $item['id'] . '_' . $item['created'] . '_' . $fieldName;
                     $item[$fieldName] = TwoWay::decrypt($item[$fieldName], $key);
+                }
+            }
+            if (StringUtils::startsWidth($field['type'], 'select') || $field['type'] == 'cartState') {
+                foreach ($list as &$item) {
+                    $fieldName          = $field['field_name'];
+                    $field['value']     = $item[$fieldName];
+                    $model = 'Appacman\Model\Form\\'.ucfirst($field['type']);
+                    $select             = new $model($field, $item[$fieldName]);
+                    $item[ $fieldName ] = $select->getSeeValue();
                 }
             }
         }
