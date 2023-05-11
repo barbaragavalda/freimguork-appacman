@@ -20,7 +20,7 @@ class Timestamp extends FormInput {
      */
     protected function getInputHTML($langID = null){
         $value = self::getSeeValue($langID);
-        if( !$value ){
+        if( !$value && $this->isRequired ){
             $value = date(DateUtils::FORMAT_TIMESTAMP_DB);
             $this->value = $value;
         }
