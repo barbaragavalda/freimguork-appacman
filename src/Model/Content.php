@@ -119,10 +119,12 @@ class Content extends Page {
      */
     public function getList($order, $fields, $extraWhere = null){
         foreach ($fields as &$field){
-            if( !StringUtils::startsWidth($field['field_name'], 'id') && StringUtils::startsWidth($field['type'], 'select') && strlen($field['type']) > strlen('select')){
-                $field['field_name'] = '"-" AS ' . $field['field_name'];
-            }else{
+            if ($this->mysql->fieldExists($this->table, $field['field_name']) ||
+                $this->mysql->fieldExists($this->table . '_lang', $field['field_name']
+                )){
                 $field['field_name'] = '`' . $field['field_name'] . '`';
+            }else{
+                $field['field_name'] = '"-" AS ' . $field['field_name'];
             }
         }
         $fieldsNames = array_column($fields, 'field_name');
