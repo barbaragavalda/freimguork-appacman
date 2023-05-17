@@ -94,18 +94,18 @@
                 columns:        orderColumns,
                 order:          {{ list_order|json_encode|raw }},
                 language: {
-                    lengthMenu:     '{% trans %}Mostrar _MENU_ items por página{% endtrans %}',
-                    zeroRecords:    '{% trans %}Sin resultados{% endtrans %}',
-                    info:           '{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}',
-                    infoEmpty:      '{% trans %}No hay registros disponibles{% endtrans %}',
-                    search:         '{% trans %}Buscar{% endtrans %}: ',
-                    infoFiltered:   '{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}',
-                    processing:     '{% trans %}Cargando{% endtrans %}...',
+                    lengthMenu:     "{% trans %}Mostrar _MENU_ items por página{% endtrans %}",
+                    zeroRecords:    "{% trans %}Sin resultados{% endtrans %}",
+                    info:           "{% trans %}Mostrando _START_ a _END_ de _TOTAL_ entradas{% endtrans %}",
+                    infoEmpty:      "{% trans %}No hay registros disponibles{% endtrans %}",
+                    search:         "{% trans %}Buscar{% endtrans %}: ",
+                    infoFiltered:   "{% trans %}(filtrado de _MAX_ entradas totales){% endtrans %}",
+                    processing:     "{% trans %}Cargando{% endtrans %}...",
                     paginate: {
-                        first:      '{% trans %}Primero{% endtrans %}',
-                        last:       '{% trans %}Último{% endtrans %}',
-                        previous:   '{% trans %}Anterior{% endtrans %}',
-                        next:       '{% trans %}Siguiente{% endtrans %}'
+                        first:      "{% trans %}Primero{% endtrans %}",
+                        last:       "{% trans %}Último{% endtrans %}",
+                        previous:   "{% trans %}Anterior{% endtrans %}",
+                        next:       "{% trans %}Siguiente{% endtrans %}"
                     }
                 },
                 createdRow: function(row, data) {
@@ -120,12 +120,12 @@
                     });
 
                     // delete item
-                    var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+                    var deleteModel = new Namespace.Delete("{% trans %}Error{% endtrans %}", "{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}", "{% trans %}Cerrar{% endtrans %}");
                     deleteModel.item(
                         'left',
-                        '{% trans %}Este proceso es irreversible{% endtrans %}',
-                        '{% trans %}Sí{% endtrans %}',
-                        '{% trans %}No{% endtrans %}',
+                        "{% trans %}Este proceso es irreversible{% endtrans %}",
+                        "{% trans %}Sí{% endtrans %}",
+                        "{% trans %}No{% endtrans %}",
                         '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
                         function () {
                             window.location.reload();
@@ -133,18 +133,18 @@
                     );
 
                     // block item
-                    var blockModel = new Namespace.Block('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}', '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
+                    var blockModel = new Namespace.Block("{% trans %}Error{% endtrans %}", "{% trans %}Cerrar{% endtrans %}", "{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/");
                     blockModel.block(
-                        '{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}',
-                        '{% trans %}Sí{% endtrans %}',
-                        '{% trans %}No{% endtrans %}',
-                        '{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+                        "{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}",
+                        "{% trans %}Sí{% endtrans %}",
+                        "{% trans %}No{% endtrans %}",
+                        "{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}"
                     );
                     blockModel.unblock(
-                        '{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}',
-                        '{% trans %}Sí{% endtrans %}',
-                        '{% trans %}No{% endtrans %}',
-                        '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+                        "{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}",
+                        "{% trans %}Sí{% endtrans %}",
+                        "{% trans %}No{% endtrans %}",
+                        "{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}"
                     );
                 }
             });

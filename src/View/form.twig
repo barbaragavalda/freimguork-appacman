@@ -45,23 +45,23 @@
             lang = '{{ lang }}';
 
         // dynamic fiels
-        var dynamic = new Namespace.Dynamic('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+        var dynamic = new Namespace.Dynamic("{% trans %}Error{% endtrans %}", "{% trans %}Cerrar{% endtrans %}");
         dynamic.add('{{ domain }}{% trans %}anadir-campo{% endtrans %}/{{ contentID }}/{{ itemID }}');
         dynamic.delete(
             '{{ domain }}{% trans %}eliminar-campo{% endtrans %}/{{ contentID }}/{{ itemID }}',
-            '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}',
-            '{% trans %}Este proceso es irreversible{% endtrans %}',
-            '{% trans %}Sí{% endtrans %}',
-            '{% trans %}No{% endtrans %}'
+            "{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}",
+            "{% trans %}Este proceso es irreversible{% endtrans %}",
+            "{% trans %}Sí{% endtrans %}",
+            "{% trans %}No{% endtrans %}"
         );
 
         // delete item
-        var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+        var deleteModel = new Namespace.Delete("{% trans %}Error{% endtrans %}", "{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}", "{% trans %}Cerrar{% endtrans %}");
         deleteModel.item(
             'bottom',
-            '{% trans %}Este proceso es irreversible{% endtrans %}',
-            '{% trans %}Sí{% endtrans %}',
-            '{% trans %}No{% endtrans %}',
+            "{% trans %}Este proceso es irreversible{% endtrans %}",
+            "{% trans %}Sí{% endtrans %}",
+            "{% trans %}No{% endtrans %}",
             '{{ domain }}{% trans %}eliminar-item{% endtrans %}/{{ contentID }}/',
             function () {
                 window.location = '{{ domain }}{{ listLink }}/{{ contentID }}';
@@ -69,28 +69,28 @@
         );
 
         // delete file
-        var deleteModel = new Namespace.Delete('{% trans %}Error{% endtrans %}', '{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}', '{% trans %}Cerrar{% endtrans %}');
+        var deleteModel = new Namespace.Delete("{% trans %}Error{% endtrans %}", "{% trans %}No se ha podido eliminar el item. Por favor, inténtalo más tarde.{% endtrans %}", "{% trans %}Cerrar{% endtrans %}");
         deleteModel.file(
             'left',
-            '{% trans %}Este proceso es irreversible{% endtrans %}',
-            '{% trans %}Sí{% endtrans %}',
-            '{% trans %}No{% endtrans %}',
+            "{% trans %}Este proceso es irreversible{% endtrans %}",
+            "{% trans %}Sí{% endtrans %}",
+            "{% trans %}No{% endtrans %}",
             '{{ domain }}{% trans %}eliminar-archivo{% endtrans %}/{{ contentID }}/{{ itemID }}'
         );
 
         // block item
-        var blockModel = new Namespace.Block('{% trans %}Error{% endtrans %}', '{% trans %}Cerrar{% endtrans %}', '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
+        var blockModel = new Namespace.Block("{% trans %}Error{% endtrans %}", "{% trans %}Cerrar{% endtrans %}", '{{ domain }}{% trans %}bloquear{% endtrans %}/{{ contentID }}/');
         blockModel.block(
-            '{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}',
-            '{% trans %}Sí{% endtrans %}',
-            '{% trans %}No{% endtrans %}',
-            '{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+            "{% trans %}¿Seguro que quieres bloquear este item?{% endtrans %}",
+            "{% trans %}Sí{% endtrans %}",
+            "{% trans %}No{% endtrans %}",
+            "{% trans %}No se ha podido bloquear el item. Por favor, inténtalo más tarde.{% endtrans %}"
         );
         blockModel.unblock(
-            '{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}',
-            '{% trans %}Sí{% endtrans %}',
-            '{% trans %}No{% endtrans %}',
-            '{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}'
+            "{% trans %}¿Seguro que quieres desbloquear este item?{% endtrans %}",
+            "{% trans %}Sí{% endtrans %}",
+            "{% trans %}No{% endtrans %}",
+            "{% trans %}No se ha podido desbloquear el item. Por favor, inténtalo más tarde.{% endtrans %}"
         );
     </script>
 {% endblock %}

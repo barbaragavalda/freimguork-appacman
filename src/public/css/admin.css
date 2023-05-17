@@ -23,6 +23,10 @@
 .sidebar-collapse .sidebar-menu > li > a {
     padding-right: 0px;
 }
+.main-sidebar{
+    bottom: 0;
+    overflow: scroll;
+}
 
 /* common */
 .media-object{
