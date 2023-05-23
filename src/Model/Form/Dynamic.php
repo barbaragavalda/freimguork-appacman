@@ -208,20 +208,26 @@ class Dynamic extends FormInput
     public function save($itemID, $langID = null)
     {
         $this->id = $itemID;
+        if (count($this->forms) == 0) {
+            $this->init();
+        }
 
         // num forms
-        $numForms   = 0;
-        if(count($this->forms)){
-            $lang       = null;
-            $firstInput = $loopInputs[1];
-            if ($firstInput->isOnLangTable()) {
-                $lang = $this->languages[0]['id'];
-            }
-            if (isset($_FILES[ $firstInput->getInputName($lang) ])) {
-                $numForms = count($_FILES[ $firstInput->getInputName($lang) ]['name']);
-            } else {
-                if (isset($_POST[ $firstInput->getInputName($lang) ])) {
-                    $numForms += count($_POST[ $firstInput->getInputName($lang) ]);
+        $numForms = 0;
+        $lang     = null;
+        if (count($this->forms)) {
+            $loopInputs = $this->forms[0]->get($this->languages);
+            if (count($this->forms)) {
+                $firstInput = $loopInputs[1];
+                if ($firstInput->isOnLangTable()) {
+                    $lang = $this->languages[0]['id'];
+                }
+                if (isset($_FILES[ $firstInput->getInputName($lang) ])) {
+                    $numForms = count($_FILES[ $firstInput->getInputName($lang) ]['name']);
+                } else {
+                    if (isset($_POST[ $firstInput->getInputName($lang) ])) {
+                        $numForms += count($_POST[ $firstInput->getInputName($lang) ]);
+                    }
                 }
             }
         }

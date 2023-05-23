@@ -138,7 +138,7 @@ var Namespace = Namespace || {};
                     ['fontsize', ['fontsize', 'color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['table', ['table']],
-                    ['media', ['picture', 'link']],
+                    ['media', ['picture', 'link', 'video']],
                     ['extra', ['codeview']]
                 ],
                 callbacks: {
