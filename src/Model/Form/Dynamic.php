@@ -11,7 +11,9 @@ class Dynamic extends FormInput
 
     protected $forms = array();
 
-    protected $canEdit = false;
+    protected $canEdit   = false;
+    protected $canCreate = false;
+    protected $canDelete = false;
 
     private function init()
     {
@@ -44,8 +46,10 @@ class Dynamic extends FormInput
         );
         $tableInfo = $this->mysql->query($sql, $params);
         if (count($tableInfo)) {
-            $user          = User::getInstance();
-            $this->canEdit = $user->hasPermission($tableInfo[0]['id_appacman_content'], Permissions::EDIT);
+            $user            = User::getInstance();
+            $this->canEdit   = $user->hasPermission($tableInfo[0]['id_appacman_content'], Permissions::EDIT);
+            $this->canCreate = $user->hasPermission($tableInfo[0]['id_appacman_content'], Permissions::CREATE);
+            $this->canDelete = $user->hasPermission($tableInfo[0]['id_appacman_content'], Permissions::DELETE);
         }
     }
 
@@ -56,18 +60,9 @@ class Dynamic extends FormInput
     public function getName()
     {
         $name = $this->name;
-        if ($this->canEdit) {
-            $name .= '
-            <a href="#" data-field="'
-                . $this->fieldName
-                . '" data-id="'
-                . $this->id
-                . '" data-table="'
-                . $this->table
-                . '" class="add-dynamic-field btn btn-success btn-xs" title="'
-                . gettext('Añadir')
-                . '"><i class="fa fa-plus"></i></a>
-        ';
+        if ($this->canCreate) {
+            $title = gettext('Añadir');
+            $name  = "<a href=\"#\" data-field=\"$this->fieldName\"  data-id=\"$this->id\" data-table=\"$this->table\"  class=\"add-dynamic-field btn btn-success btn-xs\" title=\"$title\"><i class=\"fa fa-plus\"></i></a>";
         }
         return $name;
     }
@@ -165,14 +160,10 @@ class Dynamic extends FormInput
                 $html .= $input->getHTML();
             }
         }
-        if ($this->canEdit) {
-            $html .= '<a href="#" data-id="'
-                . $form->getID()
-                . '" data-field="'
-                . $this->fieldName
-                . '" class="delete-dynamic-field pull-right btn btn-danger btn-xs" title="'
-                . gettext('Eliminar')
-                . '" data-toggle="confirmation"><i class="fa fa-trash"></i></a>';
+        if ($this->canDelete) {
+            $id    = $form->getID();
+            $title = gettext('Eliminar');
+            $html  .= "<a href=\"#\" data-field=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
         }
         $html .= '
                 </div>
@@ -208,26 +199,20 @@ class Dynamic extends FormInput
     public function save($itemID, $langID = null)
     {
         $this->id = $itemID;
-        if (count($this->forms) == 0) {
-            $this->init();
-        }
 
         // num forms
         $numForms = 0;
-        $lang     = null;
         if (count($this->forms)) {
-            $loopInputs = $this->forms[0]->get($this->languages);
-            if (count($this->forms)) {
-                $firstInput = $loopInputs[1];
-                if ($firstInput->isOnLangTable()) {
-                    $lang = $this->languages[0]['id'];
-                }
-                if (isset($_FILES[ $firstInput->getInputName($lang) ])) {
-                    $numForms = count($_FILES[ $firstInput->getInputName($lang) ]['name']);
-                } else {
-                    if (isset($_POST[ $firstInput->getInputName($lang) ])) {
-                        $numForms += count($_POST[ $firstInput->getInputName($lang) ]);
-                    }
+            $lang       = null;
+            $firstInput = $loopInputs[1];
+            if ($firstInput->isOnLangTable()) {
+                $lang = $this->languages[0]['id'];
+            }
+            if (isset($_FILES[ $firstInput->getInputName($lang) ])) {
+                $numForms = count($_FILES[ $firstInput->getInputName($lang) ]['name']);
+            } else {
+                if (isset($_POST[ $firstInput->getInputName($lang) ])) {
+                    $numForms += count($_POST[ $firstInput->getInputName($lang) ]);
                 }
             }
         }
