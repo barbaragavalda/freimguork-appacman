@@ -22,7 +22,7 @@ class SeeOnly extends FormInput {
         return $this->getInputValue($langID);
     }
 
-    private function selectSeeValue(){
+    protected function selectSeeValue(){
         if( StringUtils::startsWidth($this->fieldName, 'id_') ){
             $table = str_replace('id_', '', $this->fieldName);
             if( $this->mysql->tableExists($table) ){
