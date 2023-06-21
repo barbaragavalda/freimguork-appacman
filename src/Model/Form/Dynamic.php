@@ -42,7 +42,7 @@ class Dynamic extends FormInput
             WHERE table_name = :table
         ';
         $params    = array(
-            'table' => array('value' => $this->table, 'type' => \PDO::PARAM_STR)
+            'table' => array('value' => $this->fieldName, 'type' => \PDO::PARAM_STR)
         );
         $tableInfo = $this->mysql->query($sql, $params);
         if (count($tableInfo)) {
