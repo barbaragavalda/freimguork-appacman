@@ -199,11 +199,13 @@ class Dynamic extends FormInput
     public function save($itemID, $langID = null)
     {
         $this->id = $itemID;
+        $this->init();
 
         // num forms
         $numForms = 0;
         if (count($this->forms)) {
             $lang       = null;
+            $loopInputs = $this->forms[0]->get($this->languages);
             $firstInput = $loopInputs[1];
             if ($firstInput->isOnLangTable()) {
                 $lang = $this->languages[0]['id'];
