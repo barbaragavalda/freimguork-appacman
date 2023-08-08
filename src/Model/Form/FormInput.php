@@ -507,7 +507,10 @@ abstract class FormInput extends Model {
      */
     protected function inputType($type = 'text', $langID = null, $extra = ''){
         $postName = $this->getInputName($langID);
-        $value = str_replace('"', '&quot;', $this->getInputValue($langID));
+        $value = $this->getInputValue($langID);
+        if($value){
+            $value = str_replace('"', '&quot;', $value);
+        }
         return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$value.'" ' . $extra . ' />';
     }
 
