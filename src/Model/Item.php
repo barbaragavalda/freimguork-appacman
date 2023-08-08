@@ -51,7 +51,8 @@ class Item extends Page {
         $this->initFields($this->table);
         $fields = $this->fields->get();
 
-        foreach($fields as $field){
+        $this->form = array();
+        foreach($fields as $i => $field){
             $input = $this->getInputClass($field);
             $input->setLanguages($languages);
             $this->form[] = $input;

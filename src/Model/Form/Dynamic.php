@@ -90,17 +90,15 @@ class Dynamic extends FormInput
     {
         $this->init();
 
-        $html = '';
+        $html = $this->getStartContainer($this->forms[0]);
         $i    = 0;
         foreach ($this->forms as $form) {
             $html .= $this->getItemHTML($form, true, $i);
             $i++;
         }
+        $html .= $this->getEndContainer() . $this->getName();
 
-        return '
-            <div id="content-' . $this->fieldName . '" class="box-body">' . $html . '</div>
-            ' . $this->getName() . '
-        ';
+        return $html;
     }
 
     public function getSeeValue($langID = null)
@@ -119,16 +117,11 @@ class Dynamic extends FormInput
 
     public function getItemHTML($form = null, $canEdit = true, $multiplePosition = true)
     {
-        if ($form == null) {
-            $form          = new Item(false, $this->fieldName);
-            $this->forms[] = $form;
-        }
-
+        $inputs = $this->getFormInputs($form);
         $html   = '
             <div class="with-border">
                 <div class="box-body">
         ';
-        $inputs = $this->getInputs($form);
         foreach ($inputs as $input) {
             if ($input->getType() != 'selectMulti') {
                 $input->setID($this->id);
@@ -160,17 +153,41 @@ class Dynamic extends FormInput
                 $html .= $input->getHTML();
             }
         }
-        if ($this->canDelete) {
-            $id    = $form->getID();
-            $title = gettext('Eliminar');
-            $html  .= "<a href=\"#\" data-field=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
-        }
-        $html .= '
+        $html .= $this->deleteButton($form) . '
                 </div>
             </div>
         ';
 
         return $html;
+    }
+
+    protected function deleteButton($form)
+    {
+        if ($this->canDelete) {
+            $id    = $form->getID();
+            $title = gettext('Eliminar');
+            return "<a href=\"#\" data-field=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
+        }
+        return '';
+    }
+
+    protected function getFormInputs($form)
+    {
+        if ($form == null) {
+            $form          = new Item(false, $this->fieldName);
+            $this->forms[] = $form;
+        }
+        return $this->getInputs($form);
+    }
+
+    protected function getStartContainer($form = null)
+    {
+        return '<div id="content-' . $this->fieldName . '" class="box-body">';
+    }
+
+    protected function getEndContainer()
+    {
+        return '</div>';
     }
 
     /**
@@ -199,13 +216,11 @@ class Dynamic extends FormInput
     public function save($itemID, $langID = null)
     {
         $this->id = $itemID;
-        $this->init();
 
         // num forms
         $numForms = 0;
         if (count($this->forms)) {
             $lang       = null;
-            $loopInputs = $this->forms[0]->get($this->languages);
             $firstInput = $loopInputs[1];
             if ($firstInput->isOnLangTable()) {
                 $lang = $this->languages[0]['id'];
