@@ -153,6 +153,7 @@ class Dynamic extends FormInput
                 $html .= $input->getHTML();
             }
         }
+
         $html .= $this->deleteButton($form) . '
                 </div>
             </div>
@@ -166,7 +167,7 @@ class Dynamic extends FormInput
         if ($this->canDelete) {
             $id    = $form->getID();
             $title = gettext('Eliminar');
-            return "<a href=\"#\" data-field=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
+            return "<a href=\"#\" data-id=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
         }
         return '';
     }
