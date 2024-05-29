@@ -26,8 +26,8 @@ class Upload extends Ajax {
                     $file->resize(array(
                         array(
                             'suffix' => 'text',
-                            'width' => 1000,
-                            'height' => 1000
+                            'width' => 2000,
+                            'height' => 2000
                         )
                     ));
                 }

@@ -36,6 +36,10 @@ class Dynamic extends FormInput
             $this->forms[] = new Item(false, $this->fieldName);
         }
 
+        $this->initPermissions();
+    }
+
+    private function initPermissions(){
         $sql       = '
             SELECT id_appacman_content
             FROM appacman_content
@@ -59,10 +63,11 @@ class Dynamic extends FormInput
      */
     public function getName()
     {
+        $this->initPermissions();
         $name = $this->name;
         if ($this->canCreate) {
             $title = gettext('Añadir');
-            $name  = "<a href=\"#\" data-field=\"$this->fieldName\"  data-id=\"$this->id\" data-table=\"$this->table\"  class=\"add-dynamic-field btn btn-success btn-xs\" title=\"$title\"><i class=\"fa fa-plus\"></i></a>";
+            $name  .= " <a href=\"#\" data-field=\"$this->fieldName\"  data-id=\"$this->id\" data-table=\"$this->table\"  class=\"add-dynamic-field btn btn-success btn-xs\" title=\"$title\"><i class=\"fa fa-plus\"></i></a>";
         }
         return $name;
     }

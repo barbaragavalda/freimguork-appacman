@@ -103,7 +103,7 @@ class Table extends Paginated {
     }
 
     private function prepareItems(){
-        if( count($this->items) < 500 ){
+        if( count($this->items) < 600 ){
             $this->items = $this->prepare($this->items);
             $this->prepared = true;
         }
