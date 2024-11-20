@@ -119,15 +119,17 @@ class GenericFile extends FormInput {
      */
     protected function getPostValue($langID = null){
         // already uploaded
-        if( $this->fileID ){
-            if( $this->isMultiple !== false && $this->postID == -1 ){
+        if( $this->isMultiple !== false && $this->fileID ){
+            if( $this->postID == -1 ){
                 $this->postID = $this->fileID;
             }
-
             return $this->fileID;
         }
 
         // upload file
+        $this->fileID = false;
+        $this->postID = -1;
+        $this->postFile = -1;
         $file = $this->getPostFile($langID);
         if( $file && !empty($file['tmp_name']) ){
             $image = new File();
