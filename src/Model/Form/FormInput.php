@@ -514,4 +514,23 @@ abstract class FormInput extends Model {
         return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$value.'" ' . $extra . ' />';
     }
 
+    protected function getContentID(){
+        $lateralTable = str_replace('id_', '', $this->fieldName);
+        $sql = '
+            SELECT id_appacman_content
+            FROM appacman_content
+            WHERE table_name = :table
+            LIMIT 1
+        ';
+        $params = array(
+            'table' => array('value' => $lateralTable, 'type' => \PDO::PARAM_STR)
+        );
+        $content = $this->mysql->query($sql, $params);
+
+        if( count($content) ){
+            return $content[0]['id_appacman_content'];
+        }
+        return false;
+    }
+
 }

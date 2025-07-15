@@ -34,23 +34,4 @@ class SelectEncryptedTwoWay extends Select {
         return $this->loadOptions($lateralTable, ', created');
     }
 
-    private function getContentID(){
-        $lateralTable = str_replace('id_', '', $this->fieldName);
-        $sql = '
-            SELECT id_appacman_content
-            FROM appacman_content
-            WHERE table_name = :table
-            LIMIT 1
-        ';
-        $params = array(
-            'table' => array('value' => $lateralTable, 'type' => \PDO::PARAM_STR)
-        );
-        $content = $this->mysql->query($sql, $params);
-
-        if( count($content) ){
-            return $content[0]['id_appacman_content'];
-        }
-        return false;
-    }
-
 }
