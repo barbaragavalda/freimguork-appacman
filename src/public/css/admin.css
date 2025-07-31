@@ -10,6 +10,8 @@
 
 .main-header .user-image {
     background-color: #ffffff;
+    min-width: auto;
+    min-height: auto;
 }
 
 .error-page > .error-content {

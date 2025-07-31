@@ -6,7 +6,7 @@ use Core\Model\Utils\StringUtils;
 
 class Image extends GenericFile {
 
-    private $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg');
+    private $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg', 'webp');
 
     /**
      * image tag with link to see it

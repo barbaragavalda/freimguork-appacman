@@ -14,7 +14,7 @@ class SelectWithLink extends Select
     {
         $seeValue = parent::getSeeValue($langID);
         if (!empty($seeValue)) {
-            return $this->getLink($seeValue);
+            return $this->getLink($this->getLinkName($seeValue, $langID));
         }
         return $seeValue;
     }
@@ -22,7 +22,13 @@ class SelectWithLink extends Select
     protected function getInputHTML($langID = null): string
     {
         $input = parent::getInputHTML($langID);
-        return $input . '<br>' . $this->getLink('(' . _('ver') . ' ' . strtolower($this->name) . ')');
+        $name  = $this->getLinkName('(' . _('ver') . ' ' . strtolower($this->name) . ')', $langID);
+        return $input . '<br>' . $this->getLink($name);
+    }
+
+    protected function getLinkName($name, $langID = null): string
+    {
+        return $name;
     }
 
     private function getLink($value): string
