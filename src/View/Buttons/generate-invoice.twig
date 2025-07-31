@@ -1,0 +1,5 @@
+{% if canGenerateInvoice and itemID %}
+    <button type="submit" name="generate-invoice" value="1" class="btn btn-primary">
+        <i class="fa fa-shopping-cart"></i> {% trans %}Generar factura{% endtrans %}
+    </button>
+{% endif %}

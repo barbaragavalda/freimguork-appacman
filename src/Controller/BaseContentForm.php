@@ -127,6 +127,7 @@ abstract class BaseContentForm extends Content {
             $this->assign('canOwn', $canOwn);
             $this->assign('canLock', $canLock);
             $this->assign('canSendChanges', $this->user->hasPermission($contentID, Permissions::SEND_CHANGES));
+            $this->assign('canGenerateInvoice', $this->user->hasPermission($contentID, Permissions::GENERATE_INVOICE));
         }
 
         return $hasPermission;

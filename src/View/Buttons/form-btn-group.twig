@@ -15,5 +15,6 @@
     {% include 'Buttons/send.twig' with {'itemID': itemID} %}
     {% include 'Buttons/delete.twig' with {'itemID': itemID} %}
     {% include 'Buttons/lock.twig' with {'itemID': itemID, isLocked: isLocked} %}
+    {% include 'Buttons/generate-invoice.twig' with {'itemID': itemID} %}
     {% if contentID %}<a href="{{ domain }}{{ listLink }}/{{ contentID }}" class="btn btn-default"><i class="fa fa-remove"></i> {% trans %}Cancelar{% endtrans %}</a>{% endif %}
 </div>
