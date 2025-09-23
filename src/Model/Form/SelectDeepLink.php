@@ -12,8 +12,12 @@ class SelectDeepLink extends Select {
 
     private $profileID = null;
 
-    public function setProfileID($profileID){
-        $this->profileID = $profileID;
+    protected function getOptions($table = null, $extraFields = ''){
+        return parent::getOptions('appacman_push_deeplink', $extraFields);
+    }
+
+    public function getSeeValue($langID = null){
+        return $this->value;
     }
 
     /**
