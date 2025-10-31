@@ -158,7 +158,7 @@ class SelectMulti extends Select
         return false;
     }
 
-    protected function insert($itemID, $ids = array())
+    protected function insert($itemID, $ids = array(), $deleteOld = true)
     {
         $this->initTables();
         $field = $this->getLateralField();
@@ -180,7 +180,7 @@ class SelectMulti extends Select
         }
 
         $delete = array_diff($old, $ids);
-        if (count($delete)) {
+        if (count($delete) && $deleteOld) {
             $sql          = '
                 DELETE FROM ' . $this->fieldName . '
                 WHERE id_' . $this->currentTable . ' = :item AND id_' . $field . ' IN(' . implode(', ', $delete) . ')
