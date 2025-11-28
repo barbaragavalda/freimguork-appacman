@@ -1,7 +1,30 @@
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
 // Starsoft Mongolia LLC Temuujin Ariunbold
 
-(function($) {
-  $.extend($.summernote.lang, {
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'mn-MN': {
       font: {
         bold: 'Тод',
@@ -155,3 +178,8 @@
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-mn-MN.js.map

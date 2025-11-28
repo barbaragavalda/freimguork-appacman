@@ -1,5 +1,28 @@
-(function($) {
-  $.extend($.summernote.lang, {
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'fr-FR': {
       font: {
         bold: 'Gras',
@@ -40,7 +63,7 @@
         videoLink: 'Lien vidéo',
         insert: 'Insérer une vidéo',
         url: 'URL de la vidéo',
-        providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion ou Youku)'
+        providers: '(YouTube, Google Drive, Vimeo, Vine, Instagram, DailyMotion or Youku)'
       },
       link: {
         link: 'Lien',
@@ -147,9 +170,14 @@
         redo: 'Restaurer la dernière action annulée'
       },
       specialChar: {
-        specialChar: 'CARACTÈRES SPÉCIAUX',
+        specialChar: 'Caractères spéciaux',
         select: 'Choisir des caractères spéciaux'
       }
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-fr-FR.js.map

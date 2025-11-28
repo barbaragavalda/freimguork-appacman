@@ -1,5 +1,28 @@
-(function($) {
-  $.extend($.summernote.lang, {
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'zh-CN': {
       font: {
         bold: '粗体',
@@ -27,13 +50,13 @@
         shapeThumbnail: '形状: 缩略图',
         shapeNone: '形状: 无',
         dragImageHere: '将图片拖拽至此处',
-        dropImage: '拖放图片或文字',
+        dropImage: '拖拽图片或文本',
         selectFromFiles: '从本地上传',
         maximumFileSize: '文件大小最大值',
         maximumFileSizeError: '文件大小超出最大值。',
         url: '图片地址',
         remove: '移除图片',
-        original: '原始'
+        original: '原始图片'
       },
       video: {
         video: '视频',
@@ -53,10 +76,10 @@
       },
       table: {
         table: '表格',
-        addRowAbove: '上方插入行',
-        addRowBelow: '下方插入行',
-        addColLeft: '左边插入列',
-        addColRight: '右边插入列',
+        addRowAbove: '在上方插入行',
+        addRowBelow: '在下方插入行',
+        addColLeft: '在左侧插入列',
+        addColRight: '在右侧插入列',
         delRow: '删除行',
         delCol: '删除列',
         delTable: '删除表格'
@@ -148,8 +171,13 @@
       },
       specialChar: {
         specialChar: '特殊字符',
-        select: '选择特殊字符'
+        select: '选取特殊字符'
       }
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-zh-CN.js.map

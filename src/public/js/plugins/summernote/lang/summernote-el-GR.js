@@ -1,5 +1,28 @@
-(function($) {
-  $.extend($.summernote.lang, {
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'el-GR': {
       font: {
         bold: 'Έντονα',
@@ -11,20 +34,22 @@
         strikethrough: 'Διεγραμμένα',
         subscript: 'Δείκτης',
         superscript: 'Εκθέτης',
-        size: 'Μέγεθος'
+        size: 'Μέγεθος',
+        sizeunit: 'Μονάδα μεγέθους'
       },
       image: {
-        image: 'εικόνα',
+        image: 'Εικόνα',
         insert: 'Εισαγωγή',
         resizeFull: 'Πλήρες μέγεθος',
         resizeHalf: 'Μισό μέγεθος',
         resizeQuarter: '1/4 μέγεθος',
+        resizeNone: 'Αρχικό μέγεθος',
         floatLeft: 'Μετατόπιση αριστερά',
         floatRight: 'Μετατόπιση δεξιά',
         floatNone: 'Χωρίς μετατόπιση',
         shapeRounded: 'Σχήμα: Στρογγυλεμένο',
         shapeCircle: 'Σχήμα: Κύκλος',
-        shapeThumbnail: 'Σχήμα: Thumbnail',
+        shapeThumbnail: 'Σχήμα: Μικρογραφία',
         shapeNone: 'Σχήμα: Κανένα',
         dragImageHere: 'Σύρτε την εικόνα εδώ',
         dropImage: 'Αφήστε την εικόνα',
@@ -33,7 +58,7 @@
         maximumFileSizeError: 'Το μέγεθος είναι μεγαλύτερο από το μέγιστο επιτρεπτό.',
         url: 'URL',
         remove: 'Αφαίρεση',
-        original: 'Original'
+        original: 'Αρχικό'
       },
       link: {
         link: 'Σύνδεσμος',
@@ -41,7 +66,7 @@
         unlink: 'Αφαίρεση συνδέσμου',
         edit: 'Επεξεργασία συνδέσμου',
         textToDisplay: 'Κείμενο συνδέσμου',
-        url: 'URL',
+        url: 'Σε ποιo URL πρέπει να πηγαίνει αυτός ο σύνδεσμος;',
         openInNewWindow: 'Άνοιγμα σε νέο παράθυρο'
       },
       video: {
@@ -49,17 +74,17 @@
         videoLink: 'Σύνδεσμος Βίντεο',
         insert: 'Εισαγωγή',
         url: 'URL',
-        providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)'
+        providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion ή Youku)'
       },
       table: {
         table: 'Πίνακας',
-        addRowAbove: 'Add row above',
-        addRowBelow: 'Add row below',
-        addColLeft: 'Add column left',
-        addColRight: 'Add column right',
-        delRow: 'Delete row',
-        delCol: 'Delete column',
-        delTable: 'Delete table'
+        addRowAbove: 'Προσθήκη γραμμής πάνω',
+        addRowBelow: 'Προσθήκη γραμμής κάτω',
+        addColLeft: 'Προσθήκη στήλης αριστερά',
+        addColRight: 'Προσθήκη στήλης δεξία',
+        delRow: 'Διαγραφή γραμμής',
+        delCol: 'Διαγραφή στήλης',
+        delTable: 'Διαγραφή πίνακα'
       },
       hr: {
         insert: 'Εισαγωγή οριζόντιας γραμμής'
@@ -70,11 +95,11 @@
         blockquote: 'Παράθεση',
         pre: 'Ως έχει',
         h1: 'Κεφαλίδα 1',
-        h2: 'συνδέσμου 2',
-        h3: 'συνδέσμου 3',
-        h4: 'συνδέσμου 4',
-        h5: 'συνδέσμου 5',
-        h6: 'συνδέσμου 6'
+        h2: 'Κεφαλίδα 2',
+        h3: 'Κεφαλίδα 3',
+        h4: 'Κεφαλίδα 4',
+        h5: 'Κεφαλίδα 5',
+        h6: 'Κεφαλίδα 6'
       },
       lists: {
         unordered: 'Αταξινόμητη λίστα',
@@ -102,7 +127,8 @@
         transparent: 'Διαφανές',
         setTransparent: 'Επιλογή διαφάνειας',
         reset: 'Επαναφορά',
-        resetToDefault: 'Επαναφορά στις προκαθορισμένες τιμές'
+        resetToDefault: 'Επαναφορά στις προκαθορισμένες τιμές',
+        cpSelect: 'Επιλογή'
       },
       shortcut: {
         shortcuts: 'Συντομεύσεις',
@@ -114,6 +140,7 @@
         extraKeys: 'Επιπλέον συντομεύσεις'
       },
       help: {
+        'escape': 'Έξοδος',
         'insertParagraph': 'Εισαγωγή παραγράφου',
         'undo': 'Αναιρεί την προηγούμενη εντολή',
         'redo': 'Επαναλαμβάνει την προηγούμενη εντολή',
@@ -147,9 +174,17 @@
         redo: 'Επαναληψη'
       },
       specialChar: {
-        specialChar: 'SPECIAL CHARACTERS',
+        specialChar: 'ΕΙΔΙΚΟΙ ΧΑΡΑΚΤΗΡΕΣ',
         select: 'Επιλέξτε ειδικούς χαρακτήρες'
+      },
+      output: {
+        noSelection: 'Δεν έγινε επιλογή!'
       }
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-el-GR.js.map

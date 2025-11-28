@@ -1,5 +1,28 @@
-(function($) {
-  $.extend($.summernote.lang, {
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'zh-TW': {
       font: {
         bold: '粗體',
@@ -53,13 +76,13 @@
       },
       table: {
         table: '表格',
-        addRowAbove: 'Add row above',
-        addRowBelow: 'Add row below',
-        addColLeft: 'Add column left',
-        addColRight: 'Add column right',
-        delRow: 'Delete row',
-        delCol: 'Delete column',
-        delTable: 'Delete table'
+        addRowAbove: '上方插入列',
+        addRowBelow: '下方插入列',
+        addColLeft: '左方插入欄',
+        addColRight: '右方插入欄',
+        delRow: '刪除列',
+        delCol: '刪除欄',
+        delTable: '刪除表格'
       },
       hr: {
         insert: '水平線'
@@ -89,7 +112,7 @@
         paragraph: '段落',
         outdent: '取消縮排',
         indent: '增加縮排',
-        left: '靠右對齊',
+        left: '靠左對齊',
         center: '靠中對齊',
         right: '靠右對齊',
         justify: '左右對齊'
@@ -98,11 +121,11 @@
         recent: '字型顏色',
         more: '更多',
         background: '背景',
-        foreground: '前景',
+        foreground: '字體',
         transparent: '透明',
         setTransparent: '透明',
         reset: '重設',
-        resetToDefault: '默認'
+        resetToDefault: '預設'
       },
       shortcut: {
         shortcuts: '快捷鍵',
@@ -153,3 +176,8 @@
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-zh-TW.js.map

@@ -1,5 +1,28 @@
-(function($) {
-  $.extend($.summernote.lang, {
+/*!
+ * 
+ * Super simple WYSIWYG editor v0.9.0
+ * https://summernote.org
+ *
+ * Copyright 2013~ Hackerwins and contributors
+ * Summernote may be freely distributed under the MIT license.
+ *
+ * Date: 2024-09-30T14:42Z
+ *
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+(function ($) {
+  $.extend(true, $.summernote.lang, {
     'da-DK': {
       font: {
         bold: 'Fed',
@@ -53,13 +76,13 @@
       },
       table: {
         table: 'Tabel',
-        addRowAbove: 'Add row above',
-        addRowBelow: 'Add row below',
-        addColLeft: 'Add column left',
-        addColRight: 'Add column right',
-        delRow: 'Delete row',
-        delCol: 'Delete column',
-        delTable: 'Delete table'
+        addRowAbove: 'Tilføj række over',
+        addRowBelow: 'Tilføj række under',
+        addColLeft: 'Tilføj venstre kolonne',
+        addColRight: 'Tilføj højre kolonne',
+        delRow: 'Slet række',
+        delCol: 'Slet kolonne',
+        delTable: 'Slet tabel'
       },
       hr: {
         insert: 'Indsæt horisontal linje'
@@ -114,7 +137,7 @@
         extraKeys: 'Extra keys'
       },
       help: {
-        'insertParagraph': 'Insert Paragraph',
+        'insertParagraph': 'Indsæt paragraf',
         'undo': 'Undoes the last command',
         'redo': 'Redoes the last command',
         'tab': 'Tab',
@@ -140,7 +163,7 @@
         'formatH5': 'Change current block\'s format as H5',
         'formatH6': 'Change current block\'s format as H6',
         'insertHorizontalRule': 'Insert horizontal rule',
-        'linkDialog.show': 'Show Link Dialog'
+        'linkDialog.show': 'Vis Link Dialog'
       },
       history: {
         undo: 'Fortryd',
@@ -148,8 +171,13 @@
       },
       specialChar: {
         specialChar: 'SPECIAL CHARACTERS',
-        select: 'Select Special characters'
+        select: 'Vælg special karakterer'
       }
     }
   });
 })(jQuery);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=summernote-da-DK.js.map
