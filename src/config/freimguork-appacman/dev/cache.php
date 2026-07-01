@@ -3,7 +3,7 @@
 $config = array(
 
     'cache' => array(
-        'is_caching'    => false
+        'is_caching' => false
     )
 
 );

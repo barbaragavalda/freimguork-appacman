@@ -2,26 +2,31 @@
 
 namespace Appacman\Controller;
 
-class DefaultController extends AppacmanController {
+class DefaultController extends AppacmanController
+{
 
-	// 404 error
-    protected function run(){
-        if( $this->user->loggedIn() ){
+    // 404 error
+    protected function run(): void
+    {
+        if ($this->user->loggedIn()) {
             $this->template('DefaultTemplate/loggedin.twig');
-        }else{
+        } else {
             $this->template('DefaultTemplate/loggedout.twig');
         }
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return true;
     }
 
-    protected function getTitle(){
+    protected function getTitle(): string
+    {
         return 'Appacman';
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

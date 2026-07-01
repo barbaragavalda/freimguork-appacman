@@ -5,28 +5,31 @@ namespace Appacman\Controller\Ajax;
 use Appacman\Model\Utils\Permissions;
 use Core\Model\File;
 
-class Upload extends Ajax {
+class Upload extends Ajax
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->permission = Permissions::EDIT;
     }
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->removeInfo();
 
         $error = false;
-        if( count($_FILES) ){
+        if (count($_FILES)) {
             $path = array();
-            foreach($_FILES as $uploadedFile){
+            foreach ($_FILES as $uploadedFile) {
                 $file = new File();
                 $file->save($uploadedFile);
-                if( $file->getID() ){
+                if ($file->getID()) {
                     $file->resize(array(
                         array(
                             'suffix' => 'text',
-                            'width' => 2000,
+                            'width'  => 2000,
                             'height' => 2000
                         )
                     ));
@@ -34,7 +37,7 @@ class Upload extends Ajax {
                 $path[] = $file->getAbsolutePath('text');
             }
             $this->assign('path', $path);
-        }else{
+        } else {
             $error = true;
         }
 

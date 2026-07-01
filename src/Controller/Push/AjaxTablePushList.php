@@ -8,7 +8,7 @@ use Appacman\Model\Push\Notifier;
 class AjaxTablePushList extends BaseContentList
 {
 
-    public function extraFields($list, $assign = true)
+    public function extraFields($list, $assign = true): array
     {
         foreach ($list as &$item) {
             if (strtolower($item['is_sent']) == 'no' or !$item['is_sent']) {

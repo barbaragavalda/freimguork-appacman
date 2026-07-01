@@ -4,51 +4,55 @@ namespace Appacman\Controller;
 
 use Appacman\Model\Utils\Permissions;
 
-abstract class BaseContentList extends Content {
+abstract class BaseContentList extends Content
+{
 
-    protected $redirectToForm = true;
+    protected bool $redirectToForm = true;
 
-    protected $hasSearch = true;
+    protected bool $hasSearch = true;
 
-    protected $listURL = null;
+    protected ?string $listURL = null;
 
-    protected function run(){
+    protected function run(): void
+    {
         parent::run();
 
         $template = true;
         $listType = $this->content->getListType();
 
         $contentID = $this->content->getID();
-        if( $this->redirectToForm ){
+        if ($this->redirectToForm) {
             $currentContent = null;
-            foreach($this->info['menu'] as $block){
-                foreach($block['list'] as $content){
-                    if( $content['id_appacman_content'] == $contentID ){
+            foreach ($this->info['menu'] as $block) {
+                foreach ($block['list'] as $content) {
+                    if ($content['id_appacman_content'] == $contentID) {
                         $currentContent = $content;
                         break;
                     }
                 }
             }
 
-            if( $currentContent && $currentContent['counter'] == 1 ){
+            if ($currentContent && $currentContent['counter'] == 1) {
                 // only one item
-                $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
-                $model = new $listClass($this->content, 1, 1);
-                $list = $model->getItemsPage();
-                if( count($list) ){
+                $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
+                        |> ucwords(...)
+                        |> (fn($x) => str_replace(' ', '', $x));
+                $model     = new $listClass($this->content, 1, 1);
+                $list      = $model->getItemsPage();
+                if (count($list)) {
                     $template = false;
 
                     $link = _('formulario');
-                    if( $this->content->getTable() == 'appacman_push' ){
+                    if ($this->content->getTable() == 'appacman_push') {
                         $link = _('notificacion-push');
                     }
-                    $this->redirect($this->domain . $link . '/' . $contentID  . '/' . $list[0]['id']);
+                    $this->redirect($this->domain . $link . '/' . $contentID . '/' . $list[0]['id']);
                 }
             }
         }
 
-        if( $template ){
-            if( $this->listURL == null ){
+        if ($template) {
+            if ($this->listURL == null) {
                 $this->listURL = $this->domain . 'table/' . $contentID;
             }
 
@@ -64,22 +68,23 @@ abstract class BaseContentList extends Content {
         }
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = parent::hasPermission();
-        if( $hasPermission ){
-            $contentID = $this->content->getID();
-            $canSee = $this->user->hasPermission($contentID, Permissions::SEE);
-            $canEdit = $this->user->hasPermission($contentID, Permissions::EDIT);
-            $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
-            $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
-            $canExport = $this->user->hasPermission($contentID, Permissions::EXPORT);
-            $canLock = $this->user->hasPermission($contentID, Permissions::LOCK);
-            $canOwn = $this->user->hasPermission($contentID, Permissions::OWN);
+        if ($hasPermission) {
+            $contentID    = $this->content->getID();
+            $canSee       = $this->user->hasPermission($contentID, Permissions::SEE);
+            $canEdit      = $this->user->hasPermission($contentID, Permissions::EDIT);
+            $canCreate    = $this->user->hasPermission($contentID, Permissions::CREATE);
+            $canDelete    = $this->user->hasPermission($contentID, Permissions::DELETE);
+            $canExport    = $this->user->hasPermission($contentID, Permissions::EXPORT);
+            $canLock      = $this->user->hasPermission($contentID, Permissions::LOCK);
+            $canOwn       = $this->user->hasPermission($contentID, Permissions::OWN);
             $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
-            $canLogOut = $this->user->hasPermission($contentID, Permissions::LOG_OUT);
+            $canLogOut    = $this->user->hasPermission($contentID, Permissions::LOG_OUT);
 
             // has permissions to see list?
-            if( $canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate || $canDuplicate ){
+            if ($canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate) {
                 $this->assign('canSee', $canSee);
                 $this->assign('canEdit', $canEdit);
                 $this->assign('canCreate', $canCreate);
@@ -89,7 +94,7 @@ abstract class BaseContentList extends Content {
                 $this->assign('canOwn', $canOwn);
                 $this->assign('canDuplicate', $canDuplicate);
                 $this->assign('canLogOut', $canLogOut);
-            }else{
+            } else {
                 $hasPermission = false;
             }
         }
@@ -97,11 +102,13 @@ abstract class BaseContentList extends Content {
         return $hasPermission;
     }
 
-    protected function getTitle(){
-        return gettext('Listado') . ' ' . $this->content->getName();
+    protected function getTitle(): string
+    {
+        return _('Listado') . ' ' . $this->content->getName();
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array(
             array('name' => $this->content->getName(), 'link' => null)
         );
@@ -111,6 +118,6 @@ abstract class BaseContentList extends Content {
      * append extra columns (if necessary)
      * @return array    array of extra fields array( array('name' => '<display_name>', 'field_name' => '<field>') )
      */
-    abstract protected function extraHeaders();
+    abstract protected function extraHeaders(): array;
 
 }

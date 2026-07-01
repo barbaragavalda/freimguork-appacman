@@ -4,22 +4,27 @@ namespace Appacman\Controller\LoggedOut;
 
 use Appacman\Controller\AppacmanController;
 
-class LogOut extends AppacmanController {
+class LogOut extends AppacmanController
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->user->logout();
-        $this->redirect($this->domain . gettext('iniciar-sesion'));
+        $this->redirect($this->domain . _('iniciar-sesion'));
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return true;
     }
 
-    protected function getTitle(){
-        return gettext('Cerrar sesión');
+    protected function getTitle(): string
+    {
+        return _('Cerrar sesión');
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

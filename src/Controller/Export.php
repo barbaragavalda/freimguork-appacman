@@ -2,11 +2,11 @@
 
 namespace Appacman\Controller;
 
-use Appacman\Model\Utils\Permissions;
+class Export extends BaseExport
+{
 
-class Export extends BaseExport {
-
-    protected function addExtraInfo($list){
+    protected function addExtraInfo($list): array
+    {
         return $list;
     }
 

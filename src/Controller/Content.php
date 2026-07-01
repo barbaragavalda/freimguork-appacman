@@ -2,51 +2,44 @@
 
 namespace Appacman\Controller;
 
+use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 
-class Content extends AppacmanController {
+class Content extends AppacmanController
+{
 
-    /**
-     * @var \Appacman\Model\Content $content
-     */
-    protected $content = null;
+    protected \Appacman\Model\Content|null $content = null;
 
-    /**
-     * @var \Appacman\Model\Item $item
-     */
-    protected $item = null;
+    protected ?Item $item = null;
 
-    /**
-     * @var string  list link
-     */
-    protected $listLink = null;
+    protected ?string $listLink = null;
 
-    /**
-     * @var string  form link
-     */
-    protected $formLink = null;
+    protected ?string $formLink = null;
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->listLink = _('listado');
         $this->formLink = _('formulario');
     }
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->assign('contentID', $this->content->getID());
         $this->assign('formLink', $this->formLink);
         $this->assign('listLink', $this->listLink);
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = false;
-        $contentID = intval($this->getParam('contentID'));
+        $contentID     = intval($this->getParam('contentID'));
         // has content id?
-        if( $contentID > 0 ){
+        if ($contentID > 0) {
             // content exists?
             $this->content = new \Appacman\Model\Content($contentID);
-            if( $this->content->exists() ){
+            if ($this->content->exists()) {
                 $hasPermission = true;
             }
         }
@@ -54,14 +47,12 @@ class Content extends AppacmanController {
         return $hasPermission;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getForm(){
+    protected function getForm(): mixed
+    {
         // languages
         $languages = array();
-        if( $this->item->hasLang() ){
-            $lang = new Language();
+        if ($this->item->hasLang()) {
+            $lang      = new Language();
             $languages = $lang->get();
         }
         $this->assign('languages', $languages);
@@ -69,11 +60,13 @@ class Content extends AppacmanController {
         return $this->item->get($languages);
     }
 
-    protected function getTitle(){
+    protected function getTitle(): string
+    {
         return '';
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

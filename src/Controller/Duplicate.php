@@ -5,65 +5,57 @@ namespace Appacman\Controller;
 use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
-use Core\Model\File;
 
-class Duplicate extends Content {
+class Duplicate extends Content
+{
 
-    /**
-     * @var \Appacman\Model\Item $item
-     */
-    protected $item = null;
+    protected ?Item $item = null;
 
-    protected function run(){
+    protected function run(): void
+    {
         parent::run();
 
         // languages
         $languages = array();
-        if( $this->item->hasLang() ){
-            $lang = new Language();
+        if ($this->item->hasLang()) {
+            $lang      = new Language();
             $languages = $lang->get();
         }
 
-        $inputs = $this->item->get($languages);
+        $inputs     = $this->item->get($languages);
         $inputsHTML = '';
-        foreach($inputs as $input){
+        foreach ($inputs as $input) {
             $fieldName = $input->getFieldName();
-            /*
-            if( is_a($input, 'Appacman\\Model\\Form\\Image') ){
-                $file = new File($input->getValue());
-                $path = $file->getRelativePath();
-                $photoID = $file->copy(basename($path), $path);
-                $inputsHTML .= '<input type="hidden" name="' . $fieldName . '" value="' . $photoID . '" />';
-            }else*/ if( in_array($fieldName, array('start', 'end', 'last_update', 'created')) === false ){
+            if (in_array($fieldName, array('start', 'end', 'last_update', 'created')) === false) {
                 $inputsHTML .= '<input type="hidden" name="' . $fieldName . '" value="' . $input->getValue() . '" />';
             }
         }
-        echo '
-            <form id="duplicate" action="' . $this->domain . $this->formLink . '/' . $this->content->getID() . '" method="POST">
-                ' . $inputsHTML . '
-                <input type="hidden" name="send" value="1" />
+        echo "<form id='duplicate' action='$this->domain$this->formLink/{$this->content->getID()}' method='POST'>
+                $inputsHTML
+                <input type='hidden' name='send' value='1' />
             </form>
-            <script type="text/javascript">
-                document.getElementById("duplicate").submit();
+            <script type='text/javascript'>
+                document.getElementById('duplicate').submit();
             </script>
-        ';
+        ";
         exit;
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = parent::hasPermission();
 
-        if( $hasPermission ){
-            $contentID = $this->content->getID();
+        if ($hasPermission) {
+            $contentID    = $this->content->getID();
             $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
-            if( $canDuplicate ){
+            if ($canDuplicate) {
                 // has permission to create?
-                $itemID = $this->getParam('itemID');
+                $itemID     = $this->getParam('itemID');
                 $this->item = new Item($itemID, $this->content->getTable());
-                if( !$this->item->exists() ){
+                if (!$this->item->exists()) {
                     $hasPermission = false;
                 }
-            }else{
+            } else {
                 $hasPermission = false;
             }
         }
@@ -71,11 +63,13 @@ class Duplicate extends Content {
         return $hasPermission;
     }
 
-    protected function getTitle(){
+    protected function getTitle(): string
+    {
         return '';
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

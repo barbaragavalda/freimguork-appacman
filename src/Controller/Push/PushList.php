@@ -4,26 +4,30 @@ namespace Appacman\Controller\Push;
 
 use Appacman\Controller\ContentList;
 
-class PushList extends ContentList  {
+class PushList extends ContentList
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->listLink = _('notificaciones-push');
         $this->formLink = _('notificacion-push');
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = parent::hasPermission();
         $this->listURL = $this->domain . 'push-table/' . $this->content->getID();
         return $hasPermission;
     }
 
-    public function extraHeaders(){
+    public function extraHeaders(): array
+    {
         return array(
             array(
-                'name' => gettext('Alcance'),
-                'field_name'    => 'target'
+                'name'       => _('Alcance'),
+                'field_name' => 'target'
             )
         );
     }

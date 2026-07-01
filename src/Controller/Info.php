@@ -7,23 +7,28 @@ use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 use Core\Utils\Session;
 
-class Info extends AppacmanController {
+class Info extends AppacmanController
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->template('info.twig');
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return true;
     }
 
-    protected function getTitle(){
-        return gettext('Información');
+    protected function getTitle(): string
+    {
+        return _('Información');
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array(
-            array('name' => gettext('Información'), 'link' => null)
+            array('name' => _('Información'), 'link' => null)
         );
     }
 

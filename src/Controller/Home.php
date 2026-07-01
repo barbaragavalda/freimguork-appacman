@@ -8,21 +8,26 @@
 
 namespace Appacman\Controller;
 
-class Home extends AppacmanController {
+class Home extends AppacmanController
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->template('home.twig');
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return $this->user->loggedIn();
     }
 
-    protected function getTitle(){
-        return gettext('Inicio');
+    protected function getTitle(): string
+    {
+        return _('Inicio');
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

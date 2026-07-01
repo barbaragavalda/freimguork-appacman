@@ -4,25 +4,29 @@ namespace Appacman\Controller;
 
 use Core\Model\Utils\SessionLog;
 
-class ForceLogOut extends Content {
+class ForceLogOut extends Content
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         parent::run();
 
         $contentID = $this->getParam('contentID');
-        $itemID = $this->getParam('itemID');
+        $itemID    = $this->getParam('itemID');
 
         $log = new SessionLog();
         $log->logOut($itemID);
 
-        $this->redirect($this->domain . _('listado') . '/' . $contentID );
+        $this->redirect($this->domain . _('listado') . '/' . $contentID);
     }
 
-    protected function getTitle(){
+    protected function getTitle(): string
+    {
         return '';
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

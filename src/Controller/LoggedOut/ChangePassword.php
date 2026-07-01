@@ -5,21 +5,23 @@ namespace Appacman\Controller\LoggedOut;
 use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 
-class ChangePassword extends AppacmanController {
+class ChangePassword extends AppacmanController
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         $send = false;
         $form = new UserForm();
         $hash = $this->getParam('hash');
 
-        if( $form->canChange($hash) ){
-            if( isset($_POST['change']) ){
+        if ($form->canChange($hash)) {
+            if (isset($_POST['change'])) {
                 $form->change();
 
                 $send = $form->getSend();
                 $this->assign('form_error', $form->getError());
             }
-        }else{
+        } else {
             $this->assign('wrong_link', true);
         }
 
@@ -27,15 +29,18 @@ class ChangePassword extends AppacmanController {
         $this->template('LoggedOut/change-password.twig');
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return !$this->user->loggedIn();
     }
 
-    protected function getTitle(){
-        return gettext('Cambiar contraseña');
+    protected function getTitle(): string
+    {
+        return _('Cambiar contraseña');
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 }

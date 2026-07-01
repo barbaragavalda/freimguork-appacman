@@ -1,62 +1,67 @@
 <?php
-    
-    namespace Appacman\Controller\LoggedOut;
-    
-    use Appacman\Controller\AppacmanController;
-    use Appacman\Model\LoggedOut\UserForm;
-    
-    class SignIn extends AppacmanController {
-        
-        protected function run(){
-            $send = false;
-            if( isset($_POST['enter']) ){
-                $form = new UserForm();
-                $form->signin();
-                $send = $form->getSend();
-                $formInfo = $form->getForm();
-                $error = $form->getError();
-                
-                $extraUser = 'Appacman\\Model\\ExtraUser';
-                if( class_exists($extraUser) ){
-                    $form = new $extraUser($formInfo, $error);
-                    if( $send ){
-                        if( method_exists($form, 'extraSignin') ){
-                            $form->extraSignin();
-                        }
-                    }else{
-                        if( method_exists($form, 'signin') ){
-                            $form->signin();
-                        }
+
+namespace Appacman\Controller\LoggedOut;
+
+use Appacman\Controller\AppacmanController;
+use Appacman\Model\LoggedOut\UserForm;
+
+class SignIn extends AppacmanController
+{
+
+    protected function run(): void
+    {
+        $send = false;
+        if (isset($_POST['enter'])) {
+            $form = new UserForm();
+            $form->signin();
+            $send     = $form->getSend();
+            $formInfo = $form->getForm();
+            $error    = $form->getError();
+
+            $extraUser = 'Appacman\\Model\\ExtraUser';
+            if (class_exists($extraUser)) {
+                $form = new $extraUser($formInfo, $error);
+                if ($send) {
+                    if (method_exists($form, 'extraSignin')) {
+                        $form->extraSignin();
                     }
-                    $send = $form->getSend();
-                    
-                    if( $form->getError() ){
-                        $formInfo = $form->getForm();
-                        $error = $form->getError();
+                } else {
+                    if (method_exists($form, 'signin')) {
+                        $form->signin();
                     }
                 }
-                
-                $this->assign('form', $formInfo);
-                $this->assign('form_error', $error);
+                $send = $form->getSend();
+
+                if ($form->getError()) {
+                    $formInfo = $form->getForm();
+                    $error    = $form->getError();
+                }
             }
 
-            if( $send ){
-                $this->redirect($this->domain);
-            }else{
-                $this->template('LoggedOut/signin.twig');
-            }
+            $this->assign('form', $formInfo);
+            $this->assign('form_error', $error);
         }
-        
-        protected function hasPermission(){
-            return !$this->user->loggedIn();
+
+        if ($send) {
+            $this->redirect($this->domain);
+        } else {
+            $this->template('LoggedOut/signin.twig');
         }
-        
-        protected function getTitle(){
-            return gettext('Iniciar sesión');
-        }
-        
-        protected function getBreadcrumb(){
-            return array();
-        }
-    
     }
+
+    protected function hasPermission(): bool
+    {
+        return !$this->user->loggedIn();
+    }
+
+    protected function getTitle(): string
+    {
+        return _('Iniciar sesión');
+    }
+
+    protected function getBreadcrumb(): array
+    {
+        return array();
+    }
+
+}

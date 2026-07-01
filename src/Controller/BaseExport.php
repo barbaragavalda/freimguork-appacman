@@ -4,9 +4,11 @@ namespace Appacman\Controller;
 
 use Appacman\Model\Utils\Permissions;
 
-abstract class BaseExport extends Content {
+abstract class BaseExport extends Content
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         parent::run();
 
         $list = $this->content->getExportList();
@@ -15,14 +17,15 @@ abstract class BaseExport extends Content {
         $this->export($this->content->getTable());
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = parent::hasPermission();
-        if( $hasPermission ){
+        if ($hasPermission) {
             $contentID = $this->content->getID();
             $canExport = $this->user->hasPermission($contentID, Permissions::EXPORT);
 
             // has permissions to export?
-            if( $canExport ){
+            if ($canExport) {
                 return true;
             }
         }
@@ -30,14 +33,16 @@ abstract class BaseExport extends Content {
         return $hasPermission;
     }
 
-    protected function getTitle(){
-        return gettext('Exportar') . ' ' . $this->content->getName();
+    protected function getTitle(): string
+    {
+        return _('Exportar') . ' ' . $this->content->getName();
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 
-    abstract protected function addExtraInfo($list);
+    abstract protected function addExtraInfo($list): array;
 
 }

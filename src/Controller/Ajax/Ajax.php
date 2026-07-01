@@ -5,27 +5,27 @@ namespace Appacman\Controller\Ajax;
 use Appacman\Controller\Content;
 use Appacman\Model\Item;
 
-class Ajax extends Content {
+class Ajax extends Content
+{
 
     protected $permission = null;
 
-    /**
-     * @var \Appacman\Model\Item
-     */
-    protected $item = null;
+    protected ?Item $item = null;
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         $hasPermission = parent::hasPermission();
 
-        if( $hasPermission ){
+        if ($hasPermission) {
             $contentID = $this->content->getID();
-            $canLock = $this->user->hasPermission($contentID, $this->permission);
+            #TODO
+            $canLock   = $this->user->hasPermission($contentID, $this->permission);
 
             // has permission to block?
             $itemID = $this->getParam('itemID');
-            $item = new Item($itemID, $this->content->getTable());
-            if( $itemID > 0 && $item->exists() && $canLock ){
-                $this->item = $item;
+            $item   = new Item($itemID, $this->content->getTable());
+            if ($itemID > 0 && $item->exists() && $canLock) {
+                $this->item    = $item;
                 $hasPermission = true;
             }
         }
@@ -33,17 +33,20 @@ class Ajax extends Content {
         return $hasPermission;
     }
 
-    protected function setError($error){
+    protected function setError($error): void
+    {
         $this->removeInfo();
         $this->assign('error', $error);
         $this->json();
     }
 
-    protected function getTitle(){
+    protected function getTitle(): string
+    {
         return '';
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 

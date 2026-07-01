@@ -4,33 +4,38 @@ namespace Appacman\Controller\Ajax;
 
 use Appacman\Model\Utils\Permissions;
 
-abstract class BaseContentList extends Ajax {
+abstract class BaseContentList extends Ajax
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->permission = Permissions::SEE;
     }
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->removeInfo();
 
         $itemsPerPage = $_REQUEST['length'];
-        $page = ($_REQUEST['start'] / $itemsPerPage) + 1;
+        $page         = ($_REQUEST['start'] / $itemsPerPage) + 1;
 
-        $order = isset($_REQUEST['list_order']) ? $_REQUEST['list_order'] : array();
-        $search = isset($_REQUEST['search']) && isset($_REQUEST['search']['value']) ? $_REQUEST['search']['value'] : '';
+        $order  = $_REQUEST['list_order'] ?? array();
+        $search = $_REQUEST['search']['value'] ?? '';
 
-        $listType = $this->content->getListType();
-        $listClass = 'Appacman\\Model\\Lists\\' . str_replace(' ', '', ucwords(str_replace('-', ' ', $listType) ));
-        $model = new $listClass($this->content, $page, $itemsPerPage);
+        $listType  = $this->content->getListType();
+        $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
+                |> ucwords(...)
+                |> (fn($x) => str_replace(' ', '', $x));
+        $model     = new $listClass($this->content, $page, $itemsPerPage);
         $model->filter($search, $order);
         $list = $model->getItemsPage();
         $list = $this->extraFields($list);
-        foreach($list as $key => &$item){
-            if( empty($item['id']) ){
+        foreach ($list as &$item) {
+            if (empty($item['id'])) {
                 $item['actions'] = '';
-            }else{
+            } else {
                 $item['actions'] = '[APPACMAN_ACCIONS]';
             }
         }
@@ -46,9 +51,11 @@ abstract class BaseContentList extends Ajax {
 
     /**
      * append extra fields to items (if necessary)
+     *
      * @param $list     array of current list
+     *
      * @return array    modified list
      */
-    abstract protected function extraFields($list);
+    abstract protected function extraFields(array $list): array;
 
 }

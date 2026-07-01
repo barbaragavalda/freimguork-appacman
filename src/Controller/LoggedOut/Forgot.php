@@ -5,18 +5,20 @@ namespace Appacman\Controller\LoggedOut;
 use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 
-class Forgot extends AppacmanController {
+class Forgot extends AppacmanController
+{
 
-    protected function run(){
+    protected function run(): void
+    {
         $send = false;
-        if( isset($_POST['remember']) ){
+        if (isset($_POST['remember'])) {
             $form = new UserForm();
             $form->remember();
 
             $extraUser = 'Appacman\\Model\\ExtraUser';
-            if( !$send && class_exists($extraUser) ){
+            if (class_exists($extraUser)) {
                 $form = new $extraUser();
-                if( method_exists($form, 'remember') ){
+                if (method_exists($form, 'remember')) {
                     $form->remember();
                 }
             }
@@ -30,15 +32,18 @@ class Forgot extends AppacmanController {
         $this->template('LoggedOut/forgot.twig');
     }
 
-    protected function hasPermission(){
+    protected function hasPermission(): bool
+    {
         return !$this->user->loggedIn();
     }
 
-    protected function getTitle(){
-        return gettext('Recordar contraseña');
+    protected function getTitle(): string
+    {
+        return _('Recordar contraseña');
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array();
     }
 }

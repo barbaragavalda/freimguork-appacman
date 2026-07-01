@@ -5,27 +5,30 @@ namespace Appacman\Controller\Push;
 use Appacman\Controller\BaseContentForm;
 use Appacman\Model\Push\Statistic;
 
-class Form extends BaseContentForm {
+class Form extends BaseContentForm
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->listLink = _('notificaciones-push');
         $this->formLink = _('notificacion-push');
     }
 
-    protected function run(){
+    protected function run(): void
+    {
         $this->template = 'Push/form.twig';
         parent::run();
     }
 
-    protected function prepareForm()
+    protected function prepareForm(): void
     {
         parent::prepareForm();
 
-        if( $this->item->getID() ){
-            foreach($this->info['form'] as $input){
-                if( $input->getFieldName() == 'is_sent' && filter_var($input->getValue(), FILTER_VALIDATE_BOOL) ){
+        if ($this->item->getID()) {
+            foreach ($this->info['form'] as $input) {
+                if ($input->getFieldName() == 'is_sent' && filter_var($input->getValue(), FILTER_VALIDATE_BOOL)) {
                     // if is sent: cannot edit or delete
                     $this->assign('canEdit', false);
                     $this->assign('canDelete', false);
@@ -39,14 +42,19 @@ class Form extends BaseContentForm {
         }
     }
 
-    protected function getBreadcrumb(){
+    protected function getBreadcrumb(): array
+    {
         return array(
-            array('name' => $this->content->getName(), 'link' => $this->domain . gettext('notificaciones-push') . '/' . $this->content->getID() ),
+            array(
+                'name' => $this->content->getName(),
+                'link' => $this->domain . _('notificaciones-push') . '/' . $this->content->getID()
+            ),
             array('name' => $this->item->getName(), 'link' => null)
         );
     }
 
-    protected function hasErrors(){
+    protected function hasErrors(): bool
+    {
         return false;
     }
 

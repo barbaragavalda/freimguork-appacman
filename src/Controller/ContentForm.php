@@ -2,14 +2,11 @@
 
 namespace Appacman\Controller;
 
-use Appacman\Model\Item;
-use Appacman\Model\Utils\Permissions;
-use Core\Model\Push\Base;
-use Core\Utils\Session;
+class ContentForm extends BaseContentForm
+{
 
-class ContentForm extends BaseContentForm {
-
-    protected function hasErrors(){
+    protected function hasErrors(): bool
+    {
         return $this->item->getError();
     }
 

@@ -2,9 +2,11 @@
 
 namespace Appacman\Controller;
 
-class ContentList extends BaseContentList {
+class ContentList extends BaseContentList
+{
 
-    protected function extraHeaders(){
+    protected function extraHeaders(): array
+    {
         return array();
     }
 

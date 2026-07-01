@@ -7,31 +7,34 @@ use Appacman\Model\Form\Dynamic;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 
-class Add extends Ajax {
+class Add extends Ajax
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
         $this->permission = Permissions::EDIT;
     }
 
-    protected function run(){
-        $field = new Dynamic(
+    protected function run(): void
+    {
+        $field    = new Dynamic(
             array(
                 'field_name' => $_POST['field'],
-                'name' => '',
-                'value' => '',
-                'required' => false,
-                'type' => 'dynamic'
-            ),
-            $_POST['id'],
-            $_POST['table']
+                'name'       => '',
+                'value'      => '',
+                'required'   => false,
+                'type'       => 'dynamic'
+            ), $_POST['id'], $_POST['table']
         );
         $position = null;
-        if( $_POST['position'] ) $position = $_POST['position'];
+        if ($_POST['position']) {
+            $position = $_POST['position'];
+        }
 
         $languagesModel = new Language();
-        $languages = $languagesModel->get();
+        $languages      = $languagesModel->get();
         $field->setLanguages($languages);
 
         $this->removeInfo();
