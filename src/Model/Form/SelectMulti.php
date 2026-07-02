@@ -2,21 +2,23 @@
 
 namespace Appacman\Model\Form;
 
+use PDO;
+
 class SelectMulti extends Select
 {
 
-    protected $currentTable = '';
+    protected string $currentTable = '';
 
-    protected $lateralTable = '';
+    protected string $lateralTable = '';
 
-    public function __construct($info, $id, $table = null)
+    public function __construct(array $info, int $id, ?string $table = null)
     {
         parent::__construct($info, $id, $table);
 
         $this->initTables();
     }
 
-    public function getSeeValue($langID = null)
+    public function getSeeValue(?int $langID = null): string
     {
         $options = $this->getOptions();
         $values  = $this->loadValues($langID);
@@ -33,14 +35,7 @@ class SelectMulti extends Select
         return '-';
     }
 
-    /**
-     * select multiple (more than one option)
-     *
-     * @param int|null $langID
-     *
-     * @return string
-     */
-    protected function getInputHTML($langID = null)
+    protected function getInputHTML(?int $langID = null): string
     {
         $fieldName   = $this->getInputName($langID);
         $selectCheck = $this->getInputName($langID, false) . '_selectAll';
@@ -55,9 +50,9 @@ class SelectMulti extends Select
                 </div>
             ";
         }
-        $select = _('Selecciona') . ' ' . $this->getPlaceholder();
+        $select  = _('Selecciona') . ' ' . $this->getPlaceholder();
         $options = $this->getOptionsHTML($langID);
-        $field .= "
+        $field   .= "
             <select id=\"$fieldName\" name=\"$fieldName\" class=\"form-control select2-multi select2-hidden-accessible\" multiple=\"\" data-placeholder=\"$select\" style=\"width: 100%;\" tabindex=\"-1\" aria-hidden=\"true\" data-name=\"$this->fieldName\">
                 $options
             </select>
@@ -65,7 +60,7 @@ class SelectMulti extends Select
         return $field;
     }
 
-    public function getInputName($langID = null, $withMultiple = true)
+    public function getInputName(?int $langID = null, bool $withMultiple = true): string
     {
         $fieldName = $this->fieldName;
         if ($this->isMultiple !== false) {
@@ -79,7 +74,7 @@ class SelectMulti extends Select
         }
     }
 
-    private function getLateralField()
+    private function getLateralField(): string
     {
         if ($this->currentTable == $this->lateralTable) {
             return $this->lateralTable . '_related';
@@ -87,23 +82,12 @@ class SelectMulti extends Select
         return $this->lateralTable;
     }
 
-    /**
-     * from witch table has to load options?
-     * @return array
-     */
-    protected function getOptions($table = null, $extraFields = '')
+    protected function getOptions(?string $table = null, string $extraFields = ''): array
     {
         return $this->loadOptions($this->lateralTable);
     }
 
-    /**
-     * get selected options
-     *
-     * @param $langID
-     *
-     * @return array
-     */
-    protected function loadValues($langID)
+    protected function loadValues(?int $langID): array
     {
         $this->initTables();
         $sql    = '
@@ -112,13 +96,13 @@ class SelectMulti extends Select
             WHERE id_' . $this->currentTable . ' = :id
         ';
         $params = array(
-            'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+            'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT)
         );
         $values = $this->mysql->query($sql, $params);
         return array_column($values, 'id');
     }
 
-    protected function initTables()
+    protected function initTables(): void
     {
         $tables             = explode('_', $this->fieldName);
         $this->currentTable = $tables[0];
@@ -132,24 +116,17 @@ class SelectMulti extends Select
         }
     }
 
-    /**
-     * Check if its required
-     *
-     * @param null $langID
-     *
-     * @return false|string
-     */
-    public function hasError($langID = null)
+    public function hasError(?int $langID = null): bool
     {
         return false;
     }
 
-    public function canSave($langID = null)
+    public function canSave(?int $langID = null): bool
     {
         return false;
     }
 
-    public function save($itemID, $langID = null)
+    public function save(int $itemID, ?int $langID = null): bool
     {
         $postName = $this->getInputName($langID, false);
         if (isset($_POST[ $postName ])) {
@@ -158,7 +135,7 @@ class SelectMulti extends Select
         return false;
     }
 
-    protected function insert($itemID, $ids = array(), $deleteOld = true)
+    protected function insert(int $itemID, array $ids = array(), bool $deleteOld = true): bool
     {
         $this->initTables();
         $field = $this->getLateralField();
@@ -168,14 +145,14 @@ class SelectMulti extends Select
         // insert again
         $values = array();
         $params = array(
-            'id' => array('value' => $itemID, 'type' => \PDO::PARAM_INT)
+            'id' => array('value' => $itemID, 'type' => PDO::PARAM_INT)
         );
         $ids    = array_unique($ids);
         foreach ($ids as $index => $id) {
             $exists = count($this->exists($field, $itemID, $id));
             if ($id && !$exists) {
                 $values[]                         = '(:id, :lateral_id_' . $index . ')';
-                $params[ 'lateral_id_' . $index ] = array('value' => $id, 'type' => \PDO::PARAM_INT);
+                $params[ 'lateral_id_' . $index ] = array('value' => $id, 'type' => PDO::PARAM_INT);
             }
         }
 
@@ -186,7 +163,7 @@ class SelectMulti extends Select
                 WHERE id_' . $this->currentTable . ' = :item AND id_' . $field . ' IN(' . implode(', ', $delete) . ')
             ';
             $paramsDelete = array(
-                'item' => array('value' => $itemID, 'type' => \PDO::PARAM_INT)
+                'item' => array('value' => $itemID, 'type' => PDO::PARAM_INT)
             );
             $this->mysql->query($sql, $paramsDelete);
         }
@@ -200,20 +177,19 @@ class SelectMulti extends Select
             if ($this->mysql->getState()) {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
-    private function exists($field, $itemID, $id = null)
+    private function exists(string $field, int $itemID, ?int $id = null): array
     {
         $where  = '';
         $params = array(
-            'item' => array('value' => $itemID, 'type' => \PDO::PARAM_INT)
+            'item' => array('value' => $itemID, 'type' => PDO::PARAM_INT)
         );
         if ($id != null) {
             $where        = ' AND id_' . $field . ' = :id';
-            $params['id'] = array('value' => $id, 'type' => \PDO::PARAM_INT);
+            $params['id'] = array('value' => $id, 'type' => PDO::PARAM_INT);
         }
 
         $sql = '

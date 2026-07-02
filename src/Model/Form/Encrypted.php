@@ -2,59 +2,52 @@
 
 namespace Appacman\Model\Form;
 
-abstract class Encrypted extends FormInput {
+abstract class Encrypted extends FormInput
+{
 
-    protected $key = '';
+    protected string $key = '';
 
-    /**
-     * Initialize input key for encryption
-     * @param $info
-     * @param $id
-     * @param string|null $table
-     */
-    public function __construct($info, $id, $table){
+    public function __construct(array $info, int $id, ?string $table)
+    {
         parent::__construct($info, $id, $table);
 
-        $keyID = 0;
+        $keyID      = 0;
         $keyCreated = null;
-        if( $id ){
-            $sql = '
+        if ($id) {
+            $sql    = '
                 SELECT *
-                FROM '.$this->table.'
-                WHERE id_'.$this->table.' = :id
+                FROM ' . $this->table . '
+                WHERE id_' . $this->table . ' = :id
             ';
             $params = array(
                 'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
             );
-            $row = $this->mysql->query($sql, $params);
-            if( count($row) ){
-                $row = $row[0];
-                $keyID = $row['id_'.$this->table];
+            $row    = $this->mysql->query($sql, $params);
+            if (count($row)) {
+                $row        = $row[0];
+                $keyID      = $row[ 'id_' . $this->table ];
                 $keyCreated = $row['created'];
             }
-        }else{
+        } else {
             $keyID = $this->mysql->getMaxId($table);
-            if( isset($_POST['created']) ){
+            if (isset($_POST['created'])) {
                 $keyCreated = $_POST['created'];
             }
         }
         $this->key = $keyID . '_' . $keyCreated . '_' . $this->fieldName;
     }
 
-    /**
-     * Check if its required
-     * @param null $langID
-     * @return false|string
-     */
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool|string
+    {
         $postValue = parent::getPostValue($langID);
-        if( empty($postValue) && $this->isRequired ){
-            return gettext('Campo obligatorio.');
+        if (empty($postValue) && $this->isRequired) {
+            return _('Campo obligatorio.');
         }
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

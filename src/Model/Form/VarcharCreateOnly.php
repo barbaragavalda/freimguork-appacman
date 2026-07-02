@@ -2,17 +2,14 @@
 
 namespace Appacman\Model\Form;
 
-class VarcharCreateOnly extends Varchar {
+class VarcharCreateOnly extends Varchar
+{
 
-    /**
-     * input type text
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
-        if( $this->id ){
+    protected function getInputHTML(?int $langID = null): string
+    {
+        if ($this->id) {
             return $this->getInputValue($langID) . $this->inputType('hidden', $langID);
-        }else{
+        } else {
             return $this->inputType('text', $langID);
         }
     }

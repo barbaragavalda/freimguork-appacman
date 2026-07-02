@@ -3,41 +3,38 @@
 namespace Appacman\Model\Form;
 
 use Core\Model\Utils\DateUtils;
+use DateInterval;
 
-class Timestamp extends FormInput {
+class Timestamp extends FormInput
+{
 
-    /**
-     * show like database in order to sort it correctly
-     * @return mixed|string
-     */
-    public function getListValue(){
+    public function getListValue(): string
+    {
         return parent::getSeeValue();
     }
 
-    /**
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         $value = self::getSeeValue($langID);
-        if( !$value && $this->isRequired ){
-            $value = date(DateUtils::FORMAT_TIMESTAMP_DB);
+        if (!$value && $this->isRequired) {
+            $value       = date(DateUtils::FORMAT_TIMESTAMP_DB);
             $this->value = $value;
         }
         return $this->label($value) . $this->inputType('hidden', $langID);
     }
 
     /**
-     * format timestamp for database
-     * @param int|null $langID
-     * @return string
+     * @throws \DateMalformedStringException
      */
-    protected function getPostValue($langID = null){
+    protected function getPostValue(?int $langID = null): string
+    {
         $value = parent::getPostValue($langID);
-        if( !$value && $this->value ) $value = $this->value;
-        if( !$value && $this->isRequired ){
-            $date = new \DateTime( date(DateUtils::FORMAT_TIMESTAMP_DB) );
-            $date->add(new \DateInterval('PT5M'));
+        if (!$value && $this->value) {
+            $value = $this->value;
+        }
+        if (!$value && $this->isRequired) {
+            $date = new \DateTime(date(DateUtils::FORMAT_TIMESTAMP_DB));
+            $date->add(new DateInterval('PT5M'));
             $value = $date->format('Y-m-d H:i:s');
         }
         $this->value = $value;
@@ -45,19 +42,19 @@ class Timestamp extends FormInput {
     }
 
     /**
-     * Check timestamp format and if its required
-     * @param null $langID
-     * @return false|string
+     * @throws \DateMalformedStringException
      */
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool|string
+    {
         $postValue = $this->getPostValue($langID);
-        if( $postValue == null && $this->isRequired ){
-            return gettext('Campo obligatorio.');
+        if ($postValue == null && $this->isRequired) {
+            return _('Campo obligatorio.');
         }
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

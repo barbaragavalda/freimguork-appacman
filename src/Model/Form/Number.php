@@ -2,40 +2,36 @@
 
 namespace Appacman\Model\Form;
 
-class Number extends FormInput {
+use PDO;
 
-    protected $type = \PDO::PARAM_STR;
+class Number extends FormInput
+{
 
-    /**
-     * Post value must be a number
-     * @param null $langID
-     * @return bool
-     */
-    protected function getPostValue($langID = null){
+    protected int $type = PDO::PARAM_STR;
+
+    protected function getPostValue(?int $langID = null): ?string
+    {
         $postName = $this->getInputName($langID, false);
-        $post = $this->getPost($postName);
+        $post     = $this->getPost($postName);
 
-        if( $post === '' ){
+        if ($post === '') {
             return null;
         }
-        $post = str_replace(',', '.', $post);
-        return $post;
+        return str_replace(',', '.', $post);
     }
 
-    /**
-     * input type text
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         return $this->inputType('text', $langID);
     }
 
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

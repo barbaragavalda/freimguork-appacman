@@ -3,56 +3,61 @@
 namespace Appacman\Model\Utils;
 
 use Core\Model\Model;
+use PDO;
 
-class Permissions extends Model {
+class Permissions extends Model
+{
 
-    const CREATE = 'create';
-    const EDIT = 'edit';
-    const DELETE = 'delete';
-    const SEE = 'see';
-    const EXPORT = 'export';
-    const LOCK = 'lock';
-    const OWN = 'own';
-    const DUPLICATE = 'duplicate';
-    const FIREBASE = 'firebase';
-    const SEND_CHANGES = 'send-changes';
-    const LOG_OUT = 'log-out';
-    const GENERATE_INVOICE = 'generate-invoice';
+    const string  CREATE           = 'create';
+    const string  EDIT             = 'edit';
+    const string  DELETE           = 'delete';
+    const string  SEE              = 'see';
+    const string  EXPORT           = 'export';
+    const string  LOCK             = 'lock';
+    const string  OWN              = 'own';
+    const string  DUPLICATE        = 'duplicate';
+    const string  FIREBASE         = 'firebase';
+    const string  SEND_CHANGES     = 'send-changes';
+    const string  LOG_OUT          = 'log-out';
+    const string  GENERATE_INVOICE = 'generate-invoice';
 
-    /**
-     * @var int $userID
-     */
-    private $userID = 0;
+    private int $userID;
 
-    /**
-     * @var int $profileID
-     */
-    private $profileID = null;
+    private ?int $profileID;
 
-    /**
-     * @var array $permissionsCodes
-     */
-    private $permissionsCodes = array();
+    private array $permissionsCodes;
 
-    /**
-     * @var array $permissions
-     */
-    private $permissions = array();
+    private array $permissions = array();
 
-    public function __construct($userID, $profileID = null){
+    public function __construct($userID, $profileID = null)
+    {
         parent::__construct();
 
-        $this->permissionsCodes = array(self::CREATE, self::DELETE, self::EDIT, self::SEE, self::EXPORT, self::LOCK, self::OWN, self::DUPLICATE, self::SEND_CHANGES, self::LOG_OUT, self::GENERATE_INVOICE);
-        $this->userID = $userID;
-        $this->profileID = $profileID;
+        $this->permissionsCodes = array(
+            self::CREATE,
+            self::DELETE,
+            self::EDIT,
+            self::SEE,
+            self::EXPORT,
+            self::LOCK,
+            self::OWN,
+            self::DUPLICATE,
+            self::SEND_CHANGES,
+            self::LOG_OUT,
+            self::GENERATE_INVOICE
+        );
+        $this->userID           = $userID;
+        $this->profileID        = $profileID;
     }
 
-    public function getProfileID(){
+    public function getProfileID(): ?int
+    {
         return $this->profileID;
     }
 
-    public function load(){
-        $sql = '
+    public function load(): void
+    {
+        $sql    = '
             SELECT aupp.id_appacman_content, aup.code, aupl.name, aupp.id_appacman_user_profile
             FROM appacman_user AS au
             INNER JOIN appacman_user_profile_permission AS aupp ON aupp.id_appacman_user_profile = au.id_appacman_user_profile
@@ -61,11 +66,11 @@ class Permissions extends Model {
             WHERE au.id_appacman_user = :user_id
         ';
         $params = array(
-            'user_id'   => array('value' => $this->userID, 'type' => \PDO::PARAM_INT),
-            'lang'      => array('value' => $this->langID, 'type' => \PDO::PARAM_INT)
+            'user_id' => array('value' => $this->userID, 'type' => PDO::PARAM_INT),
+            'lang'    => array('value' => $this->langID, 'type' => PDO::PARAM_INT)
         );
-        if( $this->profileID != null ){
-            $sql = '
+        if ($this->profileID != null) {
+            $sql    = '
                 SELECT aupp.id_appacman_content, aup.code, aupl.name, aupp.id_appacman_user_profile
                 FROM appacman_user_profile_permission AS aupp
                 INNER JOIN appacman_user_permission AS aup ON aup.id_appacman_user_permission = aupp.id_appacman_user_permission
@@ -73,26 +78,29 @@ class Permissions extends Model {
                 WHERE aupp.id_appacman_user_profile = :profile_id
             ';
             $params = array(
-                'profile_id'    => array('value' => $this->profileID,   'type' => \PDO::PARAM_INT),
-                'lang'          => array('value' => $this->langID,      'type' => \PDO::PARAM_INT)
+                'profile_id' => array('value' => $this->profileID, 'type' => PDO::PARAM_INT),
+                'lang'       => array('value' => $this->langID, 'type' => PDO::PARAM_INT)
             );
         }
         $permissions = $this->mysql->query($sql, $params);
 
         $this->permissions = array();
-        if( count($permissions) ) $this->profileID = $permissions[0]['id_appacman_user_profile'];
-        foreach($permissions as $permission){
-            $this->permissions['c'.$permission['id_appacman_content']][] = array(
+        if (count($permissions)) {
+            $this->profileID = $permissions[0]['id_appacman_user_profile'];
+        }
+        foreach ($permissions as $permission) {
+            $this->permissions[ 'c' . $permission['id_appacman_content'] ][] = array(
                 'code' => $permission['code'],
                 'name' => $permission['name']
             );
         }
     }
 
-    public function getContentPermissions($contentID){
+    public function getContentPermissions(int $contentID): array
+    {
         $permissions = array();
-        foreach($this->permissionsCodes as $permission){
-            if( ($contentPermission = $this->hasPermission($contentID, $permission)) !== false ){
+        foreach ($this->permissionsCodes as $permission) {
+            if (($contentPermission = $this->hasPermission($contentID, $permission)) !== false) {
                 $permissions[] = $contentPermission;
             }
         }
@@ -100,11 +108,12 @@ class Permissions extends Model {
         return $permissions;
     }
 
-    public function hasPermission($contentID, $permission){
-        $contentID = 'c'.$contentID;
-        if( array_key_exists($contentID, $this->permissions) ){
-            foreach($this->permissions[$contentID] as $contentPermission){
-                if( array_search($permission, $contentPermission) !== false ){
+    public function hasPermission($contentID, $permission): bool
+    {
+        $contentID = 'c' . $contentID;
+        if (array_key_exists($contentID, $this->permissions)) {
+            foreach ($this->permissions[ $contentID ] as $contentPermission) {
+                if (in_array($permission, $contentPermission)) {
                     return $contentPermission;
                 }
             }

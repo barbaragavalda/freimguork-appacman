@@ -2,8 +2,9 @@
 
 namespace Appacman\Model\Form;
 
-class TextSimple extends Text {
+class TextSimple extends Text
+{
 
-    protected $class = 'wysiwyg-textarea-simple';
+    protected string $class = 'wysiwyg-textarea-simple';
 
 }

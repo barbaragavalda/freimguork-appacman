@@ -2,8 +2,9 @@
 
 namespace Appacman\Model\Form;
 
-class TextRaw extends Text {
+class TextRaw extends Text
+{
 
-    protected $class = 'raw-textarea';
+    protected string $class = 'raw-textarea';
 
 }

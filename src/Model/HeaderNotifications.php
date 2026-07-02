@@ -5,12 +5,14 @@ namespace Appacman\Model;
 use Core\Model\File;
 use Core\Model\Model;
 
-abstract class HeaderNotifications extends Model {
+abstract class HeaderNotifications extends Model
+{
 
-    public function get(){
+    public function get(): array
+    {
         return array(
             'counter' => $this->getCounter(),
-            'list' => $this->getList()
+            'list'    => $this->getList()
         );
     }
 
@@ -18,7 +20,7 @@ abstract class HeaderNotifications extends Model {
      * total notifications
      * @return int
      */
-    abstract public function getCounter();
+    abstract public function getCounter(): int;
 
     /**
      * array list
@@ -31,6 +33,6 @@ abstract class HeaderNotifications extends Model {
      * )
      * @return array
      */
-    abstract public function getList();
+    abstract public function getList(): array;
 
 }

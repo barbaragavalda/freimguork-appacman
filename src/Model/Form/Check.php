@@ -2,60 +2,53 @@
 
 namespace Appacman\Model\Form;
 
-class Check extends FormInput {
+use PDO;
 
-    protected $type = \PDO::PARAM_BOOL;
+class Check extends FormInput
+{
 
-    /**
-     * See value is 'yes' or 'no'
-     * @param null $langID
-     * @return string
-     */
-    public function getSeeValue($langID = null){
+    protected int $type = PDO::PARAM_BOOL;
+
+    public function getSeeValue(?int $langID = null): string
+    {
         $value = parent::getSeeValue($langID);
-        if( $value ){
-            return gettext('Sí');
+        if ($value) {
+            return _('Sí');
         }
-        return gettext('No');
+        return _('No');
     }
 
-    /**
-     * input type chek with custom css
-     * @param null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         $postName = $this->getInputName($langID);
 
         $disabled = $checked = '';
-        if( parent::getInputValue($langID) ){
+        if (parent::getInputValue($langID)) {
             $disabled = 'disabled';
-            $checked = 'checked';
+            $checked  = 'checked';
         }
-        return '
-            <input type="hidden" id="'.$postName.'" name="'.$postName.'" value="0" '.$disabled.' />
-            <input type="checkbox" class="custom-check" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" '.$checked.' value="1">
-        ';
+        return "
+            <input type='hidden' id='$postName' name='$postName' value='0' $disabled/>
+            <input type='checkbox' class='custom-check' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' $checked value='1'/> />
+        ";
     }
 
-    /**
-     * Post value is true or false
-     * @param null $langID
-     * @return bool
-     */
-    protected function getPostValue($langID = null){
+    protected function getPostValue(?int $langID = null): string
+    {
         $post = parent::getPostValue($langID);
-        if( empty($post) ){
+        if (empty($post)) {
             return false;
         }
         return true;
     }
 
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

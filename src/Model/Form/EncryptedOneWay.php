@@ -4,49 +4,46 @@ namespace Appacman\Model\Form;
 
 use Core\Model\Encryptor\OneWay;
 
-class EncryptedOneWay extends Encrypted {
+class EncryptedOneWay extends Encrypted
+{
 
-    public function getSeeValue($langID = null){
-        return $this->label( '<i class="fa fa-eye-slash"></i> ' . gettext('Valor oculto') );
+    public function getSeeValue(?int $langID = null): string
+    {
+        return $this->label('<i class="fa fa-eye-slash"></i> ' . _('Valor oculto'));
     }
 
-    /**
-     * all two-way encrypted values, cannot be displayed because it is impossible to decrypt them
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         $postName = $this->getInputName($langID);
-        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="" />';
+        return '<input type="text" class="form-control" id="'
+            . $postName
+            . '" name="'
+            . $postName
+            . '" placeholder="'
+            . $this->getPlaceholder()
+            . '" value="" />';
     }
 
-    public function canSave($langID = null){
+    public function canSave(?int $langID = null): bool
+    {
         $postValue = parent::getPostValue($langID);
-        if( $postValue ){
+        if ($postValue) {
             return true;
         }
         return false;
     }
 
-    /**
-     * encrypt value in order to save on database
-     * @param null $langID
-     * @return string
-     */
-    protected function getPostValue($langID = null){
+    protected function getPostValue(?int $langID = null): ?string
+    {
         $postValue = parent::getPostValue($langID);
         return OneWay::encrypt($postValue, $this->key);
     }
 
-    /**
-     * not required if already exists item
-     * @param null $langID
-     * @return false|string
-     */
-    public function hasError($langID = null){
-        if( $this->id ){
+    public function hasError(?int $langID = null): bool|string
+    {
+        if ($this->id) {
             return false;
-        }else{
+        } else {
             return parent::hasError($langID);
         }
     }

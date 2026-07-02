@@ -19,7 +19,9 @@
   ],
   "require": {
     "php": "^8.5",
+    "ext-fileinfo": "*",
     "ext-gettext": "*",
+    "ext-pdo": "*",
     "appaqui/freimguork-core": "dev-master",
     "almasaeed2010/adminlte": "~2.4"
   },

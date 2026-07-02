@@ -5,82 +5,77 @@ namespace Appacman\Model;
 use Appacman\Model\Utils\Field;
 use Core\Model\Model;
 
-abstract class Page extends Model {
+abstract class Page extends Model
+{
 
-    /**
-     * @var string $name. Title of this item
-     */
-    protected $name = 0;
+    protected string $name = '';
 
-    /**
-     * @var array $info. Info of the content
-     */
-    protected $info = array();
+    protected array $info = array();
 
-    /**
-     * @var \Appacman\Model\Utils\Field $fields. Fields info
-     */
-    protected $fields = array();
+    protected ?Field $fields = null;
 
-    /**
-     * @var string $table. Table name
-     */
-    protected $table = '';
+    protected string $table = '';
 
-    public function __construct($id){
+    public function __construct($id)
+    {
         parent::__construct();
 
         $this->id = $id;
     }
 
-    public function getValues(){
+    public function getValues(): array
+    {
         return $this->info;
     }
 
-    protected function initFields($tableName, $contentID = null){
+    protected function initFields($tableName, $contentID = null): void
+    {
         $this->fields = new Field($tableName, $contentID);
     }
 
-    public function getInputClass(&$field, $info = null){
+    public function getInputClass(&$field, $info = null): object
+    {
         $info = ($info == null) ? $this->info : $info;
         // field value
-        $fieldName = $field['field_name'];
+        $fieldName      = $field['field_name'];
         $field['value'] = '';
-        if( array_key_exists($fieldName, $info) ){
-            $field['value'] = $info[$fieldName];
+        if (array_key_exists($fieldName, $info)) {
+            $field['value'] = $info[ $fieldName ];
         }
 
         // input view class
-        if( strpos($field['type'], ' ') !== false ){
-        	$explode = explode(' ', $field['type']);
-        	if( count($explode) > 0 ){
-        		$field['type'] = $explode[0];
-        	}
+        if (str_contains($field['type'], ' ')) {
+            $explode = explode(' ', $field['type']);
+            if (count($explode) > 0) {
+                $field['type'] = $explode[0];
+            }
         }
-        $inputClass = 'Appacman\\Model\\Form\\' . ucfirst( $field['type'] );
-        $id = null;
-        if( count($info) ){
-            if( is_a($this, 'Appacman\\Model\\Item') ){
-                $id = $info['id_'.$this->table];
-            }else if(array_key_exists('id', $info) ){
-                $id = $info['id'];
+        $inputClass = 'Appacman\\Model\\Form\\' . ucfirst($field['type']);
+        $id         = null;
+        if (count($info)) {
+            if (is_a($this, 'Appacman\\Model\\Item')) {
+                $id = $info[ 'id_' . $this->table ];
+            } else {
+                if (array_key_exists('id', $info)) {
+                    $id = $info['id'];
+                }
             }
         }
         return new $inputClass($field, $id, $this->table);
     }
 
-    abstract public function getName();
+    abstract public function getName(): string;
 
     /**
      * get the formulari for that item
      * @return array
      */
-    abstract public function get();
+    abstract public function get(): array;
 
     /**
      * check if this item exists
      * @return bool
      */
-    abstract public function exists();
+    abstract public function exists(): bool;
 
 }

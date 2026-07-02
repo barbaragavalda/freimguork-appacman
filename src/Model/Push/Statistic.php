@@ -3,12 +3,12 @@
 namespace Appacman\Model\Push;
 
 use Core\Model\Model;
-use Core\Model\Push\Push;
+use PDO;
 
 class Statistic extends Model
 {
 
-    private $hasStatistics = false;
+    private bool $hasStatistics;
 
     public function __construct($id)
     {
@@ -18,7 +18,7 @@ class Statistic extends Model
         $this->hasStatistics = $this->mysql->tableExists('appacman_push_statistic');
     }
 
-    public function update($devices)
+    public function update(int $devices): void
     {
         if ($this->hasStatistics) {
             $sql    = '
@@ -27,8 +27,8 @@ class Statistic extends Model
                     devices = :devices
             ';
             $params = array(
-                'id'      => array('value' => $this->id, 'type' => \PDO::PARAM_INT),
-                'devices' => array('value' => $devices, 'type' => \PDO::PARAM_INT),
+                'id'      => array('value' => $this->id, 'type' => PDO::PARAM_INT),
+                'devices' => array('value' => $devices, 'type' => PDO::PARAM_INT),
             );
             if ($this->exists()) {
                 $sql = '
@@ -42,7 +42,7 @@ class Statistic extends Model
         }
     }
 
-    public function click()
+    public function click(): void
     {
         if ($this->hasStatistics) {
             $sql    = '
@@ -51,16 +51,13 @@ class Statistic extends Model
                 WHERE id_appacman_push = :id
             ';
             $params = array(
-                'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT),
+                'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT),
             );
             $this->mysql->query($sql, $params);
         }
     }
 
-    /**
-     * @return bool|array     exists?
-     */
-    private function exists()
+    private function exists(): bool|array
     {
         if ($this->hasStatistics) {
             $sql       = '
@@ -69,7 +66,7 @@ class Statistic extends Model
                 WHERE id_appacman_push = :id
             ';
             $params    = array(
-                'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+                'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT)
             );
             $statistic = $this->mysql->query($sql, $params);
 
@@ -80,7 +77,7 @@ class Statistic extends Model
         return false;
     }
 
-    public function get()
+    public function get(): array
     {
         if ($this->hasStatistics) {
             $sql       = '
@@ -89,7 +86,7 @@ class Statistic extends Model
                 WHERE id_appacman_push = :id
             ';
             $params    = array(
-                'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+                'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT)
             );
             $statistic = $this->mysql->query($sql, $params);
 
@@ -99,7 +96,7 @@ class Statistic extends Model
 
             return array(
                 'devices' => '0',
-                'clicks' => '0'
+                'clicks'  => '0'
             );
         }
         return array();

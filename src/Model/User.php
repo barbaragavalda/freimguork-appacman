@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: barbaragavaldabalada
- * Date: 31/10/17
- * Time: 21:02
- */
 
 namespace Appacman\Model;
 
@@ -12,134 +6,116 @@ use Appacman\Model\Utils\Permissions;
 use Core\Model\Encryptor\TwoWay;
 use Core\Model\Model;
 use Core\Utils\Session;
+use PDO;
 
-class User extends Model {
+class User extends Model
+{
+    private static User $instance;
 
-    /**
-     * @var \Appacman\Model\User $instance. Instance of the singleton
-     */
-    private static $instance;
+    private ?array $profileInfo;
 
-    /**
-     * @var null|array. User forced profile
-     */
-    private $profileInfo = null;
+    private ?Permissions $permissions = null;
 
-    /**
-     * @var \Appacman\Model\Utils\Permissions $permissions. User permissions
-     */
-    private $permissions = null;
-
-    /**
-     * @var \Core\Utils\Session $session
-     */
-    private $session = null;
+    private Session $session;
 
     /**
      * load user info from session
      */
-    private function __construct(){
+    private function __construct()
+    {
         parent::__construct();
 
-        $this->session = Session::getInstance();
-        $this->id = $this->session->get('user_id');
+        $this->session     = Session::getInstance();
+        $this->id          = $this->session->get('user_id');
         $this->profileInfo = $this->session->get('profile_info');
-        
+
         $this->loadPermissions();
     }
 
-    /**
-     * initializes the instance (if needed) based on the singleton pattern
-     * @return \Appacman\Model\User
-     */
-    public static function getInstance(){
-        if( self::$instance === null) {
+    public static function getInstance(): User
+    {
+        if (self::$instance === null) {
             self::$instance = new User();
         }
         return self::$instance;
     }
 
-    /**
-     * @return string username
-     */
-    public function getName(){
+    public function getName(): string
+    {
         return $this->session->get('user_name');
     }
 
-    public function getProfileID(){
+    public function getProfileID(): int
+    {
         return $this->permissions->getProfileID();
     }
 
-    public function getProfileInfo(){
+    public function getProfileInfo(): ?array
+    {
         return $this->profileInfo;
     }
 
-    public function getEmail(){
-        $sql = '
+    public function getEmail(): string
+    {
+        $sql    = '
             SELECT id_appacman_user, email, created
             FROM appacman_user
             WHERE id_appacman_user = :id
         ';
         $params = array(
-            'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+            'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT)
         );
-        $user = $this->mysql->query($sql, $params);
-        if( count($user) ){
-            $user = $user[0];
-            $this->id = $user['id_appacman_user'];
+        $user   = $this->mysql->query($sql, $params);
+        if (count($user)) {
+            $user          = $user[0];
+            $this->id      = $user['id_appacman_user'];
             $this->created = $user['created'];
             $this->setKey();
-            return TwoWay::decrypt($user['email'], $this->key.'email');
+            return TwoWay::decrypt($user['email'], $this->key . 'email');
         }
         return '';
     }
 
-    /**
-     * is the user loggedin
-     * @return bool
-     */
-    public function loggedIn(){
-        if( empty($this->id) ){
+    public function loggedIn(): bool
+    {
+        if (empty($this->id)) {
             return false;
         }
         return true;
     }
 
-    /**
-     * remove session
-     */
-    public function logout(){
+    public function logout(): void
+    {
         $this->session->clear();
     }
 
-    /**
-     * save session
-     * @param $userID           int identifier
-     * @param $username         string name
-     * @param $profileInfo      array custom profile
-     */
-    public function signin($userID, $username, $profileInfo = null){
+    public function signin(int $userID, string $username, ?array $profileInfo = null): void
+    {
         $this->id = $userID;
         $this->session->set('user_id', $userID);
         $this->session->set('user_name', $username);
-        if( $profileInfo != null ) $this->session->set('profile_info', $profileInfo);
+        if ($profileInfo != null) {
+            $this->session->set('profile_info', $profileInfo);
+        }
     }
 
-    /**
-     * load user permissions
-     */
-    private function loadPermissions(){
+    private function loadPermissions(): void
+    {
         $profileID = null;
-        if( $this->profileInfo != null ) $profileID = $this->profileInfo['profile'];
+        if ($this->profileInfo != null) {
+            $profileID = $this->profileInfo['profile'];
+        }
         $this->permissions = new Permissions($this->id, $profileID);
         $this->permissions->load();
     }
 
-    public function getContentPermissions($contentID){
+    public function getContentPermissions($contentID): array
+    {
         return $this->permissions->getContentPermissions($contentID);
     }
 
-    public function hasPermission($contentID, $permission){
+    public function hasPermission($contentID, $permission): array
+    {
         return $this->permissions->hasPermission($contentID, $permission);
     }
 

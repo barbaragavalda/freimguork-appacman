@@ -5,11 +5,12 @@ namespace Appacman\Model;
 use Core\Model\File;
 use Core\Model\Model;
 use Core\Model\Push\Push;
+use PDO;
 
 class PushCronJob extends Model
 {
 
-    protected $systemType = null;
+    protected ?int $systemType = null;
 
     public function __construct()
     {
@@ -26,7 +27,7 @@ class PushCronJob extends Model
         }
     }
 
-    protected function getPending()
+    protected function getPending(): array
     {
         $where = '';
         if ($this->mysql->fieldExists('appacman_push', 'is_sent')) {
@@ -42,12 +43,12 @@ class PushCronJob extends Model
             WHERE send <= :now ' . $where . '
         ';
         $params = array(
-            'now' => array('value' => $now, 'type' => \PDO::PARAM_STR)
+            'now' => array('value' => $now, 'type' => PDO::PARAM_STR)
         );
         return $this->mysql->query($sql, $params);
     }
 
-    public function sendPending()
+    public function sendPending(): void
     {
         $notifications = $this->getPending();
 
@@ -77,7 +78,7 @@ class PushCronJob extends Model
         }
     }
 
-    protected function getTranslation($items)
+    protected function getTranslation($items): array
     {
         $translations = array();
         foreach ($items as $item) {
@@ -94,7 +95,7 @@ class PushCronJob extends Model
         return $translations;
     }
 
-    protected function getFilters($info)
+    protected function getFilters($info): array
     {
         $wheres = array();
         if (array_key_exists('platform', $info) && $info['platform']) {
@@ -123,7 +124,7 @@ class PushCronJob extends Model
         );
     }
 
-    protected function getDevices($info, $notificationType)
+    protected function getDevices($info, $notificationType): array
     {
         $filters       = $this->getFilters($info);
         $params        = $filters['params'];
@@ -171,28 +172,28 @@ class PushCronJob extends Model
             FROM (' . implode('UNION', $union) . ')AS t
             GROUP BY platform, user_language
         ';
-        $params['type'] = array('value' => $notificationType, 'type' => \PDO::PARAM_INT);
+        $params['type'] = array('value' => $notificationType, 'type' => PDO::PARAM_INT);
         return $this->mysql->query($sql, $params);
     }
 
-    private function getWhereIn($list, $function = 'addQuotesReplace')
+    private function getWhereIn($list, $function = 'addQuotesReplace'): string
     {
         $array = explode(',', $list);
         $array = array_map(array($this, $function), $array);
         return implode(',', $array);
     }
 
-    private function addQuotes($e)
+    private function addQuotes($e): string
     {
         return '"' . $e . '"';
     }
 
-    private function addQuotesReplace($e)
+    private function addQuotesReplace($e): string
     {
         return '"' . str_replace('.', ',', $e) . '"';
     }
 
-    private function delete($notifications)
+    private function delete($notifications): void
     {
         if (count($notifications)) {
             $ids = array_column($notifications, 'id');
@@ -213,7 +214,7 @@ class PushCronJob extends Model
         }
     }
 
-    protected function markAsSent($notifications)
+    protected function markAsSent($notifications): void
     {
         if (count($notifications)) {
             $ids = array_column($notifications, 'id');

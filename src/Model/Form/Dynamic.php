@@ -5,17 +5,18 @@ namespace Appacman\Model\Form;
 use Appacman\Model\Item;
 use Appacman\Model\User;
 use Appacman\Model\Utils\Permissions;
+use PDO;
 
 class Dynamic extends FormInput
 {
 
-    protected $forms = array();
+    protected array $forms = array();
 
-    protected $canEdit   = false;
-    protected $canCreate = false;
-    protected $canDelete = false;
+    protected bool $canEdit   = false;
+    protected bool $canCreate = false;
+    protected bool $canDelete = false;
 
-    private function init()
+    private function init(): void
     {
         $sql    = '
             SELECT *
@@ -23,7 +24,7 @@ class Dynamic extends FormInput
             WHERE id_' . $this->table . ' = :id
         ';
         $params = array(
-            'id' => array('value' => $this->id, 'type' => \PDO::PARAM_INT)
+            'id' => array('value' => $this->id, 'type' => PDO::PARAM_INT)
         );
         $items  = $this->mysql->query($sql, $params);
         if (count($items)) {
@@ -39,14 +40,15 @@ class Dynamic extends FormInput
         $this->initPermissions();
     }
 
-    private function initPermissions(){
+    private function initPermissions(): void
+    {
         $sql       = '
             SELECT id_appacman_content
             FROM appacman_content
             WHERE table_name = :table
         ';
         $params    = array(
-            'table' => array('value' => $this->fieldName, 'type' => \PDO::PARAM_STR)
+            'table' => array('value' => $this->fieldName, 'type' => PDO::PARAM_STR)
         );
         $tableInfo = $this->mysql->query($sql, $params);
         if (count($tableInfo)) {
@@ -57,41 +59,23 @@ class Dynamic extends FormInput
         }
     }
 
-    /**
-     * Field name (description useful for the user)
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         $this->initPermissions();
         $name = $this->name;
         if ($this->canCreate) {
-            $title = gettext('Añadir');
+            $title = _('Añadir');
             $name  .= " <a href=\"#\" data-field=\"$this->fieldName\"  data-id=\"$this->id\" data-table=\"$this->table\"  class=\"add-dynamic-field btn btn-success btn-xs\" title=\"$title\"><i class=\"fa fa-plus\"></i></a>";
         }
         return $name;
     }
 
-    /**
-     * remove tags on list
-     *
-     * @param null $langID
-     *
-     * @return string
-     */
-    public function getListValue($langID = null)
+    public function getListValue(?int $langID = null): string
     {
         return '';
     }
 
-    /**
-     * input type text
-     *
-     * @param int|null $langID
-     *
-     * @return string
-     */
-    protected function getInputHTML($langID = null)
+    protected function getInputHTML(?int $langID = null): string
     {
         $this->init();
 
@@ -106,7 +90,7 @@ class Dynamic extends FormInput
         return $html;
     }
 
-    public function getSeeValue($langID = null)
+    public function getSeeValue(?int $langID = null): string
     {
         $html = '';
         $i    = 0;
@@ -120,7 +104,7 @@ class Dynamic extends FormInput
         ';
     }
 
-    public function getItemHTML($form = null, $canEdit = true, $multiplePosition = true)
+    public function getItemHTML(?Item $form = null, bool $canEdit = true, bool $multiplePosition = true): string
     {
         $inputs = $this->getFormInputs($form);
         $html   = '
@@ -167,17 +151,17 @@ class Dynamic extends FormInput
         return $html;
     }
 
-    protected function deleteButton($form)
+    protected function deleteButton(Item $form): string
     {
         if ($this->canDelete) {
             $id    = $form->getID();
-            $title = gettext('Eliminar');
+            $title = _('Eliminar');
             return "<a href=\"#\" data-id=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
         }
         return '';
     }
 
-    protected function getFormInputs($form)
+    protected function getFormInputs(?Item $form): array
     {
         if ($form == null) {
             $form          = new Item(false, $this->fieldName);
@@ -186,40 +170,27 @@ class Dynamic extends FormInput
         return $this->getInputs($form);
     }
 
-    protected function getStartContainer($form = null)
+    protected function getStartContainer($form = null): string
     {
         return '<div id="content-' . $this->fieldName . '" class="box-body">';
     }
 
-    protected function getEndContainer()
+    protected function getEndContainer(): string
     {
         return '</div>';
     }
 
-    /**
-     * Check if its required
-     *
-     * @param null $langID
-     *
-     * @return false|string
-     */
-    public function hasError($langID = null)
+    public function hasError(?int $langID = null): bool
     {
         return false;
     }
 
-    public function canSave($langID = null)
+    public function canSave(?int $langID = null): bool
     {
         return false;
     }
 
-    /**
-     * @param int  $itemID
-     * @param null $langID
-     *
-     * @return bool     error
-     */
-    public function save($itemID, $langID = null)
+    public function save(int $itemID, ?int $langID = null): bool
     {
         $this->id = $itemID;
         $this->init();
@@ -292,12 +263,7 @@ class Dynamic extends FormInput
         return false;
     }
 
-    /**
-     * @param $form \Appacman\Model\Item
-     *
-     * @return array
-     */
-    protected function getInputs($form)
+    protected function getInputs(?Item $form): array
     {
         $inputs = $form->get($this->languages);
 
@@ -316,14 +282,7 @@ class Dynamic extends FormInput
         return $inputs;
     }
 
-    /**
-     * remove current rows on database
-     *
-     * @param array $ids ids to delete
-     *
-     * @return bool         success
-     */
-    public function deleteWithID($ids)
+    public function deleteWithID(array $ids): bool
     {
         $ids = implode(',', array_column($ids, 'id'));
         $sql = '

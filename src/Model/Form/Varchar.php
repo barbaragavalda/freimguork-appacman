@@ -2,40 +2,30 @@
 
 namespace Appacman\Model\Form;
 
-class Varchar extends FormInput {
+class Varchar extends FormInput
+{
 
-    /**
-     * remove tags on list
-     * @param null $langID
-     * @return string
-     */
-    public function getListValue($langID = null){
+    public function getListValue(?int $langID = null): string
+    {
         return strip_tags(parent::getListValue($langID));
     }
 
-    /**
-     * input type text
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         return $this->inputType('text', $langID);
     }
 
-    /**
-     * Check if its required
-     * @param null $langID
-     * @return false|string
-     */
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool
+    {
         $postValue = $this->getPostValue($langID);
-        if( $postValue == null && $this->isRequired ){
-            return gettext('Campo obligatorio.');
+        if ($postValue == null && $this->isRequired) {
+            return _('Campo obligatorio.');
         }
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

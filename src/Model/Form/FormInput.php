@@ -3,228 +3,144 @@
 namespace Appacman\Model\Form;
 
 use Core\Model\Model;
+use PDO;
 
-abstract class FormInput extends Model {
+abstract class FormInput extends Model
+{
 
-    /**
-     * field name and placeholder
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
-    /**
-     * field hint
-     * @var string
-     */
-    protected $hint = '';
+    protected string $hint = '';
 
-    /**
-     * field name on database
-     * @var string
-     */
-    protected $fieldName = '';
+    protected string $fieldName = '';
 
-    /**
-     * field current value on dastabase
-     * @var string
-     */
-    protected $value = '';
+    protected string|array $value = '';
 
-    /**
-     * is required?
-     * @var bool
-     */
-    protected $isRequired = false;
+    protected bool $isRequired = false;
 
-    /**
-     * visible on form?
-     * @var bool
-     */
-    protected $isVisible = true;
+    protected bool $isVisible = true;
 
-    /**
-     * @var int $id. Item id
-     */
-    protected $id = 0;
+    protected ?string $table = '';
 
-    /**
-     * @var string $table. Table of the item
-     */
-    protected $table = '';
+    protected bool $onLangTable = false;
 
-    /**
-     * on lang table?
-     * @var bool
-     */
-    protected $onLangTable = false;
+    protected bool $isMultiple = false;
 
-    /**
-     * post value on array
-     * @var bool
-     */
-    protected $isMultiple = false;
+    protected array $languages = array();
 
-    /**
-     * @var array $languages. Available languages on database
-     */
-    protected $languages = array();
+    protected int $type = PDO::PARAM_STR;
 
-    /**
-     * @var int $type. PDO type of input
-     */
-    protected $type = \PDO::PARAM_STR;
+    protected string $fieldType = '';
 
-    /**
-     * @var string $type
-     */
-    protected $fieldType = '';
+    protected false|string $error = false;
 
-    /**
-     * validation error
-     * @var false|string $error
-     */
-    protected $error = false;
-
-    public function __construct($info, $id, $table = null){
+    public function __construct(array $info, int $id, ?string $table = null)
+    {
         parent::__construct();
-        $this->id = $id;
+        $this->id    = $id;
         $this->table = $table;
 
-        $this->name = $info['name'];
-        $this->fieldName = $info['field_name'];
-        $this->value = $info['value'];
+        $this->name       = $info['name'];
+        $this->fieldName  = $info['field_name'];
+        $this->value      = $info['value'];
         $this->isRequired = $info['required'];
-        $this->fieldType = $info['type'];
-        if( array_key_exists('hint', $info) ){
+        $this->fieldType  = $info['type'];
+        if (array_key_exists('hint', $info)) {
             $this->hint = $info['hint'];
         }
-        if( array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti')) ){
+        if (array_key_exists('type', $info) && in_array($info['type'], array('dynamic', 'selectMulti'))) {
             $this->isRequired = false;
         }
-        if( $this->mysql->fieldExists($this->table.'_lang', $this->fieldName) ){
+        if ($this->mysql->fieldExists($this->table . '_lang', $this->fieldName)) {
             $this->onLangTable = true;
         }
     }
 
-    public function isMultiple($position = true){
+    public function isMultiple($position = true): void
+    {
         $this->isMultiple = $position;
     }
 
-    /**
-     * available languages
-     * @param $languages
-     */
-    public function setLanguages($languages){
+    public function setLanguages(array $languages): void
+    {
         $this->languages = $languages;
     }
 
-    /**
-     * is on lang table
-     * @param $onLangTable
-     */
-    public function setOnLangTable($onLangTable = true){
+    public function setOnLangTable(bool $onLangTable = true): void
+    {
         $this->onLangTable = $onLangTable;
     }
 
-    /**
-     * inputs can override this function in order to not be displayed of the form
-     * @return bool
-     */
-    public function isVisible(){
+    public function isVisible(): bool
+    {
         return $this->isVisible;
     }
 
-    /**
-     * is field required?
-     * @return bool
-     */
-    public function isRequired(){
+    public function isRequired(): bool
+    {
         return $this->isRequired;
     }
 
-    /**
-     * is field required?
-     * @param bool
-     */
-    public function setIsRequired($isRequired){
+    public function setIsRequired(bool $isRequired): void
+    {
         $this->isRequired = $isRequired;
     }
 
-    /**
-     * Field name (description useful for the user)
-     * @return string
-     */
-    public function getName(){
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getPlaceholder(){
+    public function getPlaceholder(): string
+    {
         return strip_tags($this->name);
     }
 
-    /**
-     * Field name on database
-     * @return string
-     */
-    public function getFieldName(){
+    public function getFieldName(): string
+    {
         return $this->fieldName;
     }
 
-    /**
-     * Value on database
-     * @return string
-     */
-    public function getValue(){
+    public function getValue(): string
+    {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    public function getType(){
+    public function getType(): string
+    {
         return $this->fieldType;
     }
 
-    public function setValue($value){
+    public function setValue($value): void
+    {
         $this->value = $value;
     }
 
-    public function getHint(){
+    public function getHint(): string
+    {
         return $this->hint;
     }
 
-    /**
-     * Get validation error
-     * @return string
-     */
-    public function getError(){
+    public function getError(): bool|string
+    {
         return $this->error;
     }
 
-    /**
-     * set validation error
-     * @param string $error
-     */
-    public function setError($error){
+    public function setError(string $error): void
+    {
         $this->error = $error;
     }
 
-    /**
-     * is on lang table?
-     * @return bool
-     */
-    public function isOnLangTable(){
+    public function isOnLangTable(): bool
+    {
         return $this->onLangTable;
     }
 
     //*******************************************//
     //***************** L I S T *****************//
     //*******************************************//
-    /**
-     * Value to show on list
-     * @return string
-     */
-    public function getListValue(){
+    public function getListValue(): string
+    {
         return $this->getSeeValue();
     }
 
@@ -235,26 +151,24 @@ abstract class FormInput extends Model {
      * Value to show on form when user CANNOT edit
      * @return string
      */
-    public function getInfoHTML(){
+    public function getInfoHTML(): string
+    {
         $html = '';
-        if( $this->onLangTable ){
-            foreach($this->languages as $language) {
+        if ($this->onLangTable) {
+            foreach ($this->languages as $language) {
                 $value = $this->getSeeValue($language['id']);
-                $html .= $this->getFromRow($this->label($value), $language);
+                $html  .= $this->getFromRow($this->label($value), $language);
             }
-        }else{
+        } else {
             $value = $this->getSeeValue();
-            $html .= $this->getFromRow( $this->label($value) );
+            $html  .= $this->getFromRow($this->label($value));
         }
 
         return $html;
     }
 
-    /**
-     * @param null $langID
-     * @return mixed|string
-     */
-    public function getSeeValue($langID = null){
+    public function getSeeValue(?int $langID = null): string|array
+    {
         return $this->getInputValue($langID);
     }
 
@@ -265,13 +179,14 @@ abstract class FormInput extends Model {
      * Value to show on form when user CAN edit
      * @return string
      */
-    public function getFormHTML(){
+    public function getFormHTML(): string
+    {
         $html = '';
-        if( $this->onLangTable ){
-            foreach($this->languages as $language) {
+        if ($this->onLangTable) {
+            foreach ($this->languages as $language) {
                 $html .= $this->getFromRow($this->getInputHTML($language['id']), $language);
             }
-        }else{
+        } else {
             $html .= $this->getFromRow($this->getInputHTML());
         }
 
@@ -282,7 +197,8 @@ abstract class FormInput extends Model {
      * hidden input
      * @return string
      */
-    public function getHTML(){
+    public function getHTML(): string
+    {
         return '';
     }
 
@@ -290,13 +206,14 @@ abstract class FormInput extends Model {
      * Value to show on form when user CANNOT edit
      * @return string
      */
-    public function getSeeHTML(){
+    public function getSeeHTML(): string
+    {
         $html = '';
-        if( $this->onLangTable ){
-            foreach($this->languages as $language) {
+        if ($this->onLangTable) {
+            foreach ($this->languages as $language) {
                 $html .= $this->getFromRow($this->getSeeValue($language['id']), $language);
             }
-        }else{
+        } else {
             $html .= $this->getFromRow($this->getSeeValue());
         }
 
@@ -305,49 +222,50 @@ abstract class FormInput extends Model {
 
     /**
      * How the inout is displayed to de user in order to edit it
+     *
      * @param int|null $langID
+     *
      * @return mixed
      */
-    abstract protected function getInputHTML($langID = null);
+    abstract protected function getInputHTML(?int $langID = null): mixed;
 
     /**
      * Name of the input for post value
-     * @param int|null $langID
-     * @param boolean $withMultiple
+     *
+     * @param ?int $langID
+     * @param bool $withMultiple
+     *
      * @return string
      */
-    public function getInputName($langID = null, $withMultiple = true){
+    public function getInputName(?int $langID = null, bool $withMultiple = true): string
+    {
         $fieldName = $this->fieldName;
-        $multiple = $this->isMultiple !== false && $withMultiple ? '[]' : '';
-        if( $langID == null ){
+        $multiple  = $this->isMultiple !== false && $withMultiple ? '[]' : '';
+        if ($langID == null) {
             return $fieldName . $multiple;
-        }else{
-            return $fieldName . '_' .$langID . $multiple;
+        } else {
+            return $fieldName . '_' . $langID . $multiple;
         }
     }
 
-    /**
-     * Value of the input for post value
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputValue($langID = null){
+    protected function getInputValue(?int $langID = null): array|string
+    {
         $postName = $this->getInputName($langID, false);
-        if( array_key_exists($postName, $_POST) ){
+        if (array_key_exists($postName, $_POST)) {
             return $this->getPost($postName);
-        }else{
-            if( !empty($this->value) ){
-                if( $langID == null && !is_array($this->value) ){
+        } else {
+            if (!empty($this->value)) {
+                if ($langID == null && !is_array($this->value)) {
                     return $this->value;
-                }else{
-                    if( $langID == null ){
+                } else {
+                    if ($langID == null) {
                         $keys = array_keys($this->value);
-                        return $this->value[$keys[0]];
-                    }else{
-                        if( is_array($this->value) ){
-                            if( array_key_exists('lang_'.$langID, $this->value) ){
-                                return $this->value['lang_'.$langID];
-                            }else{
+                        return $this->value[ $keys[0] ];
+                    } else {
+                        if (is_array($this->value)) {
+                            if (array_key_exists('lang_' . $langID, $this->value)) {
+                                return $this->value[ 'lang_' . $langID ];
+                            } else {
                                 return '';
                             }
                         }
@@ -362,41 +280,35 @@ abstract class FormInput extends Model {
     //********************************************************//
     //********* F O R M    E D I T A B L E    P O S T ********//
     //********************************************************//
-    /**
-     * Can be saved on database?
-     * @return bool
-     */
-    public function canSave($langID = null){
+    public function canSave(?int $langID = null): bool
+    {
         return true;
     }
 
-    /**
-     * post value
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getPostValue($langID = null){
+    protected function getPostValue(?int $langID = null): mixed
+    {
         $postName = $this->getInputName($langID, false);
-        $value = $this->getPost($postName);
+        $value    = $this->getPost($postName);
 
-        if( $value ){
+        if ($value) {
             return $value;
-        }else{
-            if( $this->isRequired() ){
+        } else {
+            if ($this->isRequired()) {
                 return '';
             }
         }
         return null;
     }
 
-    protected function getPost($postName, $default = ''){
-        if( isset($_POST[$postName]) ){
-            if( $this->isMultiple === false ){
-                return $_POST[$postName];
-            }else{
-                if( $_POST[$postName] && isset($_POST[$postName][ $this->isMultiple ]) ){
-                    return $_POST[$postName][ $this->isMultiple ];
-                }else{
+    protected function getPost($key, $default = ''): mixed
+    {
+        if (isset($_POST[ $key ])) {
+            if ($this->isMultiple === false) {
+                return $_POST[ $key ];
+            } else {
+                if ($_POST[ $key ] && isset($_POST[ $key ][ $this->isMultiple ])) {
+                    return $_POST[ $key ][ $this->isMultiple ];
+                } else {
                     return null;
                 }
             }
@@ -404,20 +316,20 @@ abstract class FormInput extends Model {
         return '';
     }
 
-    /**
-     * value to be saved on database
-     * @return array
-     */
-    public function getSaveValue(){
-        // multi language
-        if( $this->onLangTable ){
+    public function getSaveValue(): ?array
+    {
+        // multi-language
+        if ($this->onLangTable) {
             $values = array();
-            foreach($this->languages as $language) {
-                if( $this->canSave($language['id']) ){
+            foreach ($this->languages as $language) {
+                if ($this->canSave($language['id'])) {
                     $this->error = $this->hasError($language['id']);
-                    if( !$this->error ){
-                        $values['lang_'.$language['id']] = array(
-                            $this->fieldName => array('value'=>$this->getPostValue($language['id']), 'type'=>$this->type)
+                    if (!$this->error) {
+                        $values[ 'lang_' . $language['id'] ] = array(
+                            $this->fieldName => array(
+                                'value' => $this->getPostValue($language['id']),
+                                'type'  => $this->type
+                            )
                         );
                     }
                 }
@@ -426,9 +338,9 @@ abstract class FormInput extends Model {
         }
 
         // no language
-        if( $this->canSave() ){
+        if ($this->canSave()) {
             $this->error = $this->hasError();
-            if( !$this->error ) {
+            if (!$this->error) {
                 return array(
                     $this->fieldName => array('value' => $this->getPostValue(), 'type' => $this->type)
                 );
@@ -438,96 +350,72 @@ abstract class FormInput extends Model {
         return null;
     }
 
-    /**
-     * @param null $langID
-     * @return false|string
-     */
-    abstract protected function hasError($langID = null);
+    abstract protected function hasError(?int $langID = null): mixed;
 
-    /**
-     * save extra info
-     * @param int $itemID
-     * @param null $langID
-     * @return boolean     error
-     */
-    abstract public function save($itemID, $langID = null);
+    abstract public function save(int $itemID, ?int $langID = null): bool|string;
 
     //*******************************************//
     //*********** F O R M    U T I L S **********//
     //*******************************************//
-    /**
-     * Row HTML on form
-     * @param $input
-     * @param int|null $language
-     * @return string
-     */
-    private function getFromRow($input, $language = null){
-        $name = $span = '';
+    private function getFromRow(string $input, ?array $language = null): string
+    {
+        $name       = $span = '';
         $extraClass = '';
-        if( $language != null ){
-            $name = $language['name'];
-            $extraClass = ($language['id'] == null) ? '' : 'lang_'.$language['id'];
+        if ($language != null) {
+            $name       = $language['name'];
+            $extraClass = ($language['id'] == null) ? '' : 'lang_' . $language['id'];
         }
-        if( !empty($this->hint) ){
-            $span .= '<span class="help-block">'.$this->hint.'</span>';
+        if (!empty($this->hint)) {
+            $span .= '<span class="help-block">' . $this->hint . '</span>';
         }
-        if( $this->error ){
+        if ($this->error) {
             $extraClass = ' has-error';
-            $span .= '<span class="help-block"><i class="fa fa-times-circle-o"></i> '.$this->error.'</span>';
+            $span       .= '<span class="help-block"><i class="fa fa-times-circle-o"></i> ' . $this->error . '</span>';
         }
 
         return '
-            <div class="form-horizontal '.$extraClass.'">
+            <div class="form-horizontal ' . $extraClass . '">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">'.$name.'</label>
+                    <label class="col-sm-2 control-label">' . $name . '</label>
                     <div class="col-sm-10">
-                        '.$input.'
-                        '.$span.'
+                        ' . $input . '
+                        ' . $span . '
                     </div>
                 </div>
             </div>
         ';
     }
 
-    /**
-     * Label HTML on form row
-     * @param $value
-     * @return string
-     */
-    protected function label($value){
+    protected function label(string $value): string
+    {
         return '<label class="form-label">' . $value . '</label>';
     }
 
-    /**
-     * Default input HTML
-     * @param $type
-     * @param null $langID
-     * @param string $extra
-     * @return string
-     */
-    protected function inputType($type = 'text', $langID = null, $extra = ''){
+    protected function inputType(string $type = 'text', ?int $langID = null, string $extra = ''): string
+    {
         $postName = $this->getInputName($langID);
-        $value = $this->getInputValue($langID);
-        if($value){
+        $value    = $this->getInputValue($langID);
+        if ($value) {
             $value = str_replace('"', '&quot;', $value);
         }
-        return '<input type="'.$type.'" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$value.'" ' . $extra . ' />';
+        return "<input type='$type' class='form-control' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' value='$value' $extra>";
     }
 
-    protected function getContentID(){
+    protected function getContentID(): int|bool
+    {
         $lateralTable = str_replace('id_', '', $this->fieldName);
-        $sql = '
+        $sql          = '
             SELECT id_appacman_content
             FROM appacman_content
             WHERE table_name = :table
             LIMIT 1
         ';
-        $params = array(
-            'table' => array('value' => $lateralTable, 'type' => \PDO::PARAM_STR)
+        $params       = array(
+            'table' => array('value' => $lateralTable, 'type' => PDO::PARAM_STR)
         );
-        $content = $this->mysql->query($sql, $params);
+        $content      = $this->mysql->query($sql, $params);
 
-        if( count($content) ){
+        if (count($content)) {
             return $content[0]['id_appacman_content'];
         }
         return false;

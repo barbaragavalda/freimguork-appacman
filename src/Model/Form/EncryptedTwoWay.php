@@ -4,37 +4,34 @@ namespace Appacman\Model\Form;
 
 use Core\Model\Encryptor\TwoWay;
 
-class EncryptedTwoWay extends Encrypted {
+class EncryptedTwoWay extends Encrypted
+{
 
-    /**
-     * decrypt value for display it on form
-     * @param int|null $langID
-     * @return string
-     */
-    public function getSeeValue($langID = null){
-        if( $this->key ){
+    public function getSeeValue(?int $langID = null): string
+    {
+        if ($this->key) {
             return TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
         }
         return '';
     }
 
-    /**
-     * input type text
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         $postName = $this->getInputName($langID);
-        $value = TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
-        return '<input type="text" class="form-control" id="'.$postName.'" name="'.$postName.'" placeholder="'.$this->getPlaceholder().'" value="'.$value.'" />';
+        $value    = TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
+        return '<input type="text" class="form-control" id="'
+            . $postName
+            . '" name="'
+            . $postName
+            . '" placeholder="'
+            . $this->getPlaceholder()
+            . '" value="'
+            . $value
+            . '" />';
     }
 
-    /**
-     * encrypt value in order to save on database
-     * @param null $langID
-     * @return string
-     */
-    protected function getPostValue($langID = null){
+    protected function getPostValue(?int $langID = null): string
+    {
         $postValue = parent::getPostValue($langID);
         return TwoWay::encrypt($postValue, $this->key);
     }

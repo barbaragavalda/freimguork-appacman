@@ -3,50 +3,47 @@
 namespace Appacman\Model\Utils;
 
 use Core\Model\Model;
+use PDO;
 
-class Field extends Model {
+class Field extends Model
+{
 
-    /**
-     * @var int $contentID
-     */
-    private $contentID = 0;
+    private int $contentID;
 
-    /**
-     * @var string $contentTable
-     */
-    private $contentTable = '';
+    private string $contentTable;
 
-    /**
-     * @var array $fields. Definition of the content fields
-     */
-    private $fields = array();
+    private array $fields = array();
 
-    public function __construct($contentTable, $contentID = null){
+    public function __construct($contentTable, $contentID = null)
+    {
         parent::__construct();
 
-        $this->contentID = $contentID;
+        $this->contentID    = $contentID;
         $this->contentTable = $contentTable;
 
-        if( $this->contentID == null ){
-            $sql = '
+        if ($this->contentID == null) {
+            $sql     = '
                 SELECT id_appacman_content
                 FROM appacman_content
                 WHERE table_name = :table
             ';
-            $params = array(
-                'table' => array('value' => $this->contentTable, 'type' => \PDO::PARAM_STR),
+            $params  = array(
+                'table' => array('value' => $this->contentTable, 'type' => PDO::PARAM_STR),
             );
             $content = $this->mysql->query($sql, $params);
-            if( count($content) ) $this->contentID = $content[0]['id_appacman_content'];
+            if (count($content)) {
+                $this->contentID = $content[0]['id_appacman_content'];
+            }
         }
 
         $this->init();
     }
 
-    public function getFieldsForList(){
+    public function getFieldsForList(): array
+    {
         $names = array();
-        foreach($this->fields as $field){
-            if( $field['show_on_list'] ){
+        foreach ($this->fields as $field) {
+            if ($field['show_on_list']) {
                 $names[] = $field;
             }
         }
@@ -54,10 +51,22 @@ class Field extends Model {
         return $names;
     }
 
-    public function getFieldsForExport(){
+    public function getFieldsForExport(): array
+    {
         $names = array();
-        foreach($this->fields as $field){
-            if( !in_array($field['type'], array('unmodifiable', 'encryptedOneWay', 'image', 'imageSeeOnly', 'genericFile', 'genericFileSeeOnly', 'dynamic')) ){
+        foreach ($this->fields as $field) {
+            if (!in_array(
+                $field['type'],
+                array(
+                    'unmodifiable',
+                    'encryptedOneWay',
+                    'image',
+                    'imageSeeOnly',
+                    'genericFile',
+                    'genericFileSeeOnly',
+                    'dynamic'
+                )
+            )) {
                 $names[] = $field;
             }
         }
@@ -65,12 +74,14 @@ class Field extends Model {
         return $names;
     }
 
-    public function get(){
+    public function get(): array
+    {
         return $this->fields;
     }
 
-    private function init(){
-        $sql = '
+    private function init(): void
+    {
+        $sql          = '
             SELECT af.id_appacman_field, af.field_name, af.show_on_list, af.show_on_breadcrumb, afl.name, afl.hint, aft.name AS type
             FROM appacman_field AS af
             INNER JOIN appacman_field_lang AS afl ON afl.id_appacman_field = af.id_appacman_field AND afl.id_appacman_lang = :lang
@@ -78,31 +89,31 @@ class Field extends Model {
             WHERE af.id_appacman_content = :content_id
             ORDER BY af.order
         ';
-        $params = array(
-            'content_id'    => array('value' => $this->contentID,   'type' => \PDO::PARAM_INT),
-            'lang'          => array('value' => $this->langID,      'type' => \PDO::PARAM_INT)
+        $params       = array(
+            'content_id' => array('value' => $this->contentID, 'type' => PDO::PARAM_INT),
+            'lang'       => array('value' => $this->langID, 'type' => PDO::PARAM_INT)
         );
         $this->fields = $this->mysql->query($sql, $params);
 
-        foreach($this->fields as &$field){
+        foreach ($this->fields as &$field) {
             $fieldDescription = $this->mysql->fieldDescription($this->contentTable, $field['field_name']);
-            $field['length'] = 0;
+            $field['length']  = 0;
 
             $required = false;
-            if( !empty($fieldDescription) ){
+            if (!empty($fieldDescription)) {
                 $required = $fieldDescription['required'];
             }
             $field['required'] = $required;
 
             // field type
-            if( array_key_exists('type', $field) && !$field['type'] ){
-                if( $fieldDescription ){
+            if (array_key_exists('type', $field) && !$field['type']) {
+                if ($fieldDescription) {
                     $typeInfo = $fieldDescription['type'];
-                    $type = $typeInfo;
-                    if( strpos($typeInfo, '(') !== false ){
-                        $typeArray = explode('(', $typeInfo);
-                        $type = $typeArray[0];
-                        $field['length'] = intval( str_replace(')', '', $typeArray[1]) );
+                    $type     = $typeInfo;
+                    if (str_contains($typeInfo, '(')) {
+                        $typeArray       = explode('(', $typeInfo);
+                        $type            = $typeArray[0];
+                        $field['length'] = intval(str_replace(')', '', $typeArray[1]));
                     }
                     $field['type'] = $type;
                 }

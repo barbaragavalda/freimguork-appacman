@@ -3,59 +3,66 @@
 namespace Appacman\Model;
 
 use Core\Model\Encryptor\TwoWay;
-use Core\Model\Utils\StringUtils;
 use Core\Utils\Session;
+use PDO;
 
-class Content extends Page {
+class Content extends Page
+{
 
-    public function getName(){
+    public function getName(): string
+    {
         return $this->info['name'];
     }
 
-    public function getTable(){
+    public function getTable(): string
+    {
         return $this->info['table_name'];
     }
 
-    public function getTableHeaders(){
+    public function getTableHeaders(): array
+    {
         return $this->fields->getFieldsForList();
     }
 
-    public function getListType(){
+    public function getListType(): string
+    {
         return $this->info['list_type'];
     }
 
-    public function setListType($type){
+    public function setListType($type): void
+    {
         $this->info['list_type'] = $type;
     }
 
-    public function getOrderBy(){
-        // order by on data base
+    public function getOrderBy(): array
+    {
+        // order by on database
         $orders = array();
-        if( $this->info['order_by'] != null ){
+        if ($this->info['order_by'] != null) {
             $orders = explode(', ', $this->info['order_by']);
         }
         $orderBy = array();
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $array = explode(' ', $order);
-            $key = str_replace('`', '', $array[0]);
-            $key = str_replace('´', '', $key);
-            if( count($array) == 2 ){
-                $orderBy[$key] = $array[1];
-            }else{
-                $orderBy[$key] = 'asc';
+            $key   = str_replace('`', '', $array[0]);
+            $key   = str_replace('´', '', $key);
+            if (count($array) == 2) {
+                $orderBy[ $key ] = $array[1];
+            } else {
+                $orderBy[ $key ] = 'asc';
             }
         }
 
-        // setup order for javascript
-        $order = array();
+        // setup order for JavaScript
+        $order  = array();
         $fields = $this->fields->get();
-        $i = 0;
-        foreach($fields as $field){
+        $i      = 0;
+        foreach ($fields as $field) {
             $fieldName = $field['field_name'];
-            if( $field['show_on_list'] && $fieldName != 'is_locked' ){
-                if( array_key_exists($fieldName, $orderBy) ){
-                    $orderType = strtolower( $orderBy[$fieldName] );
-                    $order[] = array($i, $orderType);
+            if ($field['show_on_list'] && $fieldName != 'is_locked') {
+                if (array_key_exists($fieldName, $orderBy)) {
+                    $orderType = strtolower($orderBy[ $fieldName ]);
+                    $order[]   = array($i, $orderType);
                 }
                 $i++;
             }
@@ -64,66 +71,64 @@ class Content extends Page {
         return $order;
     }
 
-    public function getNextPrevItems($itemID){
-        $session = Session::getInstance();
+    public function getNextPrevItems($itemID): array
+    {
+        $session    = Session::getInstance();
         $tableOrder = $session->get('tableOrder');
-        if( $tableOrder == null ) $tableOrder = array();
+        if ($tableOrder == null) {
+            $tableOrder = array();
+        }
 
-        if( array_key_exists('tableOrder'.$this->id, $tableOrder) ){
-            $savedOrder = $tableOrder[ 'tableOrder'.$this->id ];
-            $fields = $this->fields->get();
-            $order = '`' . $fields[$savedOrder[0][0]]['field_name'] . '` ' . $savedOrder[0][1];
-        }else{
+        if (array_key_exists('tableOrder' . $this->id, $tableOrder)) {
+            $savedOrder = $tableOrder[ 'tableOrder' . $this->id ];
+            $fields     = $this->fields->get();
+            $order      = '`' . $fields[ $savedOrder[0][0] ]['field_name'] . '` ' . $savedOrder[0][1];
+        } else {
             $order = $this->info['order_by'];
         }
 
         $previous = null;
-        $next = null;
-        $info = $this->get($order);
-        $rows = $info['rows'];
-        for($i=0; $i<count($rows); $i++){
-            if( $rows[$i]['id'] == $itemID ){
-                if( $i > 0 )                $previous = $rows[$i-1]['id'];
-                if( $i < count($rows)-1 )   $next = $rows[$i+1]['id'];
+        $next     = null;
+        $info     = $this->get($order);
+        $rows     = $info['rows'];
+        for ($i = 0; $i < count($rows); $i++) {
+            if ($rows[ $i ]['id'] == $itemID) {
+                if ($i > 0) {
+                    $previous = $rows[ $i - 1 ]['id'];
+                }
+                if ($i < count($rows) - 1) {
+                    $next = $rows[ $i + 1 ]['id'];
+                }
                 break;
             }
         }
 
         return array(
             'previous' => $previous,
-            'next' => $next,
+            'next'     => $next,
         );
     }
 
-    /**
-     * get the list of items for this content
-     * @param string|null $order
-     * @param string|null $where
-     * @return array
-     */
-    public function get($order = null, $where = null){
+    public function get(?string $order = null, ?string $where = null): array
+    {
         // fields
         $fields = $this->fields->getFieldsForList();
         return array(
             'fields' => $fields,
-            'rows' => $this->getList($order, $fields, $where)
+            'rows'   => $this->getList($order, $fields, $where)
         );
     }
 
-    /**
-     * prepare list
-     * @param string|null $order
-     * @param array $fields
-     * @param string|null $extraWhere
-     * @return array
-     */
-    public function getList($order, $fields, $extraWhere = null){
-        foreach ($fields as &$field){
-            if ($this->mysql->fieldExists($this->table, $field['field_name']) ||
-                $this->mysql->fieldExists($this->table . '_lang', $field['field_name']
-                )){
+    public function getList(?string $order, array $fields, ?string $extraWhere = null): array
+    {
+        foreach ($fields as &$field) {
+            if ($this->mysql->fieldExists($this->table, $field['field_name'])
+                || $this->mysql->fieldExists(
+                    $this->table . '_lang',
+                    $field['field_name']
+                )) {
                 $field['field_name'] = '`' . $field['field_name'] . '`';
-            }else{
+            } else {
                 $field['field_name'] = '"-" AS ' . $field['field_name'];
             }
         }
@@ -131,45 +136,52 @@ class Content extends Page {
         $extraFields = count($fieldsNames) ? implode(', ', $fieldsNames) : '';
 
         // table rows
-        $table = $this->info['table_name'];
+        $table     = $this->info['table_name'];
         $tableLang = $table . '_lang';
-        $params = array();
-        if( $this->mysql->fieldExists($table, 'id_'.$table) ){
-            $extraFields = 't.id_'.$table.' AS id ,'.$extraFields;
+        $params    = array();
+        if ($this->mysql->fieldExists($table, 'id_' . $table)) {
+            $extraFields = 't.id_' . $table . ' AS id ,' . $extraFields;
         }
         $sql = '
-            SELECT '.$extraFields.'
-            FROM '.$table.' AS t
+            SELECT ' . $extraFields . '
+            FROM ' . $table . ' AS t
         ';
-        if( $this->mysql->tableExists($tableLang) ){
-            $sql .= ' INNER JOIN '.$tableLang.' AS tl ON tl.id_'.$table.' = t.id_'.$table.' AND tl.id_appacman_lang = :lang';
-            $params['lang'] = array('value'=> $this->langID, 'type' => \PDO::PARAM_INT);
+        if ($this->mysql->tableExists($tableLang)) {
+            $sql            .= ' INNER JOIN '
+                . $tableLang
+                . ' AS tl ON tl.id_'
+                . $table
+                . ' = t.id_'
+                . $table
+                . ' AND tl.id_appacman_lang = :lang';
+            $params['lang'] = array('value' => $this->langID, 'type' => PDO::PARAM_INT);
         }
 
         // where
-        $where = array();
-        $session = Session::getInstance();
+        $where       = array();
+        $session     = Session::getInstance();
         $profileInfo = $session->get('profile_info');
-        if( $profileInfo != null && $this->mysql->fieldExists($table, $profileInfo['field']) ){
-            $where[] = 't.' . $profileInfo['field'] . ' = :profile_filter';
-            $params['profile_filter'] = array('value'=> $profileInfo['value'], 'type' => \PDO::PARAM_STR);
+        if ($profileInfo != null && $this->mysql->fieldExists($table, $profileInfo['field'])) {
+            $where[]                  = 't.' . $profileInfo['field'] . ' = :profile_filter';
+            $params['profile_filter'] = array('value' => $profileInfo['value'], 'type' => PDO::PARAM_STR);
         }
-        if( $extraWhere != null ){
+        if ($extraWhere != null) {
             $where[] = $extraWhere;
         }
-        if( count($where) ){
+        if (count($where)) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
         // order
-        if( $order != null ){
-            $sql .= ' ORDER BY '.$order;
+        if ($order != null) {
+            $sql .= ' ORDER BY ' . $order;
         }
 
         return $this->mysql->query($sql, $params);
     }
 
-    public function getFieldsForExport(){
+    public function getFieldsForExport(): array
+    {
         return $this->fields->getFieldsForExport();
     }
 
@@ -177,28 +189,29 @@ class Content extends Page {
      * prepare list
      * @return array
      */
-    public function getExportList(){
+    public function getExportList(): array
+    {
         $fields = $this->getFieldsForExport();
         $titles = array();
-        foreach($fields as $field){
+        foreach ($fields as $field) {
             $titles[] = $field['name'];
         }
 
         $list = $this->getList(null, $fields);
         foreach ($fields as $field) {
-            if( $field['type'] == 'encryptedTwoWay' ){
-                foreach ($list as &$item){
-                    $fieldName = $field['field_name'];
-                    $key = $item['id'] . '_' . $item['created'] . '_' . $fieldName;
-                    $item[$fieldName] = TwoWay::decrypt($item[$fieldName], $key);
-                }
-            }
-            if (StringUtils::startsWidth($field['type'], 'select') || $field['type'] == 'cartState') {
+            if ($field['type'] == 'encryptedTwoWay') {
                 foreach ($list as &$item) {
                     $fieldName          = $field['field_name'];
-                    $field['value']     = $item[$fieldName];
-                    $model = 'Appacman\Model\Form\\'.ucfirst($field['type']);
-                    $select             = new $model($field, $item[$fieldName]);
+                    $key                = $item['id'] . '_' . $item['created'] . '_' . $fieldName;
+                    $item[ $fieldName ] = TwoWay::decrypt($item[ $fieldName ], $key);
+                }
+            }
+            if (str_starts_with($field['type'], 'select') || $field['type'] == 'cartState') {
+                foreach ($list as &$item) {
+                    $fieldName          = $field['field_name'];
+                    $field['value']     = $item[ $fieldName ];
+                    $model              = 'Appacman\Model\Form\\' . ucfirst($field['type']);
+                    $select             = new $model($field, $item[ $fieldName ]);
                     $item[ $fieldName ] = $select->getSeeValue();
                 }
             }
@@ -206,7 +219,7 @@ class Content extends Page {
 
         return array(
             'titles' => $titles,
-            'list' => $list
+            'list'   => $list
         );
     }
 
@@ -214,22 +227,23 @@ class Content extends Page {
      * check if this content exists
      * @return bool
      */
-    public function exists(){
-        $sql = '
+    public function exists(): bool
+    {
+        $sql     = '
             SELECT ac.table_name, alt.name AS list_type, ac.order_by, acl.name
             FROM appacman_content AS ac
             INNER JOIN appacman_content_lang AS acl ON acl.id_appacman_content = ac.id_appacman_content AND acl.id_appacman_lang = :lang
             LEFT JOIN appacman_list_type AS alt ON alt.id_appacman_list_type = ac.id_appacman_list_type
             WHERE ac.id_appacman_content = :id
         ';
-        $params = array(
-            'id'    => array('value' => $this->id,      'type' => \PDO::PARAM_INT),
-            'lang'  => array('value' => $this->langID,  'type' => \PDO::PARAM_INT)
+        $params  = array(
+            'id'   => array('value' => $this->id, 'type' => PDO::PARAM_INT),
+            'lang' => array('value' => $this->langID, 'type' => PDO::PARAM_INT)
         );
         $content = $this->mysql->query($sql, $params);
 
-        if( count($content) ){
-            $this->info = $content[0];
+        if (count($content)) {
+            $this->info  = $content[0];
             $this->table = $this->getTable();
             $this->initFields($this->info['table_name'], $this->id);
             return true;

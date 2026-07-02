@@ -2,36 +2,33 @@
 
 namespace Appacman\Model\Form;
 
-use Appacman\Model\ExtraUser;
-use Core\Model\Encryptor\TwoWay;
 use Core\Utils\Config;
-use Core\Utils\Session;
 
 class SelectWithLink extends Select
 {
 
-    public function getSeeValue($langID = null): string
+    public function getSeeValue(?int $langID = null): string
     {
         $seeValue = parent::getSeeValue($langID);
         if (!empty($seeValue)) {
-            return $this->getLink($this->getLinkName($seeValue, $langID));
+            return $this->getLink($this->getLinkName($seeValue));
         }
         return $seeValue;
     }
 
-    protected function getInputHTML($langID = null): string
+    protected function getInputHTML(?int $langID = null): string
     {
         $input = parent::getInputHTML($langID);
-        $name  = $this->getLinkName('(' . _('ver') . ' ' . strtolower($this->name) . ')', $langID);
+        $name  = $this->getLinkName('(' . _('ver') . ' ' . strtolower($this->name) . ')');
         return $input . '<br>' . $this->getLink($name);
     }
 
-    protected function getLinkName($name, $langID = null): string
+    protected function getLinkName(string $name): string
     {
         return $name;
     }
 
-    private function getLink($value): string
+    private function getLink(string $value): string
     {
         if ($this->value) {
             $config    = Config::getInstance();

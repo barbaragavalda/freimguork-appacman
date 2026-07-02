@@ -2,27 +2,28 @@
 
 namespace Appacman\Model\Form;
 
-class Unmodifiable extends FormInput {
+class Unmodifiable extends FormInput
+{
 
-    protected $isVisible = false;
+    protected bool $isVisible = false;
 
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         return '';
     }
 
-    /**
-     * CANNOT save
-     * @return bool
-     */
-    public function canSave($langID = null){
+    public function canSave(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 

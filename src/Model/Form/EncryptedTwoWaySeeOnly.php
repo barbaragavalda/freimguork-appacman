@@ -2,30 +2,26 @@
 
 namespace Appacman\Model\Form;
 
-class EncryptedTwoWaySeeOnly extends EncryptedTwoWay {
+class EncryptedTwoWaySeeOnly extends EncryptedTwoWay
+{
 
-    /**
-     * input type text
-     * @param int|null $langID
-     * @return string
-     */
-    protected function getInputHTML($langID = null){
+    protected function getInputHTML(?int $langID = null): string
+    {
         return $this->getSeeValue($langID);
     }
 
-    /**
-     * CANNOT save
-     * @return bool
-     */
-    public function canSave($langID = null){
+    public function canSave(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function hasError($langID = null){
+    public function hasError(?int $langID = null): bool
+    {
         return false;
     }
 
-    public function save($itemID, $langID = null){
+    public function save(int $itemID, ?int $langID = null): bool
+    {
         return false;
     }
 
