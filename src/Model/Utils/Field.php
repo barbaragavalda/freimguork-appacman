@@ -8,7 +8,7 @@ use PDO;
 class Field extends Model
 {
 
-    private int $contentID;
+    private ?int $contentID;
 
     private string $contentTable;
 

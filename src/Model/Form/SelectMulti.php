@@ -11,7 +11,7 @@ class SelectMulti extends Select
 
     protected string $lateralTable = '';
 
-    public function __construct(array $info, int $id, ?string $table = null)
+    public function __construct(array $info, ?int $id, ?string $table = null)
     {
         parent::__construct($info, $id, $table);
 

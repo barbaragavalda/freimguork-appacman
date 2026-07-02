@@ -12,9 +12,9 @@ class Dynamic extends FormInput
 
     protected array $forms = array();
 
-    protected bool $canEdit   = false;
-    protected bool $canCreate = false;
-    protected bool $canDelete = false;
+    protected array $canEdit   = array();
+    protected array $canCreate = array();
+    protected array $canDelete = array();
 
     private function init(): void
     {
@@ -106,6 +106,7 @@ class Dynamic extends FormInput
 
     public function getItemHTML(?Item $form = null, bool $canEdit = true, bool $multiplePosition = true): string
     {
+
         $inputs = $this->getFormInputs($form);
         $html   = '
             <div class="with-border">
@@ -266,7 +267,7 @@ class Dynamic extends FormInput
     protected function getInputs(?Item $form): array
     {
         $inputs = $form->get($this->languages);
-
+        
         $inputID = new Hidden(
             array(
                 'field_name' => 'id_' . $this->fieldName,

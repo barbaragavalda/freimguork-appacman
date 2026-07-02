@@ -50,13 +50,6 @@ class Item extends Page
         return $this->error;
     }
 
-    /**
-     * get the formulari for that item
-     *
-     * @param array $languages
-     *
-     * @return array
-     */
     public function get(array $languages = array()): array
     {
         $this->initFields($this->table);
@@ -78,10 +71,6 @@ class Item extends Page
         return $this->form;
     }
 
-    /**
-     * check if this item exists
-     * @return bool
-     */
     public function exists(): bool
     {
         $info = $this->getInfo($this->table);
@@ -123,9 +112,6 @@ class Item extends Page
         return $this->mysql->query($sql, $params);
     }
 
-    /**
-     * prepare post
-     */
     public function preparePost(): void
     {
         // prepare post
@@ -148,10 +134,6 @@ class Item extends Page
         }
     }
 
-    /**
-     * saves item
-     * @return bool success
-     */
     public function save(): bool
     {
         $canCommit = false;
@@ -337,10 +319,6 @@ class Item extends Page
         return implode(', ', $set);
     }
 
-    /**
-     * delete item
-     * @return bool
-     */
     public function delete(): bool
     {
         $this->deleteFiles();

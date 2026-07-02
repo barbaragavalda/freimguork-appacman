@@ -29,7 +29,7 @@ class Check extends FormInput
         }
         return "
             <input type='hidden' id='$postName' name='$postName' value='0' $disabled/>
-            <input type='checkbox' class='custom-check' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' $checked value='1'/> />
+            <input type='checkbox' class='custom-check' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' $checked value='1'/>
         ";
     }
 

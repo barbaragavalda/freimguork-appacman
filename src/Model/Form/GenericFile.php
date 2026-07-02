@@ -11,20 +11,21 @@ class GenericFile extends FormInput
     private int            $postID   = -1;
     private array|int|null $postFile = -1;
 
-    protected int|null $fileID = null;
+    protected ?int $fileID = null;
 
     protected ?string $fileURL  = null;
     protected ?string $filePath = null;
 
     private ?int $fieldID;
 
-    public function __construct(array $info, int $id, ?string $table)
+    public function __construct(array $info, ?string $id, ?string $table)
     {
+        $id = (int)$id;
         parent::__construct($info, $id, $table);
 
         $this->fieldID = $info['id_appacman_field'];
-
-        $this->fileID = parent::getSeeValue();
+        
+        $this->fileID = (int)parent::getSeeValue();
         if (!is_array($this->fileID)) {
             $this->initFile();
         }
@@ -32,7 +33,7 @@ class GenericFile extends FormInput
 
     public function initFile(?int $lang = null): void
     {
-        $this->fileID = parent::getSeeValue($lang);
+        $this->fileID = (int)parent::getSeeValue($lang);
 
         $image          = new File($this->fileID);
         $this->fileURL  = $image->getAbsolutePath();

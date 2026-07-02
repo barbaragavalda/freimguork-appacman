@@ -10,7 +10,7 @@ use PDO;
 
 class User extends Model
 {
-    private static User $instance;
+    private static ?User $instance = null;
 
     private ?array $profileInfo;
 
@@ -114,7 +114,7 @@ class User extends Model
         return $this->permissions->getContentPermissions($contentID);
     }
 
-    public function hasPermission($contentID, $permission): array
+    public function hasPermission($contentID, $permission): array|bool
     {
         return $this->permissions->hasPermission($contentID, $permission);
     }

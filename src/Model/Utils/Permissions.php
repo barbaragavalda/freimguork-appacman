@@ -21,7 +21,7 @@ class Permissions extends Model
     const string  LOG_OUT          = 'log-out';
     const string  GENERATE_INVOICE = 'generate-invoice';
 
-    private int $userID;
+    private ?int $userID;
 
     private ?int $profileID;
 
@@ -108,7 +108,7 @@ class Permissions extends Model
         return $permissions;
     }
 
-    public function hasPermission($contentID, $permission): bool
+    public function hasPermission($contentID, $permission): bool|array
     {
         $contentID = 'c' . $contentID;
         if (array_key_exists($contentID, $this->permissions)) {

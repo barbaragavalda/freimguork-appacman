@@ -10,11 +10,11 @@ abstract class FormInput extends Model
 
     protected string $name = '';
 
-    protected string $hint = '';
+    protected ?string $hint = '';
 
     protected string $fieldName = '';
 
-    protected string|array $value = '';
+    protected string|array|null $value = '';
 
     protected bool $isRequired = false;
 
@@ -34,7 +34,7 @@ abstract class FormInput extends Model
 
     protected false|string $error = false;
 
-    public function __construct(array $info, int $id, ?string $table = null)
+    public function __construct(array $info, ?int $id, ?string $table = null)
     {
         parent::__construct();
         $this->id    = $id;
@@ -167,7 +167,7 @@ abstract class FormInput extends Model
         return $html;
     }
 
-    public function getSeeValue(?int $langID = null): string|array
+    public function getSeeValue(?int $langID = null): mixed
     {
         return $this->getInputValue($langID);
     }
@@ -248,7 +248,7 @@ abstract class FormInput extends Model
         }
     }
 
-    protected function getInputValue(?int $langID = null): array|string
+    protected function getInputValue(?int $langID = null): mixed
     {
         $postName = $this->getInputName($langID, false);
         if (array_key_exists($postName, $_POST)) {

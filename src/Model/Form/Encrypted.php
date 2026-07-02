@@ -7,7 +7,7 @@ abstract class Encrypted extends FormInput
 
     protected string $key = '';
 
-    public function __construct(array $info, int $id, ?string $table)
+    public function __construct(array $info, ?int $id, ?string $table)
     {
         parent::__construct($info, $id, $table);
 
