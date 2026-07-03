@@ -267,7 +267,7 @@ class Dynamic extends FormInput
     protected function getInputs(?Item $form): array
     {
         $inputs = $form->get($this->languages);
-        
+
         $inputID = new Hidden(
             array(
                 'field_name' => 'id_' . $this->fieldName,

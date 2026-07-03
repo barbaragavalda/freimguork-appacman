@@ -48,6 +48,7 @@ class DateTime extends Timestamp
                 _('Comprueba que sea una fecha correcta con el formato %format%.')
             );
         }
+        return false;
     }
 
     private function checkEmpty(string $value): ?string

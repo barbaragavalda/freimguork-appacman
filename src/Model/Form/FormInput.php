@@ -24,7 +24,7 @@ abstract class FormInput extends Model
 
     protected bool $onLangTable = false;
 
-    protected bool $isMultiple = false;
+    protected bool|int $isMultiple = false;
 
     protected array $languages = array();
 
@@ -225,9 +225,9 @@ abstract class FormInput extends Model
      *
      * @param int|null $langID
      *
-     * @return mixed
+     * @return string
      */
-    abstract protected function getInputHTML(?int $langID = null): mixed;
+    abstract protected function getInputHTML(?int $langID = null): string;
 
     /**
      * Name of the input for post value

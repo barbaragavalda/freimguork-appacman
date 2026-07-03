@@ -9,7 +9,7 @@ class Number extends FormInput
 
     protected int $type = PDO::PARAM_STR;
 
-    protected function getPostValue(?int $langID = null): ?string
+    protected function getPostValue(?int $langID = null): mixed
     {
         $postName = $this->getInputName($langID, false);
         $post     = $this->getPost($postName);
