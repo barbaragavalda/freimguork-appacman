@@ -1,5 +1,5 @@
 {
-  "name": "appaqui/freimguork-appacman",
+  "name": "Optisistem/freimguork-appacman",
   "description": "CMS module for Freimguork projects",
   "authors": [
     {
@@ -14,7 +14,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:appaqui/freimguork-core.git"
+      "url": "git@bitbucket.org:Optisistem/freimguork-core.git"
     }
   ],
   "require": {
@@ -22,7 +22,7 @@
     "ext-fileinfo": "*",
     "ext-gettext": "*",
     "ext-pdo": "*",
-    "appaqui/freimguork-core": "dev-master",
+    "Optisistem/freimguork-core": "dev-master",
     "almasaeed2010/adminlte": "~2.4"
   },
   "autoload": {

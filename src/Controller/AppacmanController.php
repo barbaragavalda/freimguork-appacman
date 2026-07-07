@@ -23,7 +23,7 @@ abstract class AppacmanController extends Controller
         $this->loggedOutPages = array(_('iniciar-sesion'), _('he-olvidado-mi-contrasena'), _('cambiar-contrasena'));
 
         // domain admin CSS
-        $this->assign('adminDomain', $this->rootDomain . 'vendor/appaqui/freimguork-appacman/src/public/');
+        $this->assign('adminDomain', $this->rootDomain . 'vendor/Optisistem/freimguork-appacman/src/public/');
         $this->assign('vendorDomain', $this->rootDomain . 'vendor/almasaeed2010/adminlte/');
 
         //business info
