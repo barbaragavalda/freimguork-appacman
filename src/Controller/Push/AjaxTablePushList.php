@@ -6,7 +6,7 @@ use Appacman\Controller\Ajax\BaseContentList;
 use Appacman\Model\Push\Notifier;
 use Core\Routing\Attribute\Route;
 
-#[Route('/push-table/{contentID}')]
+#[Route('/push-table/{contentID}', methods: ['GET', 'POST'])]
 class AjaxTablePushList extends BaseContentList
 {
 

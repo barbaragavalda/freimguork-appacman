@@ -55,4 +55,32 @@ class AttributeRouteLoaderTest extends TestCase
         $this->assertSame($expected, $routes);
     }
 
+    /**
+     * every one of these routes used to be reachable by any HTTP method under the old
+     * routing.php (path => controller, no method concept at all) - the same single action
+     * handles both "show the form" (GET) and "process the submission" (POST), e.g.
+     * SignIn::run() branches on isset($_POST['enter']). Route's default methods is ['GET']
+     * only, so it's easy to silently break every form/AJAX POST in this app by adding a
+     * #[Route] attribute without an explicit methods: [...] - this already happened once
+     * (login POST 404ing) and got fixed; this test is here so it can't happen again quietly.
+     */
+    public function testEveryRouteAllowsBothGetAndPost(): void
+    {
+        $collection = (new AttributeRouteLoader())->load(
+            'Appacman',
+            __DIR__ . '/../../src/Controller/',
+            null
+        );
+
+        foreach ($collection as $route) {
+            $methods = $route->methods;
+            sort($methods);
+            $this->assertSame(
+                array('GET', 'POST'),
+                $methods,
+                "{$route->path} -> {$route->controllerClass} must allow both GET and POST"
+            );
+        }
+    }
+
 }

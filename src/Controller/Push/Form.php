@@ -9,8 +9,8 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/notificacion-push/{contentID}')]
-#[Route('/notificacion-push/{contentID}/{itemID}')]
+#[Route('/notificacion-push/{contentID}', methods: ['GET', 'POST'])]
+#[Route('/notificacion-push/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class Form extends BaseContentForm
 {
 

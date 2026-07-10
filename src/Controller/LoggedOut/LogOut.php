@@ -5,7 +5,7 @@ namespace Appacman\Controller\LoggedOut;
 use Appacman\Controller\AppacmanController;
 use Core\Routing\Attribute\Route;
 
-#[Route('/cerrar-sesion')]
+#[Route('/cerrar-sesion', methods: ['GET', 'POST'])]
 class LogOut extends AppacmanController
 {
 

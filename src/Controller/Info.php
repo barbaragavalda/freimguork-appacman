@@ -8,7 +8,7 @@ use Appacman\Model\Utils\Permissions;
 use Core\Routing\Attribute\Route;
 use Core\Utils\Session;
 
-#[Route('/informacion')]
+#[Route('/informacion', methods: ['GET', 'POST'])]
 class Info extends AppacmanController
 {
 

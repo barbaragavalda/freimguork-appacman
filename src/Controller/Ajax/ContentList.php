@@ -4,7 +4,7 @@ namespace Appacman\Controller\Ajax;
 
 use Core\Routing\Attribute\Route;
 
-#[Route('/table/{contentID}')]
+#[Route('/table/{contentID}', methods: ['GET', 'POST'])]
 class ContentList extends BaseContentList
 {
 

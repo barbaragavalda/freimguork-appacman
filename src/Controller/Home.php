@@ -3,7 +3,7 @@ namespace Appacman\Controller;
 
 use Core\Routing\Attribute\Route;
 
-#[Route('/')]
+#[Route('/', methods: ['GET', 'POST'])]
 class Home extends AppacmanController
 {
 

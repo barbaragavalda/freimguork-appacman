@@ -5,7 +5,7 @@ namespace Appacman\Controller;
 use Core\Model\Utils\SessionLog;
 use Core\Routing\Attribute\Route;
 
-#[Route('/log-out/{contentID}/{itemID}')]
+#[Route('/log-out/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class ForceLogOut extends Content
 {
 

@@ -6,7 +6,7 @@ use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 use Core\Routing\Attribute\Route;
 
-#[Route('/iniciar-sesion')]
+#[Route('/iniciar-sesion', methods: ['GET', 'POST'])]
 class SignIn extends AppacmanController
 {
 

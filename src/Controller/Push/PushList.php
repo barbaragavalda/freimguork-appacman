@@ -8,7 +8,7 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/notificaciones-push/{contentID}')]
+#[Route('/notificaciones-push/{contentID}', methods: ['GET', 'POST'])]
 class PushList extends ContentList
 {
 

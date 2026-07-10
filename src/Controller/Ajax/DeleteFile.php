@@ -9,7 +9,7 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/eliminar-archivo/{contentID}/{itemID}')]
+#[Route('/eliminar-archivo/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class DeleteFile extends Ajax
 {
 

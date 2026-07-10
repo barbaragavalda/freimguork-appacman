@@ -10,7 +10,7 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/eliminar-campo/{contentID}/{itemID}')]
+#[Route('/eliminar-campo/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class Delete extends Ajax
 {
 

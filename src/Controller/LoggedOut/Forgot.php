@@ -6,7 +6,7 @@ use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 use Core\Routing\Attribute\Route;
 
-#[Route('/he-olvidado-mi-contrasena')]
+#[Route('/he-olvidado-mi-contrasena', methods: ['GET', 'POST'])]
 class Forgot extends AppacmanController
 {
 

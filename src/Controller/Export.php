@@ -4,7 +4,7 @@ namespace Appacman\Controller;
 
 use Core\Routing\Attribute\Route;
 
-#[Route('/exportar/{contentID}')]
+#[Route('/exportar/{contentID}', methods: ['GET', 'POST'])]
 class Export extends BaseExport
 {
 

@@ -4,7 +4,7 @@ namespace Appacman\Controller;
 
 use Core\Routing\Attribute\Route;
 
-#[Route('/listado/{contentID}')]
+#[Route('/listado/{contentID}', methods: ['GET', 'POST'])]
 class ContentList extends BaseContentList
 {
 

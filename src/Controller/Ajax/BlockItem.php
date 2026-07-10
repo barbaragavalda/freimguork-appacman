@@ -8,7 +8,7 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/bloquear/{contentID}/{itemID}')]
+#[Route('/bloquear/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class BlockItem extends Ajax
 {
 

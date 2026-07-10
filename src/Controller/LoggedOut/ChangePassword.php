@@ -6,7 +6,7 @@ use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
 use Core\Routing\Attribute\Route;
 
-#[Route('/cambiar-contrasena/{hash}')]
+#[Route('/cambiar-contrasena/{hash}', methods: ['GET', 'POST'])]
 class ChangePassword extends AppacmanController
 {
 

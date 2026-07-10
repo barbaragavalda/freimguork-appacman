@@ -11,8 +11,8 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/anadir-campo/{contentID}')]
-#[Route('/anadir-campo/{contentID}/{itemID}')]
+#[Route('/anadir-campo/{contentID}', methods: ['GET', 'POST'])]
+#[Route('/anadir-campo/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class Add extends Ajax
 {
 

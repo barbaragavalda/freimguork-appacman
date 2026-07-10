@@ -7,7 +7,7 @@ use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 use Core\Routing\Attribute\Route;
 
-#[Route('/duplicar/{contentID}/{itemID}')]
+#[Route('/duplicar/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class Duplicate extends Content
 {
 

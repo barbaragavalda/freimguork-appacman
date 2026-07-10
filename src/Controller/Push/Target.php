@@ -10,7 +10,7 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/push-target/{contentID}')]
+#[Route('/push-target/{contentID}', methods: ['GET', 'POST'])]
 class Target extends Ajax
 {
 

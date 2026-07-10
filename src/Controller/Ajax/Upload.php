@@ -9,8 +9,8 @@ use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
 use Core\Utils\Session;
 
-#[Route('/subir-archivo/{contentID}')]
-#[Route('/subir-archivo/{contentID}/{itemID}')]
+#[Route('/subir-archivo/{contentID}', methods: ['GET', 'POST'])]
+#[Route('/subir-archivo/{contentID}/{itemID}', methods: ['GET', 'POST'])]
 class Upload extends Ajax
 {
 
