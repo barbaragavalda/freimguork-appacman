@@ -1,6 +1,9 @@
 <?php
 namespace Appacman\Controller;
 
+use Core\Routing\Attribute\Route;
+
+#[Route('/')]
 class Home extends AppacmanController
 {
 

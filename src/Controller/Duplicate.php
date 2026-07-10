@@ -5,7 +5,9 @@ namespace Appacman\Controller;
 use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
+use Core\Routing\Attribute\Route;
 
+#[Route('/duplicar/{contentID}/{itemID}')]
 class Duplicate extends Content
 {
 

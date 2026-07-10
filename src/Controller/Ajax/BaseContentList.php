@@ -3,13 +3,15 @@
 namespace Appacman\Controller\Ajax;
 
 use Appacman\Model\Utils\Permissions;
+use Core\Controller\CacheManager;
+use Core\Utils\Config;
 
 abstract class BaseContentList extends Ajax
 {
 
-    public function __construct()
+    public function __construct(Config $config, CacheManager $modelCache)
     {
-        parent::__construct();
+        parent::__construct($config, $modelCache);
 
         $this->permission = Permissions::SEE;
     }

@@ -4,6 +4,8 @@ namespace Appacman\Controller;
 
 use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
+use Core\Controller\CacheManager;
+use Core\Utils\Config;
 
 class Content extends AppacmanController
 {
@@ -16,9 +18,9 @@ class Content extends AppacmanController
 
     protected ?string $formLink = null;
 
-    public function __construct()
+    public function __construct(Config $config, CacheManager $modelCache)
     {
-        parent::__construct();
+        parent::__construct($config, $modelCache);
 
         $this->listLink = _('listado');
         $this->formLink = _('formulario');

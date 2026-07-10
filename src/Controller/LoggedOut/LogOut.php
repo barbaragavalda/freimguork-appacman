@@ -3,7 +3,9 @@
 namespace Appacman\Controller\LoggedOut;
 
 use Appacman\Controller\AppacmanController;
+use Core\Routing\Attribute\Route;
 
+#[Route('/cerrar-sesion')]
 class LogOut extends AppacmanController
 {
 

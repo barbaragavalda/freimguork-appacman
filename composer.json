@@ -15,6 +15,10 @@
     {
       "type": "vcs",
       "url": "git@bitbucket.org:optisistem/freimguork-core.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@bitbucket.org:optisistem/php-ref.git"
     }
   ],
   "require": {

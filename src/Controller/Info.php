@@ -5,8 +5,10 @@ namespace Appacman\Controller;
 use Appacman\Model\Item;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
+use Core\Routing\Attribute\Route;
 use Core\Utils\Session;
 
+#[Route('/informacion')]
 class Info extends AppacmanController
 {
 

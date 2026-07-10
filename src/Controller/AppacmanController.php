@@ -5,7 +5,9 @@ namespace Appacman\Controller;
 use Appacman\Model\Business;
 use Appacman\Model\Menu;
 use Appacman\Model\User;
+use Core\Controller\CacheManager;
 use Core\Controller\Controller;
+use Core\Utils\Config;
 use Core\Utils\Session;
 
 abstract class AppacmanController extends Controller
@@ -15,9 +17,9 @@ abstract class AppacmanController extends Controller
 
     private array $loggedOutPages;
 
-    public function __construct()
+    public function __construct(Config $config, CacheManager $modelCache)
     {
-        parent::__construct();
+        parent::__construct($config, $modelCache);
 
         // logged out pages
         $this->loggedOutPages = array(_('iniciar-sesion'), _('he-olvidado-mi-contrasena'), _('cambiar-contrasena'));

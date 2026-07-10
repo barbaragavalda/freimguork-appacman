@@ -4,7 +4,9 @@ namespace Appacman\Controller\LoggedOut;
 
 use Appacman\Controller\AppacmanController;
 use Appacman\Model\LoggedOut\UserForm;
+use Core\Routing\Attribute\Route;
 
+#[Route('/cambiar-contrasena/{hash}')]
 class ChangePassword extends AppacmanController
 {
 

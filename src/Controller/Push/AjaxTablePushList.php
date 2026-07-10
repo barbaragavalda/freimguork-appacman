@@ -4,7 +4,9 @@ namespace Appacman\Controller\Push;
 
 use Appacman\Controller\Ajax\BaseContentList;
 use Appacman\Model\Push\Notifier;
+use Core\Routing\Attribute\Route;
 
+#[Route('/push-table/{contentID}')]
 class AjaxTablePushList extends BaseContentList
 {
 
