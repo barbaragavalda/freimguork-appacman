@@ -157,12 +157,6 @@ parameters:
 			path: src/Model/Lists/Table.php
 
 		-
-			message: '#^Property Core\\Model\\Form\:\:\$error \(bool\) does not accept string\.$#'
-			identifier: assign.propertyType
-			count: 13
-			path: src/Model/LoggedOut/UserForm.php
-
-		-
 			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
 			identifier: greater.alwaysTrue
 			count: 1
