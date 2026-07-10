@@ -25,22 +25,16 @@ class Duplicate extends Content
         }
 
         $inputs     = $this->item->get($languages);
-        $inputsHTML = '';
+        $inputsData = array();
         foreach ($inputs as $input) {
             $fieldName = $input->getFieldName();
             if (in_array($fieldName, array('start', 'end', 'last_update', 'created')) === false) {
-                $inputsHTML .= '<input type="hidden" name="' . $fieldName . '" value="' . $input->getValue() . '" />';
+                $inputsData[] = array('name' => $fieldName, 'value' => $input->getValue());
             }
         }
-        echo "<form id='duplicate' action='$this->domain$this->formLink/{$this->content->getID()}' method='POST'>
-                $inputsHTML
-                <input type='hidden' name='send' value='1' />
-            </form>
-            <script type='text/javascript'>
-                document.getElementById('duplicate').submit();
-            </script>
-        ";
-        exit;
+        $this->assign('action', $this->domain . $this->formLink . '/' . $this->content->getID());
+        $this->assign('inputs', $inputsData);
+        $this->template('duplicate.twig');
     }
 
     protected function hasPermission(): bool

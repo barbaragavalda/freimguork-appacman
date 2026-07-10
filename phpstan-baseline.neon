@@ -1,0 +1,181 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Class Appacman\\Model\\Menu constructor invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Controller/AppacmanController.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\Address\:\:hasError\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Model/Form/Address.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\Check\:\:getPostValue\(\) should return string but returns false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Form/Check.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\Check\:\:getPostValue\(\) should return string but returns true\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Form/Check.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\DateTime\:\:checkEmpty\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Model/Form/DateTime.php
+
+		-
+			message: '#^Parameter \#3 \$multiplePosition of method Appacman\\Model\\Form\\Dynamic\:\:getItemHTML\(\) expects bool, int\<0, max\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Model/Form/Dynamic.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\GenericFile\:\:getPostValue\(\) should return string\|null but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Form/GenericFile.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\GenericFile\:\:getPostValue\(\) should return string\|null but returns int\<min, \-1\>\|int\<1, max\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Form/GenericFile.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: src/Model/Form/GenericFile.php
+
+		-
+			message: '#^Property Appacman\\Model\\Form\\FormInput\:\:\$value \(array\|string\|null\) does not accept int\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Model/Form/GenericFile.php
+
+		-
+			message: '#^Property Appacman\\Model\\Form\\GenericFile\:\:\$fileID \(int\|null\) does not accept false\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Model/Form/GenericFile.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\Permissions\:\:getConfig\(\) never returns string so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Model/Form/Permissions.php
+
+		-
+			message: '#^Property Appacman\\Model\\Form\\SelectDeepLink\:\:\$profileID \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Model/Form/SelectDeepLink.php
+
+		-
+			message: '#^Property Appacman\\Model\\Form\\SelectDeepLink\:\:\$profileID is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Model/Form/SelectDeepLink.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Model/Form/SelectDeepLink.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Model/Form/SelectDeepLink.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\FormInput\:\:getListValue\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Model/Form/Varchar.php
+
+		-
+			message: '#^Method Appacman\\Model\\Form\\Varchar\:\:hasError\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Form/Varchar.php
+
+		-
+			message: '#^Call to an undefined method Core\\Model\\MySQL\\PDO\:\:inTransaction\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Call to function is_array\(\) with string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Parameter \#1 \$id of class Core\\Model\\File constructor expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Parameter \#2 \$langID of method Appacman\\Model\\Item\:\:insert\(\) expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Parameter \#2 \$langID of method Appacman\\Model\\Item\:\:update\(\) expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Property Core\\Model\\Model\:\:\$id \(int\|null\) does not accept string\|false\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Model/Item.php
+
+		-
+			message: '#^Method Appacman\\Model\\Lists\\Table\:\:search\(\) should return bool but returns int\<0, max\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Lists/Table.php
+
+		-
+			message: '#^Property Core\\Model\\Form\:\:\$error \(bool\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 13
+			path: src/Model/LoggedOut/UserForm.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: src/Model/Page.php
+
+		-
+			message: '#^Method Appacman\\Model\\PushCronJob\:\:addQuotes\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: src/Model/PushCronJob.php
+
+		-
+			message: '#^Method Appacman\\Model\\PushCronJob\:\:addQuotesReplace\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: src/Model/PushCronJob.php

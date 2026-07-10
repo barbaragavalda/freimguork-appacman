@@ -7,8 +7,6 @@ use Appacman\Model\Utils\Admin;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
 use Core\Model\Utils\Mail;
-use Core\Utils\Config;
-use Core\Utils\Session;
 
 abstract class BaseContentForm extends Content
 {
@@ -21,8 +19,7 @@ abstract class BaseContentForm extends Content
     {
         parent::run();
 
-        $config = Config::getInstance();
-        $this->assign('google_maps_api_key', $config->get('api_keys', 'google_maps'));
+        $this->assign('google_maps_api_key', $this->config->get('api_keys', 'google_maps'));
 
         $this->prepareForm();
 
@@ -74,8 +71,7 @@ abstract class BaseContentForm extends Content
     protected function printForm($success): void
     {
         if ($success) {
-            $session = Session::getInstance();
-            $session->set('pendingMessage', _('Datos guardados correctamente.'));
+            $this->session->set('pendingMessage', _('Datos guardados correctamente.'));
             $this->redirect(
                 $this->domain . $this->formLink . '/' . $this->content->getID() . '/' . $this->item->getID()
             );

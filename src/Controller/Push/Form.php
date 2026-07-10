@@ -7,15 +7,16 @@ use Appacman\Model\Push\Statistic;
 use Core\Controller\CacheManager;
 use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
+use Core\Utils\Session;
 
 #[Route('/notificacion-push/{contentID}')]
 #[Route('/notificacion-push/{contentID}/{itemID}')]
 class Form extends BaseContentForm
 {
 
-    public function __construct(Config $config, CacheManager $modelCache)
+    public function __construct(Config $config, CacheManager $modelCache, Session $session)
     {
-        parent::__construct($config, $modelCache);
+        parent::__construct($config, $modelCache, $session);
 
         $this->listLink = _('notificaciones-push');
         $this->formLink = _('notificacion-push');

@@ -9,15 +9,16 @@ use Appacman\Model\Utils\Permissions;
 use Core\Controller\CacheManager;
 use Core\Routing\Attribute\Route;
 use Core\Utils\Config;
+use Core\Utils\Session;
 
 #[Route('/anadir-campo/{contentID}')]
 #[Route('/anadir-campo/{contentID}/{itemID}')]
 class Add extends Ajax
 {
 
-    public function __construct(Config $config, CacheManager $modelCache)
+    public function __construct(Config $config, CacheManager $modelCache, Session $session)
     {
-        parent::__construct($config, $modelCache);
+        parent::__construct($config, $modelCache, $session);
 
         $this->permission = Permissions::EDIT;
     }

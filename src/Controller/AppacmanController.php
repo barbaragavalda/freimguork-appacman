@@ -15,11 +15,15 @@ abstract class AppacmanController extends Controller
 
     protected ?User $user = null;
 
+    protected Session $session;
+
     private array $loggedOutPages;
 
-    public function __construct(Config $config, CacheManager $modelCache)
+    public function __construct(Config $config, CacheManager $modelCache, Session $session)
     {
         parent::__construct($config, $modelCache);
+
+        $this->session = $session;
 
         // logged out pages
         $this->loggedOutPages = array(_('iniciar-sesion'), _('he-olvidado-mi-contrasena'), _('cambiar-contrasena'));
@@ -33,7 +37,6 @@ abstract class AppacmanController extends Controller
         $this->assign('business', $business->getInfo());
 
         // pending messages
-        $session = Session::getInstance();
         $this->assign('pendingMessage', $session->get('pendingMessage'));
         $session->delete('pendingMessage');
         $this->assign('pendingError', $session->get('pendingError'));
@@ -49,6 +52,9 @@ abstract class AppacmanController extends Controller
             $isLoggedOutPage = in_array($currentPage, $this->loggedOutPages) === true;
         }
 
+        // User is appacman's own singleton, not core's - nothing registers it in the
+        // container, and Bootstrap (core's composition root) has no appacman-specific
+        // hook to add one, so this stays a direct call rather than a constructor param
         $this->user = User::getInstance();
         $isLoggedIn = $this->user->loggedIn();
         if (!$isLoggedIn && !$isLoggedOutPage) {

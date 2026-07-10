@@ -1,0 +1,9 @@
+<form id="duplicate" action="{{ action }}" method="POST">
+    {% for input in inputs %}
+        <input type="hidden" name="{{ input.name }}" value="{{ input.value }}" />
+    {% endfor %}
+    <input type="hidden" name="send" value="1" />
+</form>
+<script type="text/javascript">
+    document.getElementById('duplicate').submit();
+</script>
