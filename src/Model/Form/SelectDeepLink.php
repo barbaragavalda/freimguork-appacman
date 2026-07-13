@@ -27,19 +27,11 @@ class SelectDeepLink extends Select
     {
         $options = $this->getOptionsHTML($langID);
 
-        $selects = '
-            <select name="'
-            . $this->fieldName
-            . '" id="deeplink" class="form-control select2 select2-hidden-accessible" data-placeholder="'
-            . _('Selecciona')
-            . ' '
-            . $this->getPlaceholder()
-            . '" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                '
-            . $options['main']
-            . '
-            </select>
-        ';
+        $selects = $this->renderTemplate('select-deeplink-main', array(
+            'fieldName'   => $this->fieldName,
+            'placeholder' => _('Selecciona') . ' ' . $this->getPlaceholder(),
+            'options'     => $options['main'],
+        ));
 
         foreach ($options['secondary'] as $select) {
             $selects .= $select;
@@ -49,83 +41,66 @@ class SelectDeepLink extends Select
 
     protected function getOptionsHTML(?int $langID): array
     {
-        $mainHTML             = '';
+        $mainOptions          = array();
         $secondaryOptionsHTML = array();
         $options              = $this->getOptions('appacman_push_deeplink', ', table_name, format');
 
-        $mainHTML .= '<option value=""></option>';
         foreach ($options as $mainOption) {
-            $format = str_replace('{id}', '', $mainOption['format']);
+            $format       = str_replace('{id}', '', $mainOption['format']);
+            $selectedMain = str_starts_with($this->value, $format);
 
-            $selectedMain = (str_starts_with($this->value, $format)) ? 'selected' : '';
-            $mainHTML     .= '<option value="'
-                . $mainOption['id']
-                . '_'
-                . $mainOption['format']
-                . '" '
-                . $selectedMain
-                . ' data-id="'
-                . $mainOption['id']
-                . '" >'
-                . $mainOption['name']
-                . '</option>';
+            $mainOptions[] = array(
+                'id'       => $mainOption['id'],
+                'value'    => $mainOption['id'] . '_' . $mainOption['format'],
+                'name'     => $mainOption['name'],
+                'selected' => $selectedMain,
+            );
 
             if ($mainOption['table_name']) {
-                $secondaryHTML          = '<div style="margin-top: 10px">' . $this->getSelectOptions(
-                        $mainOption['table_name'],
-                        $selectedMain,
-                        $mainOption['id']
-                    ) . '</div>';
-                $secondaryOptionsHTML[] = $secondaryHTML;
+                $secondaryOptionsHTML[] = $this->getSelectOptions(
+                    $mainOption['table_name'],
+                    $selectedMain,
+                    $mainOption['id']
+                );
             }
         }
 
         return array(
-            'main'      => $mainHTML,
+            'main'      => $mainOptions,
             'secondary' => $secondaryOptionsHTML,
         );
     }
 
-    private function getSelectOptions(string $tableName, $selectedMain, $mainOptionID): string
+    private function getSelectOptions(string $tableName, bool $selectedMain, $mainOptionID): string
     {
         $secondaryOptions = $this->getOptions($tableName);
 
         if ($secondaryOptions !== null) {
-            $secondaryHTML = '<select name="'
-                . $this->fieldName
-                . '_'
-                . $mainOptionID
-                . '" class="deepLinkID form-control select2 select2-hidden-accessible" data-placeholder="'
-                . _('Selecciona')
-                . ' '
-                . $this->getPlaceholder()
-                . '" style="width: 100%;" tabindex="-1" aria-hidden="true">';
-            if (count($secondaryOptions)) {
-                $id    = explode('_', $this->value);
-                $value = '';
-                if (isset($_POST[ $this->fieldName . '_' . $id[0] ])) {
-                    $value = $_POST[ $this->fieldName . '_' . $id[0] ];
-                } else {
-                    if ($this->value) {
-                        $value = explode('=', $this->value);
-                        $value = $value[1];
-                    }
-                }
-                foreach ($secondaryOptions as $secondaryOption) {
-                    $selectedSecondary = $selectedMain && $value == $secondaryOption['id'] ? 'selected' : '';
-                    $secondaryHTML     .= '<option value="'
-                        . $secondaryOption['id']
-                        . '" '
-                        . $selectedSecondary
-                        . '>'
-                        . $secondaryOption['name']
-                        . '</option>';
-                }
+            $value = '';
+            $id    = explode('_', $this->value);
+            if (isset($_POST[ $this->fieldName . '_' . $id[0] ])) {
+                $value = $_POST[ $this->fieldName . '_' . $id[0] ];
             } else {
-                $secondaryHTML .= '<option disabled selected>-</option>';
+                if ($this->value) {
+                    $value = explode('=', $this->value);
+                    $value = $value[1];
+                }
             }
-            $secondaryHTML .= '</select>';
-            return $secondaryHTML;
+
+            $optionData = array();
+            foreach ($secondaryOptions as $secondaryOption) {
+                $optionData[] = array(
+                    'id'       => $secondaryOption['id'],
+                    'name'     => $secondaryOption['name'],
+                    'selected' => $selectedMain && $value == $secondaryOption['id'],
+                );
+            }
+
+            return $this->renderTemplate('select-deeplink-secondary', array(
+                'fieldName'   => $this->fieldName . '_' . $mainOptionID,
+                'placeholder' => _('Selecciona') . ' ' . $this->getPlaceholder(),
+                'options'     => $optionData,
+            ));
         }
 
         return '';

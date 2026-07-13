@@ -37,27 +37,15 @@ class SelectMulti extends Select
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $fieldName   = $this->getInputName($langID);
-        $selectCheck = $this->getInputName($langID, false) . '_selectAll';
-
-        $field = '';
-        if ($this->isMultiple === false) {
-            $selectAll = _('Seleccionar todos');
-            $field     = "
-                <div class=\"select-all\">
-                    <input type=\"checkbox\" class=\"custom-check select-all-checkbox\" id=\"$selectCheck\" name=\"$selectCheck\" />
-                    <label for=\"$selectCheck\">$selectAll</label>
-                </div>
-            ";
-        }
-        $select  = _('Selecciona') . ' ' . $this->getPlaceholder();
-        $options = $this->getOptionsHTML($langID);
-        $field   .= "
-            <select id=\"$fieldName\" name=\"$fieldName\" class=\"form-control select2-multi select2-hidden-accessible\" multiple=\"\" data-placeholder=\"$select\" style=\"width: 100%;\" tabindex=\"-1\" aria-hidden=\"true\" data-name=\"$this->fieldName\">
-                $options
-            </select>
-        ";
-        return $field;
+        return $this->renderTemplate('select-multi', array(
+            'showSelectAll'  => $this->isMultiple === false,
+            'selectCheck'    => $this->getInputName($langID, false) . '_selectAll',
+            'selectAllLabel' => _('Seleccionar todos'),
+            'postName'       => $this->getInputName($langID),
+            'placeholder'    => _('Selecciona') . ' ' . $this->getPlaceholder(),
+            'fieldName'      => $this->fieldName,
+            'optionsHTML'    => $this->getOptionsHTML($langID),
+        ));
     }
 
     public function getInputName(?int $langID = null, bool $withMultiple = true): string

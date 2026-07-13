@@ -16,12 +16,11 @@ class ImageSeeOnly extends Image
 
     protected function getImage(): string
     {
-        return '
-            ' . $this->getLinkFile() . '
-            <a href="' . $this->fileURL . '" class="btn bg-purple btn-xs" title="' . _('Descargar') . '" download target="_blank">
-                <i class="fa fa-download"></i>
-            </a>
-        ';
+        return $this->renderTemplate('image-download', array(
+            'linkFile'      => $this->getLinkFile(),
+            'fileURL'       => $this->fileURL,
+            'downloadLabel' => _('Descargar'),
+        ));
     }
 
     public function canSave(?int $langID = null): bool

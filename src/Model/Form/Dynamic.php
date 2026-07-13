@@ -155,9 +155,11 @@ class Dynamic extends FormInput
     protected function deleteButton(Item $form): string
     {
         if ($this->canDelete) {
-            $id    = $form->getID();
-            $title = _('Eliminar');
-            return "<a href=\"#\" data-id=\"$id\" data-field=\"$this->fieldName\" data-toggle=\"confirmation\" class=\"delete-dynamic-field pull-right btn btn-danger btn-xs\" title=\"$title\"><i class=\"fa fa-trash\"></i></a>";
+            return $this->renderTemplate('dynamic-delete-button', array(
+                'itemID'    => $form->getID(),
+                'fieldName' => $this->fieldName,
+                'title'     => _('Eliminar'),
+            ));
         }
         return '';
     }

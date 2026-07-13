@@ -1,0 +1,11 @@
+{{ linkFile|raw }}
+<div class="pull-left file-actions">
+    <a href="#" data-id="{{ fileID }}" data-item="{{ itemID }}" data-name="{{ postName }}" data-field="{{ fieldName }}" data-table="{{ table }}" class="btn btn-danger btn-xs delete-file" title="{{ deleteLabel }}" data-toggle="confirmation">
+        <i class="fa fa-trash"></i>
+    </a>
+    <a href="{{ fileURL }}" class="btn bg-purple btn-xs" title="{{ downloadLabel }}" download target="_blank">
+        <i class="fa fa-download"></i>
+    </a>
+    {{ hiddenInput|raw }}
+    <div style="display: none">{{ fileInput|raw }}</div>
+</div>

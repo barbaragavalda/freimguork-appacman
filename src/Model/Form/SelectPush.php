@@ -7,25 +7,15 @@ class SelectPush extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        return '
-            <select name="'
-            . $this->fieldName
-            . '[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'
-            . _('Selecciona')
-            . ' '
-            . $this->getPlaceholder()
-            . '" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                '
-            . $this->getOptionsHTML()
-            . '
-            </select>
-        ';
+        return $this->renderTemplate('select-push', array(
+            'fieldName'   => $this->fieldName,
+            'placeholder' => _('Selecciona') . ' ' . $this->getPlaceholder(),
+            'optionsHTML' => $this->getOptionsHTML(),
+        ));
     }
 
     protected function getOptionsHTML(): string
     {
-        $optionsHTML = '';
-
         $name = 'DISTINCT(' . $this->fieldName . ')';
         if ($this->fieldName == 'os_version') {
             $name = 'DISTINCT(CONCAT(' . $this->fieldName . ', " (", platform, ")"))';
@@ -37,18 +27,18 @@ class SelectPush extends FormInput
         ';
         $options = $this->mysql->query($sql);
         $values  = $this->loadValues();
+
+        $optionData = array();
         foreach ($options as $option) {
-            $selected    = (in_array($option['value'], $values) !== false) ? 'selected' : '';
-            $optionsHTML .= '<option value="'
-                . $option['value']
-                . '" '
-                . $selected
-                . '>'
-                . $option['name']
-                . '</option>';
+            $optionData[] = array(
+                'id'       => $option['value'],
+                'name'     => $option['name'],
+                'selected' => in_array($option['value'], $values) !== false,
+                'disabled' => false,
+            );
         }
 
-        return $optionsHTML;
+        return $this->renderTemplate('_select-options', array('options' => $optionData, 'includeBlank' => false));
     }
 
     protected function loadValues(): array

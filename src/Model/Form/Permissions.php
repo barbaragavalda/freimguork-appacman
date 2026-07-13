@@ -30,30 +30,12 @@ class Permissions extends FormInput
 
         $form = '';
         foreach ($this->contents as $content) {
-            $form .= '
-                <div class="form-horizontal lang_2">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">'
-                . $content['name']
-                . '</label>
-                        <div class="col-sm-10">
-                            <select name="'
-                . $this->fieldName
-                . '_'
-                . $content['id']
-                . '[]"  class="form-control select2 select2-hidden-accessible" multiple="" data-placeholder="'
-                . _('Selecciona')
-                . ' '
-                . $this->getPlaceholder()
-                . '" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                '
-                . $this->getOptionsHTML($content['id'])
-                . '
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            ';
+            $form .= $this->renderTemplate('permissions-row', array(
+                'name'        => $content['name'],
+                'fieldName'   => $this->fieldName . '_' . $content['id'],
+                'placeholder' => _('Selecciona') . ' ' . $this->getPlaceholder(),
+                'optionsHTML' => $this->getOptionsHTML($content['id']),
+            ));
         }
         return $form;
     }
@@ -204,17 +186,19 @@ class Permissions extends FormInput
             $params['id']               = array('value' => $contentID, 'type' => PDO::PARAM_INT);
         }
         $permission = $this->mysql->query($sql, $params);
+        $values     = $this->loadValues($contentID);
 
-        $optionsHTML = '<option></option>';
-        $values      = $this->loadValues($contentID);
-
+        $optionData = array();
         foreach ($permission as $option) {
-            $selected    = in_array($option['id'], $values) !== false ? 'selected' : '';
-            $name        = $option['name'];
-            $optionsHTML .= '<option value="' . $option['id'] . '" ' . $selected . '>' . $name . '</option>';
+            $optionData[] = array(
+                'id'       => $option['id'],
+                'name'     => $option['name'],
+                'selected' => in_array($option['id'], $values) !== false,
+                'disabled' => false,
+            );
         }
 
-        return $optionsHTML;
+        return $this->renderTemplate('_select-options', array('options' => $optionData));
     }
 
     private function loadValues(int $contentID): array

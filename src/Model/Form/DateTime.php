@@ -14,24 +14,13 @@ class DateTime extends Timestamp
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName  = $this->getInputName($langID);
-        $postValue = $this->checkEmpty($this->getPostValue($langID));
-        return '
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control datetimepicker" id="'
-            . $postName
-            . '" name="'
-            . $postName
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '" value="'
-            . $postValue
-            . '">
-            </div>
-        ';
+        return $this->renderTemplate('_date-group', array(
+            'icon'        => 'fa-calendar',
+            'inputClass'  => 'datetimepicker',
+            'postName'    => $this->getInputName($langID),
+            'placeholder' => $this->getPlaceholder(),
+            'value'       => $this->checkEmpty($this->getPostValue($langID)),
+        ));
     }
 
     public function hasError(?int $langID = null): bool|string

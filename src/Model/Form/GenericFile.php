@@ -80,42 +80,19 @@ class GenericFile extends FormInput
         if ($this->fileURL == null) {
             return $this->inputType('file', $langID) . $this->inputType('hidden', $langID);
         } else {
-            $fieldName = parent::getInputName($langID);
-            return '
-                '
-                . $this->getLinkFile()
-                . '
-                <div class="pull-left file-actions">
-                    <a href="#" data-id="'
-                . $this->fileID
-                . '" data-item="'
-                . $this->id
-                . '" data-name="'
-                . $fieldName
-                . '" data-field="'
-                . $this->fieldName
-                . '" data-table="'
-                . $this->table
-                . '" class="btn btn-danger btn-xs delete-file" title="'
-                . _('Eliminar')
-                . '" data-toggle="confirmation">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                    <a href="'
-                . $this->fileURL
-                . '" class="btn bg-purple btn-xs" title="'
-                . _('Descargar')
-                . '" download target="_blank">
-                        <i class="fa fa-download"></i>
-                    </a>
-                    '
-                . $this->inputType('hidden', $langID)
-                . '
-                    <div style="display: none">'
-                . $this->inputType('file', $langID)
-                . '</div>
-                </div>
-            ';
+            return $this->renderTemplate('generic-file', array(
+                'linkFile'      => $this->getLinkFile(),
+                'fileID'        => $this->fileID,
+                'itemID'        => $this->id,
+                'postName'      => parent::getInputName($langID),
+                'fieldName'     => $this->fieldName,
+                'table'         => $this->table,
+                'deleteLabel'   => _('Eliminar'),
+                'fileURL'       => $this->fileURL,
+                'downloadLabel' => _('Descargar'),
+                'hiddenInput'   => $this->inputType('hidden', $langID),
+                'fileInput'     => $this->inputType('file', $langID),
+            ));
         }
     }
 

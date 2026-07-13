@@ -27,23 +27,13 @@ class Time extends FormInput
      */
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName = $this->getInputName($langID);
-        return '
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                </div>
-                <input type="text" class="form-control timepicker" id="'
-            . $postName
-            . '" name="'
-            . $postName
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '" value="'
-            . $this->getSeeValue($langID)
-            . '">
-            </div>
-        ';
+        return $this->renderTemplate('_date-group', array(
+            'icon'        => 'fa-clock-o',
+            'inputClass'  => 'timepicker',
+            'postName'    => $this->getInputName($langID),
+            'placeholder' => $this->getPlaceholder(),
+            'value'       => $this->getSeeValue($langID),
+        ));
     }
 
     public function hasError(?int $langID = null): bool|string

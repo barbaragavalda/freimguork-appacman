@@ -1,0 +1,9 @@
+{% if showSelectAll %}
+    <div class="select-all">
+        <input type="checkbox" class="custom-check select-all-checkbox" id="{{ selectCheck }}" name="{{ selectCheck }}">
+        <label for="{{ selectCheck }}">{{ selectAllLabel }}</label>
+    </div>
+{% endif %}
+<select id="{{ postName }}" name="{{ postName }}" class="form-control select2-multi select2-hidden-accessible" multiple="" data-placeholder="{{ placeholder }}" style="width: 100%;" tabindex="-1" aria-hidden="true" data-name="{{ fieldName }}">
+    {{ optionsHTML|raw }}
+</select>

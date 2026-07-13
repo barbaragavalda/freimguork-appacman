@@ -1,0 +1,11 @@
+<div style="margin-top: 10px">
+    <select name="{{ fieldName }}" class="deepLinkID form-control select2 select2-hidden-accessible" data-placeholder="{{ placeholder }}" style="width: 100%;" tabindex="-1" aria-hidden="true">
+        {% if options|length %}
+            {% for option in options %}
+                <option value="{{ option.id }}"{% if option.selected %} selected{% endif %}>{{ option.name }}</option>
+            {% endfor %}
+        {% else %}
+            <option disabled selected>-</option>
+        {% endif %}
+    </select>
+</div>

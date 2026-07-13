@@ -19,21 +19,12 @@ class Text extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        return '
-            <div class="'
-            . $this->class
-            . '">
-                <textarea id="'
-            . $this->getInputName($langID)
-            . '" name="'
-            . $this->getInputName($langID)
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '">'
-            . parent::getInputValue($langID)
-            . '</textarea>
-            </div>
-        ';
+        return $this->renderTemplate('text', array(
+            'class'       => $this->class,
+            'postName'    => $this->getInputName($langID),
+            'value'       => parent::getInputValue($langID),
+            'placeholder' => $this->getPlaceholder(),
+        ));
     }
 
     public function hasError(?int $langID = null): bool|string

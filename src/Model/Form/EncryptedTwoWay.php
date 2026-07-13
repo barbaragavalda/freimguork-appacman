@@ -17,17 +17,13 @@ class EncryptedTwoWay extends Encrypted
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName = $this->getInputName($langID);
-        $value    = TwoWay::decrypt(parent::getSeeValue($langID), $this->key);
-        return '<input type="text" class="form-control" id="'
-            . $postName
-            . '" name="'
-            . $postName
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '" value="'
-            . $value
-            . '" />';
+        return $this->renderTemplate('_input', array(
+            'type'        => 'text',
+            'postName'    => $this->getInputName($langID),
+            'value'       => TwoWay::decrypt(parent::getSeeValue($langID), $this->key),
+            'placeholder' => $this->getPlaceholder(),
+            'extra'       => '',
+        ));
     }
 
     protected function getPostValue(?int $langID = null): string

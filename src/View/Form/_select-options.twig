@@ -1,0 +1,4 @@
+{% if includeBlank is not defined or includeBlank %}<option></option>{% endif %}
+{% for option in options %}
+    <option value="{{ option.id }}"{% if option.selected %} selected{% endif %}{% if option.disabled %} disabled{% endif %}>{{ option.name }}</option>
+{% endfor %}

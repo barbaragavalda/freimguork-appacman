@@ -23,23 +23,13 @@ class Date extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName = $this->getInputName($langID);
-        return '
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control datepicker" id="'
-            . $postName
-            . '" name="'
-            . $postName
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '" value="'
-            . $this->getSeeValue($langID)
-            . '">
-            </div>
-        ';
+        return $this->renderTemplate('_date-group', array(
+            'icon'        => 'fa-calendar',
+            'inputClass'  => 'datepicker',
+            'postName'    => $this->getInputName($langID),
+            'placeholder' => $this->getPlaceholder(),
+            'value'       => $this->getSeeValue($langID),
+        ));
     }
 
     protected function getPostValue(?int $langID = null): string

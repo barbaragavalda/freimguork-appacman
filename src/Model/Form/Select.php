@@ -23,48 +23,34 @@ class Select extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        return '
-            <select name="'
-            . $this->getInputName($langID)
-            . '" class="deepLink form-control select2 select2-hidden-accessible" data-placeholder="'
-            . _('Selecciona')
-            . ' '
-            . $this->getPlaceholder()
-            . '" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                '
-            . $this->getOptionsHTML($langID)
-            . '
-            </select>
-        ';
+        return $this->renderTemplate('select', array(
+            'postName'    => $this->getInputName($langID),
+            'placeholder' => _('Selecciona') . ' ' . $this->getPlaceholder(),
+            'optionsHTML' => $this->getOptionsHTML($langID),
+        ));
     }
 
     protected function getOptionsHTML(?int $langID): string|array
     {
-        $optionsHTML = '';
-        $options     = $this->getOptions();
-        $values      = $this->loadValues($langID);
+        $options = $this->getOptions();
+        $values  = $this->loadValues($langID);
 
-        $optionsHTML .= '<option></option>';
+        $optionData = array();
         foreach ($options as $option) {
-            $selected = in_array($option['id'], $values) !== false ? 'selected' : '';
-            $disabled = (array_key_exists('disabled', $option) && $option['disabled']) ? 'disabled' : '';
-            $name     = $option['name'];
+            $name = $option['name'];
             if (array_key_exists('created', $option)) {
                 $hash = $option['id'] . '_' . $option['created'] . '_name';
                 $name = TwoWay::decrypt($option['name'], $hash);
             }
-            $optionsHTML .= '<option value="'
-                . $option['id']
-                . '" '
-                . $selected
-                . ' '
-                . $disabled
-                . '>'
-                . $name
-                . '</option>';
+            $optionData[] = array(
+                'id'       => $option['id'],
+                'name'     => $name,
+                'selected' => in_array($option['id'], $values) !== false,
+                'disabled' => array_key_exists('disabled', $option) && $option['disabled'],
+            );
         }
 
-        return $optionsHTML;
+        return $this->renderTemplate('_select-options', array('options' => $optionData));
     }
 
     protected function getOptions(?string $table = null, string $extraFields = ''): array

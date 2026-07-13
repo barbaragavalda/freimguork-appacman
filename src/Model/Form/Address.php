@@ -30,11 +30,12 @@ class Address extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        return $this->inputType('text', $langID, ' autocomplete="off"') . '
-            <div id="map-' . $this->fieldName . '" class="map"></div>
-            <input type="hidden" name="latitude-' . $this->fieldName . '" value="' . $this->latitude . '" />
-            <input type="hidden" name="longitude-' . $this->fieldName . '" value="' . $this->longitude . '" />
-        ';
+        return $this->renderTemplate('address', array(
+            'input'     => $this->inputType('text', $langID, ' autocomplete="off"'),
+            'fieldName' => $this->fieldName,
+            'latitude'  => $this->latitude,
+            'longitude' => $this->longitude,
+        ));
     }
 
     protected function hasError(?int $langID = null): bool

@@ -13,12 +13,9 @@ class ColorPicker extends Varchar
 
     protected function getInputHTML(?int $langID = null): string
     {
-        return '
-            <div class="input-group input-colorpicker">
-                ' . $this->inputType('text', $langID) . '
-                <div class="input-group-addon"><i></i></div>
-            </div>
-        ';
+        return $this->renderTemplate('colorpicker', array(
+            'input' => $this->inputType('text', $langID),
+        ));
     }
 
 }

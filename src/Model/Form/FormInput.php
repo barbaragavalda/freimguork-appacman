@@ -8,6 +8,8 @@ use PDO;
 abstract class FormInput extends Model
 {
 
+    private static ?\Twig\Environment $twig = null;
+
     protected string $name = '';
 
     protected ?string $hint = '';
@@ -388,17 +390,27 @@ abstract class FormInput extends Model
 
     protected function label(string $value): string
     {
-        return '<label class="form-label">' . $value . '</label>';
+        return $this->renderTemplate('_label', array('value' => $value));
     }
 
     protected function inputType(string $type = 'text', ?int $langID = null, string $extra = ''): string
     {
-        $postName = $this->getInputName($langID);
-        $value    = $this->getInputValue($langID);
-        if ($value) {
-            $value = str_replace('"', '&quot;', $value);
+        return $this->renderTemplate('_input', array(
+            'type'        => $type,
+            'postName'    => $this->getInputName($langID),
+            'value'       => $this->getInputValue($langID),
+            'placeholder' => $this->getPlaceholder(),
+            'extra'       => $extra,
+        ));
+    }
+
+    protected function renderTemplate(string $name, array $data): string
+    {
+        if (self::$twig === null) {
+            $loader     = new \Twig\Loader\FilesystemLoader(APPACMAN_DIR . 'View/Form/');
+            self::$twig = new \Twig\Environment($loader);
         }
-        return "<input type='$type' class='form-control' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' value='$value' $extra>";
+        return self::$twig->render($name . '.twig', $data);
     }
 
     protected function getContentID(): int|bool

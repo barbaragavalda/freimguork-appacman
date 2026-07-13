@@ -20,17 +20,14 @@ class Check extends FormInput
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName = $this->getInputName($langID);
+        $value = (bool) parent::getInputValue($langID);
 
-        $disabled = $checked = '';
-        if (parent::getInputValue($langID)) {
-            $disabled = 'disabled';
-            $checked  = 'checked';
-        }
-        return "
-            <input type='hidden' id='$postName' name='$postName' value='0' $disabled/>
-            <input type='checkbox' class='custom-check' id='$postName' name='$postName' placeholder='{$this->getPlaceholder()}' $checked value='1'/>
-        ";
+        return $this->renderTemplate('check', array(
+            'postName'    => $this->getInputName($langID),
+            'placeholder' => $this->getPlaceholder(),
+            'checked'     => $value,
+            'disabled'    => $value,
+        ));
     }
 
     protected function getPostValue(?int $langID = null): string

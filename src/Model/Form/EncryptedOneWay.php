@@ -14,14 +14,13 @@ class EncryptedOneWay extends Encrypted
 
     protected function getInputHTML(?int $langID = null): string
     {
-        $postName = $this->getInputName($langID);
-        return '<input type="text" class="form-control" id="'
-            . $postName
-            . '" name="'
-            . $postName
-            . '" placeholder="'
-            . $this->getPlaceholder()
-            . '" value="" />';
+        return $this->renderTemplate('_input', array(
+            'type'        => 'text',
+            'postName'    => $this->getInputName($langID),
+            'value'       => '',
+            'placeholder' => $this->getPlaceholder(),
+            'extra'       => '',
+        ));
     }
 
     public function canSave(?int $langID = null): bool
