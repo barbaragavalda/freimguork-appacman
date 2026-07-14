@@ -256,7 +256,9 @@ abstract class FormInput extends Model
         if (array_key_exists($postName, $_POST)) {
             return $this->getPost($postName);
         } else {
-            if (!empty($this->value)) {
+            // not empty($this->value) - a legitimate id of "0" (e.g. a not-yet-saved
+            // Dynamic sub-item) is falsy but must still be returned, not treated as unset
+            if ($this->value !== null && $this->value !== '' && $this->value !== array()) {
                 if ($langID == null && !is_array($this->value)) {
                     return $this->value;
                 } else {
