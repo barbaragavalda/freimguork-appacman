@@ -3,6 +3,7 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Utils\Permissions;
+use Appacman\Service\CrudPermissions;
 
 abstract class BaseContentList extends Content
 {
@@ -73,25 +74,22 @@ abstract class BaseContentList extends Content
         $hasPermission = parent::hasPermission();
         if ($hasPermission) {
             $contentID    = $this->content->getID();
-            $canSee       = $this->user->hasPermission($contentID, Permissions::SEE);
-            $canEdit      = $this->user->hasPermission($contentID, Permissions::EDIT);
-            $canCreate    = $this->user->hasPermission($contentID, Permissions::CREATE);
-            $canDelete    = $this->user->hasPermission($contentID, Permissions::DELETE);
+            $permissions  = CrudPermissions::resolve($this->user, $contentID);
             $canExport    = $this->user->hasPermission($contentID, Permissions::EXPORT);
-            $canLock      = $this->user->hasPermission($contentID, Permissions::LOCK);
-            $canOwn       = $this->user->hasPermission($contentID, Permissions::OWN);
             $canDuplicate = $this->user->hasPermission($contentID, Permissions::DUPLICATE);
             $canLogOut    = $this->user->hasPermission($contentID, Permissions::LOG_OUT);
 
             // has permissions to see list?
-            if ($canSee || $canEdit || $canCreate || $canDelete || $canExport || $canLock || $canOwn || $canDuplicate) {
-                $this->assign('canSee', $canSee);
-                $this->assign('canEdit', $canEdit);
-                $this->assign('canCreate', $canCreate);
-                $this->assign('canDelete', $canDelete);
+            if ($permissions->canSee || $permissions->canEdit || $permissions->canCreate
+                || $permissions->canDelete || $canExport || $permissions->canLock
+                || $permissions->canOwn || $canDuplicate) {
+                $this->assign('canSee', $permissions->canSee);
+                $this->assign('canEdit', $permissions->canEdit);
+                $this->assign('canCreate', $permissions->canCreate);
+                $this->assign('canDelete', $permissions->canDelete);
                 $this->assign('canExport', $canExport);
-                $this->assign('canLock', $canLock);
-                $this->assign('canOwn', $canOwn);
+                $this->assign('canLock', $permissions->canLock);
+                $this->assign('canOwn', $permissions->canOwn);
                 $this->assign('canDuplicate', $canDuplicate);
                 $this->assign('canLogOut', $canLogOut);
             } else {

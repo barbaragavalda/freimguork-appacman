@@ -6,6 +6,7 @@ use Appacman\Model\Item;
 use Appacman\Model\Utils\Admin;
 use Appacman\Model\Utils\Language;
 use Appacman\Model\Utils\Permissions;
+use Appacman\Service\CrudPermissions;
 use Core\Model\Utils\Mail;
 
 abstract class BaseContentForm extends Content
@@ -86,28 +87,23 @@ abstract class BaseContentForm extends Content
         $hasPermission = parent::hasPermission();
 
         if ($hasPermission) {
-            $contentID = $this->content->getID();
-            $canSee    = $this->user->hasPermission($contentID, Permissions::SEE);
-            $canEdit   = $this->user->hasPermission($contentID, Permissions::EDIT);
-            $canCreate = $this->user->hasPermission($contentID, Permissions::CREATE);
-            $canDelete = $this->user->hasPermission($contentID, Permissions::DELETE);
-            $canOwn    = $this->user->hasPermission($contentID, Permissions::OWN);
-            $canLock   = $this->user->hasPermission($contentID, Permissions::LOCK);
+            $contentID   = $this->content->getID();
+            $permissions = CrudPermissions::resolve($this->user, $contentID);
 
             // has permission to create?
             $itemID        = $this->getParam('itemID');
             $this->item    = new Item($itemID, $this->content->getTable());
             $hasPermission = false;
-            if (!$itemID && $canCreate) {
+            if (!$itemID && $permissions->canCreate) {
                 $hasPermission = true;
                 // has permission to edit or see?
             } else {
                 if ($itemID > 0) {
                     if ($this->item->exists()) {
-                        if ($canSee || $canEdit || $canLock) {
+                        if ($permissions->canSee || $permissions->canEdit || $permissions->canLock) {
                             $hasPermission = true;
                         }
-                        if ($canOwn) {
+                        if ($permissions->canOwn) {
                             $profileInfo = $this->user->getProfileInfo();
                             if ($profileInfo != null) {
                                 $info = $this->item->getValues();
@@ -126,12 +122,12 @@ abstract class BaseContentForm extends Content
                 }
             }
 
-            $this->assign('canSee', $canSee);
-            $this->assign('canEdit', $canEdit);
-            $this->assign('canCreate', $canCreate);
-            $this->assign('canDelete', $canDelete);
-            $this->assign('canOwn', $canOwn);
-            $this->assign('canLock', $canLock);
+            $this->assign('canSee', $permissions->canSee);
+            $this->assign('canEdit', $permissions->canEdit);
+            $this->assign('canCreate', $permissions->canCreate);
+            $this->assign('canDelete', $permissions->canDelete);
+            $this->assign('canOwn', $permissions->canOwn);
+            $this->assign('canLock', $permissions->canLock);
             $this->assign('canSendChanges', $this->user->hasPermission($contentID, Permissions::SEND_CHANGES));
             $this->assign('canGenerateInvoice', $this->user->hasPermission($contentID, Permissions::GENERATE_INVOICE));
         }
