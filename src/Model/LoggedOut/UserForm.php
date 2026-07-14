@@ -4,6 +4,7 @@ namespace Appacman\Model\LoggedOut;
 
 use Appacman\Model\Business;
 use Appacman\Model\User;
+use Core\Model\Encryptor\BlindIndex;
 use Core\Model\Encryptor\OneWay;
 use Core\Model\Encryptor\TwoWay;
 use Core\Model\Form;
@@ -51,6 +52,13 @@ class UserForm extends Form
         if ($this->foundUser()) {
             $found = true;
             if (OneWay::check($this->user['password'], $this->form['password'], $this->key . '_password')) {
+                if (OneWay::needsRehash($this->user['password'])) {
+                    // opportunistic migration: this is the only point a
+                    // legacy password hash can ever be upgraded, since a
+                    // one-way hash can't be re-encrypted without the
+                    // plaintext, which we only have right here
+                    $this->rehashPassword();
+                }
                 return true;
             } else {
                 $this->error = _('Contraseña incorrecta.');
@@ -61,6 +69,23 @@ class UserForm extends Form
             $this->error = _('No existe ningún usuario con este email.');
         }
         return false;
+    }
+
+    private function rehashPassword(): void
+    {
+        $sql    = '
+            UPDATE appacman_user
+            SET password = :password
+            WHERE id_appacman_user = :id
+        ';
+        $params = array(
+            'password' => array(
+                'value' => OneWay::encrypt($this->form['password'], $this->key . '_password'),
+                'type'  => PDO::PARAM_STR
+            ),
+            'id'       => array('value' => $this->user['id_appacman_user'], 'type' => PDO::PARAM_INT),
+        );
+        $this->mysql->query($sql, $params);
     }
 
     public function remember(): void
@@ -157,11 +182,23 @@ class UserForm extends Form
 
     private function foundUser(): bool
     {
-        $sql   = '
+        // looked up by blind index instead of decrypting every row - see
+        // Core\Model\Encryptor\BlindIndex. Rows created/edited before the
+        // email field was migrated to the searchable form won't have
+        // email_bidx populated yet and simply won't be found here until
+        // they're migrated (see Core\Model\Encryptor\Migrator).
+        $sql    = '
             SELECT id_appacman_user, name, email, password, created
             FROM appacman_user
+            WHERE email_bidx = :bidx
         ';
-        $users = $this->mysql->query($sql);
+        $params = array(
+            'bidx' => array(
+                'value' => BlindIndex::compute($this->form['user'], 'email'),
+                'type'  => PDO::PARAM_STR
+            )
+        );
+        $users  = $this->mysql->query($sql, $params);
 
         foreach ($users as $user) {
             $this->key      = $user['id_appacman_user'] . '_' . $user['created'];
