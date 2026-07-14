@@ -104,7 +104,7 @@ class Dynamic extends FormInput
         ';
     }
 
-    public function getItemHTML(?Item $form = null, bool $canEdit = true, bool $multiplePosition = true): string
+    public function getItemHTML(?Item $form = null, bool $canEdit = true, bool|int $multiplePosition = true): string
     {
 
         $inputs = $this->getFormInputs($form);
@@ -113,7 +113,7 @@ class Dynamic extends FormInput
                 <div class="box-body">
         ';
         foreach ($inputs as $input) {
-            if ($input->getType() != 'selectMulti') {
+            if ($input->getType() != 'selectMulti' && $this->id !== null) {
                 $input->setID($this->id);
             }
             $input->isMultiple($multiplePosition);

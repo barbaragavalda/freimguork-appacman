@@ -31,12 +31,6 @@ parameters:
 			path: src/Model/Form/DateTime.php
 
 		-
-			message: '#^Parameter \#3 \$multiplePosition of method Appacman\\Model\\Form\\Dynamic\:\:getItemHTML\(\) expects bool, int\<0, max\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Model/Form/Dynamic.php
-
-		-
 			message: '#^Method Appacman\\Model\\Form\\GenericFile\:\:getPostValue\(\) should return string\|null but returns int\.$#'
 			identifier: return.type
 			count: 1

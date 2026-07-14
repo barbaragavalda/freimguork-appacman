@@ -25,6 +25,11 @@ class Add extends Ajax
 
     protected function run(): void
     {
+        // the parent item may not be saved yet (no id_ column value assigned), in
+        // which case its rendered data-id is empty - treat that as "no parent yet"
+        // instead of coercing '' into the ?int the constructor expects
+        $itemID = ($_POST['id'] !== '') ? (int) $_POST['id'] : null;
+
         $field    = new Dynamic(
             array(
                 'field_name' => $_POST['field'],
@@ -32,9 +37,9 @@ class Add extends Ajax
                 'value'      => '',
                 'required'   => false,
                 'type'       => 'dynamic'
-            ), $_POST['id'], $_POST['table']
+            ), $itemID, $_POST['table']
         );
-        $position = null;
+        $position = false;
         if ($_POST['position']) {
             $position = $_POST['position'];
         }
