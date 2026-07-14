@@ -4,6 +4,7 @@ namespace Appacman\Controller;
 
 use Appacman\Model\Utils\Permissions;
 use Appacman\Service\CrudPermissions;
+use Appacman\Service\SingleItemRedirectResolver;
 
 abstract class BaseContentList extends Content
 {
@@ -18,55 +19,34 @@ abstract class BaseContentList extends Content
     {
         parent::run();
 
-        $template = true;
-        $listType = $this->content->getListType();
-
+        $listType  = $this->content->getListType();
         $contentID = $this->content->getID();
+
         if ($this->redirectToForm) {
-            $currentContent = null;
-            foreach ($this->info['menu'] as $block) {
-                foreach ($block['list'] as $content) {
-                    if ($content['id_appacman_content'] == $contentID) {
-                        $currentContent = $content;
-                        break;
-                    }
+            $itemID = (new SingleItemRedirectResolver())->resolve($this->info['menu'], $this->content, $listType);
+            if ($itemID !== null) {
+                $link = _('formulario');
+                if ($this->content->getTable() == 'appacman_push') {
+                    $link = _('notificacion-push');
                 }
-            }
-
-            if ($currentContent && $currentContent['counter'] == 1) {
-                // only one item
-                $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
-                        |> ucwords(...)
-                        |> (fn($x) => str_replace(' ', '', $x));
-                $model     = new $listClass($this->content, 1, 1);
-                $list      = $model->getItemsPage();
-                if (count($list)) {
-                    $template = false;
-
-                    $link = _('formulario');
-                    if ($this->content->getTable() == 'appacman_push') {
-                        $link = _('notificacion-push');
-                    }
-                    $this->redirect($this->domain . $link . '/' . $contentID . '/' . $list[0]['id']);
-                }
+                $this->redirect($this->domain . $link . '/' . $contentID . '/' . $itemID);
+                return;
             }
         }
 
-        if ($template) {
-            if ($this->listURL == null) {
-                $this->listURL = $this->domain . 'table/' . $contentID;
-            }
-
-            // list configuration
-            $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
-            $this->assign('has_search', $this->hasSearch);
-            $this->assign('list_url', $this->listURL);
-            $this->assign('list_headers', $headers);
-            $this->assign('list_order', $this->content->getOrderBy());
-            $this->assign('tableData', $_POST);
-
-            $this->template('List/' . $listType . '.twig');
+        if ($this->listURL == null) {
+            $this->listURL = $this->domain . 'table/' . $contentID;
         }
+
+        // list configuration
+        $headers = array_merge($this->content->getTableHeaders(), $this->extraHeaders());
+        $this->assign('has_search', $this->hasSearch);
+        $this->assign('list_url', $this->listURL);
+        $this->assign('list_headers', $headers);
+        $this->assign('list_order', $this->content->getOrderBy());
+        $this->assign('tableData', $_POST);
+
+        $this->template('List/' . $listType . '.twig');
     }
 
     protected function hasPermission(): bool
