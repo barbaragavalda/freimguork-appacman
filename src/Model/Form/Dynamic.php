@@ -164,7 +164,7 @@ class Dynamic extends FormInput
         return '';
     }
 
-    protected function getFormInputs(?Item $form): array
+    protected function getFormInputs(?Item &$form): array
     {
         if ($form == null) {
             $form          = new Item(false, $this->fieldName);
