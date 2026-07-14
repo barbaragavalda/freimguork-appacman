@@ -3,8 +3,8 @@
 namespace Appacman\Controller;
 
 use Appacman\Model\Business;
-use Appacman\Model\Menu;
 use Appacman\Model\User;
+use Appacman\Service\NavigationAccessResolver;
 use Core\Controller\CacheManager;
 use Core\Controller\Controller;
 use Core\Utils\Config;
@@ -45,52 +45,33 @@ abstract class AppacmanController extends Controller
 
     public function build(): void
     {
-        // do not redirect logged out pages
-        $isLoggedOutPage = false;
-        if (count($this->parts)) {
-            $currentPage     = $this->parts[0];
-            $isLoggedOutPage = in_array($currentPage, $this->loggedOutPages) === true;
-        }
-
         // User is appacman's own singleton, not core's - nothing registers it in the
         // container, and Bootstrap (core's composition root) has no appacman-specific
         // hook to add one, so this stays a direct call rather than a constructor param
         $this->user = User::getInstance();
-        $isLoggedIn = $this->user->loggedIn();
-        if (!$isLoggedIn && !$isLoggedOutPage) {
-            // redirect logged-out users to signin page
-            $this->redirect($this->domain . _('iniciar-sesion'), 401);
-        } else {
-            $profileInfo = $this->user->getProfileInfo();
-            if ($profileInfo != null && array_key_exists('logo', $profileInfo)) {
-                $this->info['business']['logo'] = $profileInfo['logo'];
-            }
-            if ($this->hasPermission()) {
-                $menu      = new Menu($this->user->getProfileInfo());
-                $menuItems = $menu->get();
 
-                if (($isLoggedIn && count($menuItems)) || !$isLoggedIn) {
-                    // execute currect page
-                    if ($isLoggedIn) {
-                        $this->assign('username', $this->user->getName());
-                    }
+        $resolver = new NavigationAccessResolver($this->user);
+        $access   = $resolver->resolve($this->parts, $this->loggedOutPages, fn() => $this->hasPermission());
 
-                    // page title
-                    $this->assign('title', $this->getTitle());
-
-                    // menu info
-                    $this->assign('menu', $menuItems);
-                    $this->assign('breadcrumb', $this->getBreadcrumb());
-
-                    $this->run();
-                } else {
-                    $this->redirect($this->domain . _('iniciar-sesion'), 401);
-                }
-            } else {
-                // redirect logedin users to home page
-                $this->redirect($this->domain);
-            }
+        if ($access->isRedirect()) {
+            $this->redirect($this->domain . $access->redirectPath(), $access->redirectStatus());
+            return;
         }
+
+        $profileInfo = $this->user->getProfileInfo();
+        if ($profileInfo != null && array_key_exists('logo', $profileInfo)) {
+            $this->info['business']['logo'] = $profileInfo['logo'];
+        }
+
+        if ($access->isLoggedIn) {
+            $this->assign('username', $this->user->getName());
+        }
+
+        $this->assign('title', $this->getTitle());
+        $this->assign('menu', $access->menuItems);
+        $this->assign('breadcrumb', $this->getBreadcrumb());
+
+        $this->run();
     }
 
     abstract protected function run();
