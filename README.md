@@ -42,6 +42,12 @@ composer config --global http-basic.bitbucket.org "your-atlassian-account-email@
 - **Services layer**: business logic is being extracted out of controllers/models into `Service\*`
   classes, guarded by a constructor-contract test.
 
+## Secrets management
+
+This package has no credentials of its own — it always runs inside a consuming app, which owns
+`config/dev/`/`config/prod/`. See `freimguork-core`'s README for the `.dist`-template + gitignore
+convention those per-environment credential files should follow.
+
 ## Testing
 
 PHP and Composer only exist inside this project's Docker container (see the top-level
