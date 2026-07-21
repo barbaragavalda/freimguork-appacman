@@ -1,18 +1,10 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : VMPHP7
- Source Server Type    : MySQL
- Source Server Version : 100038
- Source Host           : localhost:3306
- Source Schema         : museusantpol
-
- Target Server Type    : MySQL
- Target Server Version : 100038
- File Encoding         : 65001
-
- Date: 15/12/2020 15:49:32
-*/
+-- Minimal Appacman schema + seed data to bootstrap a new project from zero.
+-- No admin user is seeded here on purpose: appacman_user.name/email are
+-- TwoWay-encrypted and password is OneWay-hashed under THIS project's own
+-- config/dev/keys.php `encryption.secret` (see Core\Model\Encryptor\Secret),
+-- so a row encrypted under some other project's key would be garbage here
+-- anyway. Generate your own secret first, then create the first admin - see
+-- README.md "First admin user".
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -27,9 +19,6 @@ CREATE TABLE `appacman_block` (
   PRIMARY KEY (`id_appacman_block`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_block
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_block` VALUES (1, 100);
 COMMIT;
@@ -44,13 +33,11 @@ CREATE TABLE `appacman_block_lang` (
   `id_appacman_lang` tinyint(3) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id_appacman_block_lang`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_block_lang
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_block_lang` VALUES (1, 1, 1, 'Gestor');
+INSERT INTO `appacman_block_lang` VALUES (2, 1, 2, 'Gestor');
 COMMIT;
 
 -- ----------------------------
@@ -62,16 +49,12 @@ CREATE TABLE `appacman_config` (
   `name` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`id_appacman_config`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_config
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_config` VALUES (1, 'logo', '');
-INSERT INTO `appacman_config` VALUES (2, 'name', 'Carlos Roman');
-INSERT INTO `appacman_config` VALUES (3, 'support_email', 'web@optisistem.com');
-INSERT INTO `appacman_config` VALUES (4, 'support_phone', '+34 93 101 01 10');
+INSERT INTO `appacman_config` VALUES (2, 'name', '');
+INSERT INTO `appacman_config` VALUES (3, 'support_email', '');
 COMMIT;
 
 -- ----------------------------
@@ -87,14 +70,10 @@ CREATE TABLE `appacman_content` (
   `order_by` varchar(255) DEFAULT NULL,
   `order` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id_appacman_content`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_content
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_content` VALUES (1, 'appacman_user', 'fa-user', 1, 1, NULL, 1);
-INSERT INTO `appacman_content` VALUES (2, 'appacman_legal', 'fa-legal', 3, 1, '`order` ASC', 1);
 COMMIT;
 
 -- ----------------------------
@@ -109,12 +88,9 @@ CREATE TABLE `appacman_content_lang` (
   PRIMARY KEY (`id_appacman_content_lang`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_content_lang
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_content_lang` VALUES (1, 1, 1, 'Administradors');
-INSERT INTO `appacman_content_lang` VALUES (2, 2, 1, 'Textos legals');
+INSERT INTO `appacman_content_lang` VALUES (2, 1, 2, 'Administradores');
 COMMIT;
 
 -- ----------------------------
@@ -130,11 +106,8 @@ CREATE TABLE `appacman_field` (
   `show_on_list` tinyint(1) unsigned DEFAULT NULL,
   `show_on_breadcrumb` tinyint(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id_appacman_field`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_field
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_field` VALUES (1, 1, 'name', 9, 1, 1, 1);
 INSERT INTO `appacman_field` VALUES (2, 1, 'email', 9, 2, 1, NULL);
@@ -142,10 +115,6 @@ INSERT INTO `appacman_field` VALUES (3, 1, 'password', 10, 3, NULL, NULL);
 INSERT INTO `appacman_field` VALUES (4, 1, 'id_appacman_user_profile', 2, 4, NULL, NULL);
 INSERT INTO `appacman_field` VALUES (5, 1, 'changing_password', 4, 5, NULL, NULL);
 INSERT INTO `appacman_field` VALUES (6, 1, 'created', NULL, 6, NULL, NULL);
-INSERT INTO `appacman_field` VALUES (7, 2, 'name', 19, 1, 1, 1);
-INSERT INTO `appacman_field` VALUES (8, 2, 'uri', 4, 2, NULL, NULL);
-INSERT INTO `appacman_field` VALUES (9, 2, 'text', NULL, 3, NULL, NULL);
-INSERT INTO `appacman_field` VALUES (10, 2, 'order', 13, 4, 1, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -159,22 +128,21 @@ CREATE TABLE `appacman_field_lang` (
   `name` varchar(255) DEFAULT NULL,
   `hint` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_appacman_field_lang`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_field_lang
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_field_lang` VALUES (1, 1, 1, 'Nom', NULL);
-INSERT INTO `appacman_field_lang` VALUES (2, 2, 1, 'Email', NULL);
-INSERT INTO `appacman_field_lang` VALUES (3, 3, 1, 'Contrasenya', NULL);
-INSERT INTO `appacman_field_lang` VALUES (4, 4, 1, 'Perfil', NULL);
-INSERT INTO `appacman_field_lang` VALUES (5, 5, 1, 'Token email', NULL);
-INSERT INTO `appacman_field_lang` VALUES (6, 6, 1, 'Data creaciÃ³', NULL);
-INSERT INTO `appacman_field_lang` VALUES (7, 7, 1, 'Nom', NULL);
-INSERT INTO `appacman_field_lang` VALUES (8, 8, 1, 'URI', NULL);
-INSERT INTO `appacman_field_lang` VALUES (9, 9, 1, 'Text', NULL);
-INSERT INTO `appacman_field_lang` VALUES (10, 10, 1, 'Ordre', NULL);
+INSERT INTO `appacman_field_lang` VALUES (2, 1, 2, 'Nombre', NULL);
+INSERT INTO `appacman_field_lang` VALUES (3, 2, 1, 'Email', NULL);
+INSERT INTO `appacman_field_lang` VALUES (4, 2, 2, 'Email', NULL);
+INSERT INTO `appacman_field_lang` VALUES (5, 3, 1, 'Contrasenya', NULL);
+INSERT INTO `appacman_field_lang` VALUES (6, 3, 2, 'Contraseña', NULL);
+INSERT INTO `appacman_field_lang` VALUES (7, 4, 1, 'Perfil', NULL);
+INSERT INTO `appacman_field_lang` VALUES (8, 4, 2, 'Perfil', NULL);
+INSERT INTO `appacman_field_lang` VALUES (9, 5, 1, 'Token email', NULL);
+INSERT INTO `appacman_field_lang` VALUES (10, 5, 2, 'Token email', NULL);
+INSERT INTO `appacman_field_lang` VALUES (11, 6, 1, 'Data creació', NULL);
+INSERT INTO `appacman_field_lang` VALUES (12, 6, 2, 'Fecha creación', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -187,9 +155,6 @@ CREATE TABLE `appacman_field_type` (
   PRIMARY KEY (`id_appacman_field_type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_field_type
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_field_type` VALUES (1, 'image');
 INSERT INTO `appacman_field_type` VALUES (2, 'select');
@@ -251,38 +216,12 @@ CREATE TABLE `appacman_lang` (
   `culture` varchar(10) NOT NULL,
   `order` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id_appacman_lang`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_lang
--- ----------------------------
 BEGIN;
-INSERT INTO `appacman_lang` VALUES (3, 'English', 'en', 3);
+INSERT INTO `appacman_lang` VALUES (1, 'Català', 'ca', 1);
+INSERT INTO `appacman_lang` VALUES (2, 'Castellano', 'es', 2);
 COMMIT;
-
--- ----------------------------
--- Table structure for appacman_legal
--- ----------------------------
-DROP TABLE IF EXISTS `appacman_legal`;
-CREATE TABLE `appacman_legal` (
-  `id_appacman_legal` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `order` tinyint(3) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id_appacman_legal`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for appacman_legal_lang
--- ----------------------------
-DROP TABLE IF EXISTS `appacman_legal_lang`;
-CREATE TABLE `appacman_legal_lang` (
-  `id_appacman_legal_lang` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `id_appacman_legal` tinyint(3) unsigned NOT NULL,
-  `id_appacman_lang` tinyint(3) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `uri` varchar(255) NOT NULL,
-  `text` text NOT NULL,
-  PRIMARY KEY (`id_appacman_legal_lang`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for appacman_list_type
@@ -294,9 +233,6 @@ CREATE TABLE `appacman_list_type` (
   PRIMARY KEY (`id_appacman_list_type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_list_type
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_list_type` VALUES (1, 'table');
 INSERT INTO `appacman_list_type` VALUES (2, 'cart');
@@ -315,14 +251,8 @@ CREATE TABLE `appacman_user` (
   `changing_password` varchar(255) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_appacman_user`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of appacman_user
--- ----------------------------
-BEGIN;
-INSERT INTO `appacman_user` VALUES (1, '44b838da3ebc52a5addcb4f1d154b80fcd7RU3ynPJ3gD0gzciwBkA==', 'cdb10be1355fd3605eb7b38181e0e959c+P9lHy51g59wEGzKYISOYNd', '$6$rounds=5000$1bfe542fb14f15e0$95oCA3LX3.TSZwrhMqmc04GZdFofijh1/y9u8lO1KoaUT/ean1DUXKLEurSJg4NcXgN7YuoW4ZmS677w1Bmo6.', 1, NULL, '2017-11-17 12:44:18');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+-- intentionally empty - see "First admin user" in README.md
 
 -- ----------------------------
 -- Table structure for appacman_user_permission
@@ -334,9 +264,6 @@ CREATE TABLE `appacman_user_permission` (
   PRIMARY KEY (`id_appacman_user_permission`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_user_permission
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_user_permission` VALUES (1, 'create');
 INSERT INTO `appacman_user_permission` VALUES (2, 'edit');
@@ -362,9 +289,6 @@ CREATE TABLE `appacman_user_permission_lang` (
   PRIMARY KEY (`id_appacman_user_permission_lang`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_user_permission_lang
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_user_permission_lang` VALUES (1, 1, 1, 'Crear');
 INSERT INTO `appacman_user_permission_lang` VALUES (2, 1, 2, 'Crear');
@@ -372,19 +296,19 @@ INSERT INTO `appacman_user_permission_lang` VALUES (3, 2, 1, 'Editar');
 INSERT INTO `appacman_user_permission_lang` VALUES (4, 2, 2, 'Editar');
 INSERT INTO `appacman_user_permission_lang` VALUES (5, 3, 1, 'Eliminar');
 INSERT INTO `appacman_user_permission_lang` VALUES (6, 3, 2, 'Eliminar');
-INSERT INTO `appacman_user_permission_lang` VALUES (7, 4, 1, 'Ver');
+INSERT INTO `appacman_user_permission_lang` VALUES (7, 4, 1, 'Veure');
 INSERT INTO `appacman_user_permission_lang` VALUES (8, 4, 2, 'Ver');
 INSERT INTO `appacman_user_permission_lang` VALUES (9, 5, 1, 'Exportar');
 INSERT INTO `appacman_user_permission_lang` VALUES (10, 5, 2, 'Exportar');
 INSERT INTO `appacman_user_permission_lang` VALUES (11, 6, 1, 'Bloquejar');
 INSERT INTO `appacman_user_permission_lang` VALUES (12, 6, 2, 'Bloquear');
-INSERT INTO `appacman_user_permission_lang` VALUES (13, 7, 1, 'Editar');
-INSERT INTO `appacman_user_permission_lang` VALUES (14, 7, 2, 'Editar');
+INSERT INTO `appacman_user_permission_lang` VALUES (13, 7, 1, 'Propi');
+INSERT INTO `appacman_user_permission_lang` VALUES (14, 7, 2, 'Propio');
 INSERT INTO `appacman_user_permission_lang` VALUES (15, 8, 1, 'Duplicar');
 INSERT INTO `appacman_user_permission_lang` VALUES (16, 8, 2, 'Duplicar');
 INSERT INTO `appacman_user_permission_lang` VALUES (17, 9, 1, 'Firebase');
 INSERT INTO `appacman_user_permission_lang` VALUES (18, 9, 2, 'Firebase');
-INSERT INTO `appacman_user_permission_lang` VALUES (19, 10, 1, 'The changes are send to all admins');
+INSERT INTO `appacman_user_permission_lang` VALUES (19, 10, 1, 'Els canvis s''envien als admins');
 INSERT INTO `appacman_user_permission_lang` VALUES (20, 10, 2, 'Los cambios se envian a los admins');
 COMMIT;
 
@@ -397,9 +321,6 @@ CREATE TABLE `appacman_user_profile` (
   PRIMARY KEY (`id_appacman_user_profile`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_user_profile
--- ----------------------------
 BEGIN;
 INSERT INTO `appacman_user_profile` VALUES (1);
 INSERT INTO `appacman_user_profile` VALUES (2);
@@ -417,14 +338,11 @@ CREATE TABLE `appacman_user_profile_lang` (
   PRIMARY KEY (`id_appacman_user_profile_lang`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_user_profile_lang
--- ----------------------------
 BEGIN;
-INSERT INTO `appacman_user_profile_lang` VALUES (1, 2, 1, 'SuperAdministrador');
-INSERT INTO `appacman_user_profile_lang` VALUES (2, 2, 2, 'SuperAdministrador');
-INSERT INTO `appacman_user_profile_lang` VALUES (3, 1, 1, 'Administrador');
-INSERT INTO `appacman_user_profile_lang` VALUES (4, 1, 2, 'Administrador');
+INSERT INTO `appacman_user_profile_lang` VALUES (1, 1, 1, 'Administrador');
+INSERT INTO `appacman_user_profile_lang` VALUES (2, 1, 2, 'Administrador');
+INSERT INTO `appacman_user_profile_lang` VALUES (3, 2, 1, 'SuperAdministrador');
+INSERT INTO `appacman_user_profile_lang` VALUES (4, 2, 2, 'SuperAdministrador');
 COMMIT;
 
 -- ----------------------------
@@ -438,15 +356,14 @@ CREATE TABLE `appacman_user_profile_permission` (
   PRIMARY KEY (`id_appacman_user_profile`,`id_appacman_content`,`id_appacman_user_permission`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of appacman_user_profile_permission
--- ----------------------------
+-- SuperAdministrador (2) gets full CRUD + own on appacman_user (1), so the
+-- first admin created (see README.md) can manage other admins.
 BEGIN;
-INSERT INTO `appacman_user_profile_permission` VALUES (1, 1, 1);
-INSERT INTO `appacman_user_profile_permission` VALUES (1, 1, 2);
-INSERT INTO `appacman_user_profile_permission` VALUES (1, 1, 3);
-INSERT INTO `appacman_user_profile_permission` VALUES (1, 2, 2);
-INSERT INTO `appacman_user_profile_permission` VALUES (1, 2, 10);
+INSERT INTO `appacman_user_profile_permission` VALUES (2, 1, 1);
+INSERT INTO `appacman_user_profile_permission` VALUES (2, 1, 2);
+INSERT INTO `appacman_user_profile_permission` VALUES (2, 1, 3);
+INSERT INTO `appacman_user_profile_permission` VALUES (2, 1, 4);
+INSERT INTO `appacman_user_profile_permission` VALUES (2, 1, 7);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
