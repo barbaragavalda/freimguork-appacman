@@ -20,9 +20,9 @@ final class SingleItemRedirectResolver
             return null;
         }
 
-        $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
+        $listClass = 'Appacman\\Model\\Lists\\' . (str_replace('-', ' ', $listType)
                 |> ucwords(...)
-                |> (fn($x) => str_replace(' ', '', $x));
+                |> (fn($x) => str_replace(' ', '', $x)));
         $model = new $listClass($content, 1, 1);
         $list  = $model->getItemsPage();
 

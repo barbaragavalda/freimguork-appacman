@@ -120,9 +120,9 @@ class Menu extends Model
 
     private function getCounter($id, $listType, $isOwn = false): int
     {
-        $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
+        $listClass = 'Appacman\\Model\\Lists\\' . (str_replace('-', ' ', $listType)
                 |> ucwords(...)
-                |> (fn($x) => str_replace(' ', '', $x));
+                |> (fn($x) => str_replace(' ', '', $x)));
         $content   = new Content($id);
         $content->exists();
         $model = new $listClass($content, 1, PHP_INT_MAX, true);

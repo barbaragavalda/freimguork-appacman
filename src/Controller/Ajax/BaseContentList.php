@@ -28,9 +28,9 @@ abstract class BaseContentList extends Ajax
         $search = $_REQUEST['search']['value'] ?? '';
 
         $listType  = $this->content->getListType();
-        $listClass = 'Appacman\\Model\\Lists\\' . str_replace('-', ' ', $listType)
+        $listClass = 'Appacman\\Model\\Lists\\' . (str_replace('-', ' ', $listType)
                 |> ucwords(...)
-                |> (fn($x) => str_replace(' ', '', $x));
+                |> (fn($x) => str_replace(' ', '', $x)));
         $model     = new $listClass($this->content, $page, $itemsPerPage);
         $model->filter($search, $order);
         $list = $model->getItemsPage();
