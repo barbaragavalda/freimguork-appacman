@@ -18,7 +18,7 @@ class Date extends FormInput
             return $this->getInputValue($langID);
         }
         $value = parent::getSeeValue($langID);
-        return DateUtils::userDate($value);
+        return DateUtils::userDate($value) ?? '';
     }
 
     protected function getInputHTML(?int $langID = null): string
