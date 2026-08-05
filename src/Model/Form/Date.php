@@ -32,9 +32,12 @@ class Date extends FormInput
         ));
     }
 
-    protected function getPostValue(?int $langID = null): string
+    protected function getPostValue(?int $langID = null): ?string
     {
         $value = parent::getPostValue($langID);
+        if ($value === null) {
+            return null;
+        }
         return DateUtils::databaseDate($value);
     }
 
