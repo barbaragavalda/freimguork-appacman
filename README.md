@@ -64,7 +64,8 @@ docker exec php sh -c "cd /var/www/html/freimguork-appacman && composer phpstan"
 Follows the same `v1.0` / `dev-master` split as `freimguork-core`: `v1.0` is the last
 pre-modernization snapshot, still used by consuming apps that haven't migrated their controller
 constructors yet. This package itself already tracks core's `dev-master`, since its routing and DI
-are fully migrated.
+are fully migrated. `v2.0` is a checkpoint tag matching `freimguork-core`'s own `v2.0` milestone, not
+a new pinning point.
 
 ## Status
 
