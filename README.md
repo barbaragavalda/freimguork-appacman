@@ -20,9 +20,8 @@ Sibling packages in this family: `freimguork-core` (shared framework), `freimguo
 composer require optisistem/freimguork-appacman
 ```
 
-This is a private Bitbucket package. Composer needs to authenticate to `bitbucket.org` to fetch
-it — Bitbucket app passwords are deprecated, so use an Atlassian API token with the
-`read:repository:bitbucket` scope instead:
+Composer needs to authenticate to `bitbucket.org` to fetch this package — Bitbucket app passwords
+are deprecated, so use an Atlassian API token with the `read:repository:bitbucket` scope instead:
 
 ```bash
 composer config --global http-basic.bitbucket.org "your-atlassian-account-email@example.com" "your-api-token"
