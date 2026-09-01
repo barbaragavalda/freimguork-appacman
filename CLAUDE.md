@@ -26,6 +26,9 @@ reflection across every file in `src/Controller/`, the same way `freimguork-core
 — if you add a controller, its constructor (or an ancestor's) must match that exact shape or the
 container won't build it.
 
+This state is tagged `v2.0`, a checkpoint reference matching `freimguork-core`'s own `v2.0` (not a
+pinning point — see README's "Versioning" section for the full convention).
+
 ## Commands
 
 Same Docker-only setup as `freimguork-core` — no local PHP/Composer toolchain on the host:
