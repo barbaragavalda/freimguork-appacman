@@ -26,7 +26,7 @@
     "ext-fileinfo": "*",
     "ext-gettext": "*",
     "ext-pdo": "*",
-    "optisistem/freimguork-core": "dev-master || v2.0",
+    "optisistem/freimguork-core": "dev-master || ^2.0",
     "almasaeed2010/adminlte": "~2.4"
   },
   "require-dev": {
