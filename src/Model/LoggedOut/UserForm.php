@@ -96,12 +96,11 @@ class UserForm extends Form
 
         if (!empty($this->form['user'])) {
             if (filter_var($this->form['user'], FILTER_VALIDATE_EMAIL)) {
+                // setupChangePassword() already sets $this->error to a specific
+                // message ("no existe ningún usuario"/"error al enviar el email")
+                // on every failure path - don't overwrite it with a generic one
                 if ($this->setupChangePassword()) {
                     $this->send = true;
-                } else {
-                    $this->error = _(
-                        'Se ha producido un error al enviar el email. Por favor, inténtalo más tarde.'
-                    );
                 }
             } else {
                 $this->error = _('Comprueba el formato del email.');
