@@ -8,6 +8,8 @@ use PDO;
 class Select extends FormInput
 {
 
+    private static array $optionsCache = array();
+
     public function getSeeValue(?int $langID = null): string
     {
         if ($this->value) {
@@ -67,6 +69,14 @@ class Select extends FormInput
 
     protected function loadOptions(string $lateralTable, string $extraFields = '', string $orderBy = 'name'): array
     {
+        // the result only depends on ($lateralTable, $extraFields, $orderBy, $this->langID),
+        // all fixed for the whole request - a fresh Select instance per row/field otherwise
+        // re-ran this identical query once per row (see Model\Lists\Table::prepare())
+        $cacheKey = $lateralTable . '|' . $extraFields . '|' . $orderBy . '|' . $this->langID;
+        if (array_key_exists($cacheKey, self::$optionsCache)) {
+            return self::$optionsCache[ $cacheKey ];
+        }
+
         $lateralTableLang = $lateralTable . '_lang';
 
         $params    = array();
@@ -84,7 +94,9 @@ class Select extends FormInput
             ' . $where . '
             ORDER BY ' . $orderBy . ' ASC
         ';
-        return $this->mysql->query($sql, $params);
+
+        self::$optionsCache[ $cacheKey ] = $this->mysql->query($sql, $params);
+        return self::$optionsCache[ $cacheKey ];
     }
 
     protected function loadValues(?int $langID): array
